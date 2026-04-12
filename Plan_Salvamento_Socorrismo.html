@@ -1,0 +1,1387 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plan de Entrenamiento – Jesús Borreguero | TSEAS</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,300&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0a1628;
+    --deep: #0d1f3c;
+    --ocean: #0e4d7a;
+    --wave: #1a7cb8;
+    --cyan: #00c8e8;
+    --foam: #e8f8ff;
+    --gold: #f0b429;
+    --red: #e8394a;
+    --white: #f5f9ff;
+    --muted: #8aa4bc;
+    --card: #0f2440;
+    --border: rgba(0,200,232,0.18);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--navy);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    line-height: 1.65;
+  }
+
+  /* ─── HERO ─────────────────────────────────────────── */
+  .hero {
+    background: linear-gradient(135deg, #041020 0%, #0a2a50 50%, #0e4d7a 100%);
+    padding: 60px 40px 50px;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 34px,
+      rgba(0,200,232,0.04) 34px,
+      rgba(0,200,232,0.04) 35px
+    );
+  }
+  .hero::after {
+    content: '🌊';
+    position: absolute;
+    font-size: 320px;
+    opacity: 0.04;
+    right: -40px; bottom: -80px;
+    line-height: 1;
+  }
+  .hero-badge {
+    display: inline-block;
+    background: rgba(0,200,232,0.12);
+    border: 1px solid var(--cyan);
+    color: var(--cyan);
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 6px 18px;
+    border-radius: 2px;
+    margin-bottom: 24px;
+  }
+  .hero h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(42px, 7vw, 80px);
+    letter-spacing: 3px;
+    line-height: 1;
+    color: var(--white);
+    margin-bottom: 8px;
+  }
+  .hero h1 span { color: var(--cyan); }
+  .hero-sub {
+    font-size: 17px;
+    color: var(--muted);
+    font-weight: 300;
+    margin-bottom: 32px;
+  }
+  .hero-meta {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+  .meta-pill {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 4px;
+    padding: 10px 22px;
+    font-size: 13px;
+    color: var(--foam);
+  }
+  .meta-pill strong {
+    display: block;
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--cyan);
+    letter-spacing: 1px;
+    margin-bottom: 2px;
+  }
+
+  /* ─── LAYOUT ───────────────────────────────────────── */
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 28px; }
+
+  /* ─── SECTION TITLE ─────────────────────────────────── */
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin: 56px 0 28px;
+  }
+  .section-header .tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--cyan);
+    text-transform: uppercase;
+    background: rgba(0,200,232,0.08);
+    border: 1px solid var(--border);
+    padding: 4px 12px;
+    border-radius: 2px;
+    white-space: nowrap;
+  }
+  .section-header h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px;
+    letter-spacing: 2px;
+    color: var(--white);
+  }
+  .section-header .line {
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* ─── SEMANA HEADER ─────────────────────────────────── */
+  .semana-block { margin-bottom: 60px; }
+  .semana-title {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 2px solid var(--border);
+  }
+  .semana-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 72px;
+    line-height: 1;
+    color: rgba(0,200,232,0.12);
+    font-weight: 400;
+  }
+  .semana-info h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 26px;
+    letter-spacing: 2px;
+    color: var(--white);
+  }
+  .semana-info p {
+    font-size: 13px;
+    color: var(--muted);
+    font-family: 'Space Mono', monospace;
+  }
+  .semana-focus {
+    display: inline-block;
+    margin-top: 6px;
+    background: rgba(240,180,41,0.12);
+    border: 1px solid rgba(240,180,41,0.3);
+    color: var(--gold);
+    font-size: 11px;
+    font-family: 'Space Mono', monospace;
+    letter-spacing: 2px;
+    padding: 3px 10px;
+    border-radius: 2px;
+  }
+
+  /* ─── SESSION CARD ──────────────────────────────────── */
+  .sessions-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  @media(max-width: 760px) { .sessions-grid { grid-template-columns: 1fr; } }
+
+  .session-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .session-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 16px 48px rgba(0,0,0,0.4);
+  }
+  .card-header {
+    padding: 18px 22px 14px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .card-type {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 2px;
+    margin-bottom: 6px;
+    display: inline-block;
+  }
+  .type-pool { background: rgba(0,200,232,0.12); color: var(--cyan); border: 1px solid rgba(0,200,232,0.3); }
+  .type-gym  { background: rgba(240,180,41,0.12);  color: var(--gold); border: 1px solid rgba(240,180,41,0.3); }
+
+  .card-title-group h4 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    letter-spacing: 1px;
+    color: var(--white);
+    line-height: 1.2;
+  }
+  .card-title-group .session-date {
+    font-size: 11px;
+    color: var(--muted);
+    font-family: 'Space Mono', monospace;
+    margin-top: 2px;
+  }
+  .duration-badge {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: var(--muted);
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    padding: 4px 10px;
+    border-radius: 2px;
+    white-space: nowrap;
+  }
+
+  .card-body { padding: 20px 22px; }
+
+  /* Objetivos */
+  .obj-block {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+  .obj-item {
+    background: rgba(0,200,232,0.06);
+    border-left: 2px solid var(--cyan);
+    padding: 6px 12px;
+    font-size: 12px;
+    color: var(--foam);
+    flex: 1;
+    min-width: 140px;
+  }
+  .obj-item strong { color: var(--cyan); display: block; font-size: 10px; letter-spacing: 1px; margin-bottom: 2px; font-family: 'Space Mono', monospace; }
+
+  /* Material */
+  .material-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 18px;
+  }
+  .mat-tag {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: var(--muted);
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-family: 'Space Mono', monospace;
+  }
+  .mat-label {
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 1px;
+    font-family: 'Space Mono', monospace;
+    margin-bottom: 6px;
+    display: block;
+  }
+
+  /* Phases */
+  .phase {
+    margin-bottom: 14px;
+    border-radius: 5px;
+    overflow: hidden;
+  }
+  .phase-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 14px;
+    cursor: pointer;
+    user-select: none;
+  }
+  .phase-warm  .phase-header { background: rgba(232, 57, 74, 0.1); border-left: 3px solid var(--red); }
+  .phase-main  .phase-header { background: rgba(0,200,232,0.1);    border-left: 3px solid var(--cyan); }
+  .phase-cool  .phase-header { background: rgba(26,124,184,0.1);   border-left: 3px solid var(--wave); }
+
+  .phase-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+  .phase-warm  .phase-label { color: var(--red); }
+  .phase-main  .phase-label { color: var(--cyan); }
+  .phase-cool  .phase-label { color: var(--wave); }
+
+  .phase-time {
+    margin-left: auto;
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+  }
+  .phase-arrow {
+    color: var(--muted);
+    font-size: 12px;
+    transition: transform 0.3s;
+  }
+  .phase.open .phase-arrow { transform: rotate(90deg); }
+
+  .phase-body {
+    display: none;
+    padding: 14px;
+    background: rgba(0,0,0,0.2);
+  }
+  .phase.open .phase-body { display: block; }
+
+  .exercise {
+    margin-bottom: 14px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+  .exercise:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+
+  .ex-name {
+    font-weight: 700;
+    color: var(--foam);
+    font-size: 13px;
+    margin-bottom: 3px;
+  }
+  .ex-dose {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--cyan);
+    margin-bottom: 5px;
+  }
+  .ex-how {
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 5px;
+    font-style: italic;
+  }
+  .ex-why {
+    font-size: 12px;
+    color: var(--foam);
+    background: rgba(240,180,41,0.07);
+    border-left: 2px solid var(--gold);
+    padding: 5px 10px;
+  }
+  .ex-why strong { color: var(--gold); font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 1px; display: block; margin-bottom: 2px; }
+
+  /* ─── SIMUL FINAL ───────────────────────────────────── */
+  .simul-card {
+    background: linear-gradient(135deg, #0d2a4a, #0e4060);
+    border: 2px solid var(--cyan);
+    border-radius: 8px;
+    padding: 32px;
+    margin-bottom: 60px;
+    position: relative;
+    overflow: hidden;
+  }
+  .simul-card::before {
+    content: '🏅';
+    position: absolute;
+    font-size: 140px;
+    right: 20px; bottom: -20px;
+    opacity: 0.06;
+  }
+  .simul-card h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 30px;
+    letter-spacing: 2px;
+    color: var(--cyan);
+    margin-bottom: 6px;
+  }
+  .simul-card .simul-sub { color: var(--muted); font-size: 13px; margin-bottom: 20px; }
+  .prueba-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .prueba-row:last-child { border-bottom: none; }
+  .prueba-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 26px;
+    color: rgba(0,200,232,0.3);
+    min-width: 36px;
+  }
+  .prueba-content { flex: 1; }
+  .prueba-content strong { color: var(--foam); font-size: 14px; display: block; }
+  .prueba-content span { color: var(--muted); font-size: 12px; }
+  .prueba-badge {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 1px;
+    border-radius: 2px;
+    padding: 3px 8px;
+    white-space: nowrap;
+  }
+  .pb-nat { background: rgba(0,200,232,0.1); color: var(--cyan); border: 1px solid rgba(0,200,232,0.3); }
+  .pb-apn { background: rgba(26,124,184,0.15); color: #6bc5f0; border: 1px solid rgba(26,124,184,0.3); }
+  .pb-rem { background: rgba(240,180,41,0.1); color: var(--gold); border: 1px solid rgba(240,180,41,0.3); }
+  .pb-comb { background: rgba(232,57,74,0.1); color: #ff8090; border: 1px solid rgba(232,57,74,0.3); }
+
+  /* ─── CRITERIA TABLE ────────────────────────────────── */
+  .criteria-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 14px;
+    margin-bottom: 60px;
+  }
+  .crit-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 18px;
+    text-align: center;
+  }
+  .crit-score {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 42px;
+    color: var(--cyan);
+    line-height: 1;
+  }
+  .crit-label { font-size: 12px; color: var(--muted); margin-top: 4px; }
+  .crit-how { font-size: 11px; color: var(--foam); margin-top: 8px; line-height: 1.5; }
+
+  /* ─── FOOTER ───────────────────────────────────────── */
+  footer {
+    text-align: center;
+    padding: 32px;
+    border-top: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 12px;
+    font-family: 'Space Mono', monospace;
+  }
+  footer strong { color: var(--cyan); }
+
+  /* ─── PRINT ─────────────────────────────────────────── */
+  @media print {
+    body { background: white; color: black; }
+    .session-card, .simul-card, .crit-card { border: 1px solid #ccc; background: white; break-inside: avoid; }
+    .phase-body { display: block !important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-badge">TSEAS · Federación de Salvamento y Socorrismo · Región de Murcia</div>
+  <h1>Plan de <span>Entrenamiento</span><br>Salvamento y Socorrismo</h1>
+  <p class="hero-sub">Jesús Borreguero · TSEAS · 4 Semanas · Nivel Medio</p>
+  <div class="hero-meta">
+    <div class="meta-pill"><strong>DURACIÓN</strong>4 Semanas</div>
+    <div class="meta-pill"><strong>SESIONES</strong>8 en total (4 piscina + 4 gimnasio)</div>
+    <div class="meta-pill"><strong>NIVEL</strong>Medio — técnica en desarrollo</div>
+    <div class="meta-pill"><strong>OBJETIVO</strong>Pruebas Mayo / Junio 2025</div>
+    <div class="meta-pill"><strong>MATERIAL</strong>Aletas, pull buoy, tabla · Gym completo</div>
+  </div>
+</header>
+
+<main class="container">
+
+<!-- ===== SEMANA 1 ===== -->
+<div class="section-header">
+  <span class="tag">Bloque 1</span>
+  <h2>Semana 1</h2>
+  <div class="line"></div>
+</div>
+
+<div class="semana-block">
+  <div class="semana-title">
+    <div class="semana-num">01</div>
+    <div class="semana-info">
+      <h3>Toma de Contacto y Base Aeróbica</h3>
+      <p>Semana 1</p>
+      <span class="semana-focus">FOCO: Volumen bajo · Técnica · Valoración inicial</span>
+    </div>
+  </div>
+
+  <div class="sessions-grid">
+
+    <!-- SESIÓN PISCINA 1 -->
+    <div class="session-card">
+      <div class="card-header">
+        <div class="card-title-group">
+          <span class="card-type type-pool">🏊 Piscina · Sesión 1</span>
+          <h4>Base Aeróbica y<br>Apnea Introductoria</h4>
+          <div class="session-date">Jesús Borreguero · TSEAS · Semana 1</div>
+        </div>
+        <div class="duration-badge">~60 MIN</div>
+      </div>
+      <div class="card-body">
+
+        <div class="obj-block">
+          <div class="obj-item"><strong>Objetivo 1</strong>Establecer la base aeróbica con nado continuo a ritmo suave</div>
+          <div class="obj-item"><strong>Objetivo 2</strong>Introducir la técnica de apnea estática y dinámica</div>
+        </div>
+
+        <span class="mat-label">📦 MATERIAL</span>
+        <div class="material-row">
+          <span class="mat-tag">Gafas</span>
+          <span class="mat-tag">Gorro</span>
+          <span class="mat-tag">Pull buoy</span>
+          <span class="mat-tag">Tabla de natación</span>
+        </div>
+
+        <!-- CALENTAMIENTO -->
+        <div class="phase phase-warm open">
+          <div class="phase-header" onclick="this.parentElement.classList.toggle('open')">
+            <span class="phase-label">🔥 Calentamiento</span>
+            <span class="phase-time">10–12 min</span>
+            <span class="phase-arrow">▶</span>
+          </div>
+          <div class="phase-body">
+            <div class="exercise">
+              <div class="ex-name">200 m nado libre suave</div>
+              <div class="ex-dose">2 × 100 m · descanso 30 seg</div>
+              <div class="ex-how">Cómo: nado libre a un ritmo cómodo en el que puedas mantener una conversación. Brazo largo, exhalación progresiva en el agua.</div>
+              <div class="ex-why"><strong>⚡ Por qué</strong>Activa el sistema cardiovascular gradualmente, eleva la temperatura muscular y prepara la mecánica respiratoria para el trabajo acuático posterior. Evita lesiones musculares en hombro y espalda, zonas de alto riesgo en natación.</div>
+            </div>
+            <div class="exercise">
+              <div class="ex-name">Estiramientos dinámicos en borde de piscina</div>
+              <div class="ex-dose">10 repeticiones cada movimiento</div>
+              <div class="ex-how">Cómo: rotaciones de hombros hacia adelante y atrás, balanceos de brazos cruzados, rotación de caderas en pie. Movimientos controlados, sin rebotes.</div>
+              <div class="ex-why"><strong>⚡ Por qué</strong>La movilidad dinámica es superior al estiramiento estático como calentamiento: mejora el rango articular sin reducir la fuerza muscular, fundamental para el ciclo de brazada en natación y el agarre en el remolque.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PARTE PRINCIPAL -->
+        <div class="phase phase-main open">
+          <div class="phase-header" onclick="this.parentElement.classList.toggle('open')">
+            <span class="phase-label">⚡ Parte Principal</span>
+            <span class="phase-time">38–42 min</span>
+            <span class="phase-arrow">▶</span>
+          </div>
+          <div class="phase-body">
+            <div class="exercise">
+              <div class="ex-name">Nado continuo libre — 300 m</div>
+              <div class="ex-dose">1 × 300 m · ritmo aeróbico (no competitivo)</div>
+              <div class="ex-how">Cómo: mantener la frecuencia de brazada constante, respiración cada 3 tiempos (bilateral). No ir al máximo, el objetivo es completarlo cómodo.</div>
+              <div class="ex-why"><strong>⚡ Por qué</strong>La prueba oficial exige 300 m de nado continuo. Esta primera semana lo realizamos sin presión para valorar el estado de forma real de Jesús, establecer el ritmo de referencia y trabajar la resistencia aeróbica de base que sostendrá todo el plan.</div>
+            </div>
+            <div class="exercise">
+              <div class="ex-name">Piernas con tabla (kicking)</div>
+              <div class="ex-dose">4 × 25 m · descanso 20 seg entre series</div>
+              <div class="ex-how">Cómo: con tabla extendida al frente, pies dentro del agua, batido de pies continuo desde cadera (no desde rodilla). Cabeza ligeramente levantada para ver al frente.</div>
+              <div class="ex-why"><strong>⚡ Por qué</strong>El trabajo de piernas con tabla aísla la patada, que es la base de la propulsión en pruebas con aletas y en el remolque. Fortalece cuádriceps, glúteos y tobillos, y mejora la posición hidrodinámica del cuerpo.</div>
+            </div>
+            <div class="exercise">
+              <div class="ex-name">Apnea estática en borde — introducción</div>
+              <div class="ex-dose">3 × 20 seg · descanso 1:30 min de recuperación completa</div>
+              <div class="ex-how">Cómo: de pie en borde, inspiración diafragmática profunda, aguantar 20 seg, exhalar lentamente. No hiperventilación previa. Cuerpo relajado.</div>
+              <div class="ex-why"><strong>⚡ Por qué</strong>La prueba de apnea exige control del reflejo de buceo. Iniciamos con tiempos cortos y recuperaciones largas para enseñar al sistema nervioso a gestionar el CO₂ sin pánico, base de cualquier mejora posterior. La técnica correcta (sin hiperventilación) es fundamental por seguridad.</div>
+            </div>
+            <div class="exercise">
+              <div class="ex-name">Remolque de compañero (técnica básica)</div>
+              <div class="ex-dose">2 × 15 m · cambio de roles</div>
+              <div class="ex-how">Cómo: agarre axilar de la víctima desde atrás, cabeza de la víctima apoyada sobre el pecho del socorrista. Patada de braza o crol de pies. Mantener la cara de la víctima fuera del agua.</div>
+              <div class="ex-why"><strong>⚡ Por qué</strong>El remolque es una de las pruebas más específicas y técnicas. Esta semana lo trabajamos en distancias cortas para interiorizar el agarre correcto. Un agarre deficiente hace ineficiente el desplazamiento y agota al socorrista antes de llegar a la orilla.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- VUELTA A LA CALMA -->
+        <div class="phase phase-cool open">
+          <div class="phase-header" onclick="this.parentElement.classList.toggle('open')">
+            <span class="phase-label">🌊 Vuelta a la Calma</span>
+            <span class="phase-time">8–10 min</span>
+            <span class="phase-arrow">▶</span>
+          </div>
+          <div class="phase-body">
+            <div class="exercise">
+              <div class="ex-name">100 m nado espalda suave</div>
+              <div class="ex-dose">1 × 100 m sin pausa · ritmo muy suave</div>
+              <div class="ex-how">Cómo: nado de espalda a ritmo tranquilo, brazos en rotación alternada, respiración normal.</div>
+              <div class="ex-why"><strong>⚡ Por qué</strong>Nadar en espalda activa la musculatura antagonista del pectoral y el hombro anterior, que quedan contraídos tras el nado libre. Además, reduce la concentración de lactato en sangre de forma activa, acelerando la recuperación.</div>
+            </div>
+            <div class="exercise">
+              <div class="ex-name">Estiramientos estáticos de hombro, pecho y cuádriceps</div>
+              <div class="ex-dose">30 seg por grupo muscular</div>
+              <div class="ex-how">Cómo: estiramiento de pectoral apoyando brazo en pared, tracción de tríceps sobre la cabeza, y cuádriceps de pie. Mantener sin rebotes.</div>
+              <div class="ex-why"><strong>⚡ Por qué</strong>La vuelta a la calma reduce el riesgo de agujetas y de lesiones por sobreuso en hombro (zona más lesionada en natación). Favorece la recuperación para la sesión de gimnasio de la misma semana.</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div><!-- /sesión piscina 1 -->
+
+    <!-- SESIÓN GYM 1 -->
+    <div class="session-card">
+      <div class="card-header">
+        <div class="card-title-group">
+          <span class="card-type type-gym">🏋️ Gimnasio · Sesión 1</span>
+          <h4>Fuerza Base y<br>Estabilización de Core</h4>
+          <div class="session-date">Jesús Borreguero · TSEAS · Semana 1</div>
+        </div>
+        <div class="duration-badge">~60 MIN</div>
+      </div>
+      <div class="card-body">
+
+        <div class="obj-block">
+          <div class="obj-item"><strong>Objetivo 1</strong>Establecer fuerza base en tren superior para el remolque</div>
+          <div class="obj-item"><strong>Objetivo 2</strong>Activar y estabilizar el core para la posición en el agua</div>
+        </div>
+
+        <span class="mat-label">📦 MATERIAL</span>
+        <div class="material-row">
+          <span class="mat-tag">Barra olímpica</span>
+          <span class="mat-tag">Mancuernas</span>
+          <span class="mat-tag">TRX</span>
+          <span class="mat-tag">Colchoneta</span>
+        </div>
+
+        <div class="phase phase-warm open">
+          <div class="phase-header" onclick="this.parentElement.classList.toggle('open')">
+            <span class="phase-label">🔥 Calentamiento</span>
+            <span class="phase-time">10 min</span>
+            <span class="phase-arrow">▶</span>
+          </div>
+          <div class="phase-body">
+            <div class="exercise">
+              <div class="ex-name">Remo TRX + rotaciones de hombro</div>
+              <div class="ex-dose">2 × 10 reps TRX + 10 rotaciones cada hombro</div>
+              <div class="ex-how">Cómo: TRX inclinado 45°, tiramos del cuerpo hasta que los codos queden a la altura del torso. En las rotaciones: brazo extendido, círculos amplios.</div>
+              <div class="ex-why"><strong>⚡ Por qué</strong>Prepara los rotadores del manguito en el rango de movimiento específico del remolque y la brazada. Activa la escápula y reduce el riesgo de impingement subacromial.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="phase phase-main open">
+          <div class="phase-header" onclick="this.parentElement.classList.toggle('open')">
+            <span class="phase-label">⚡ Parte Principal</span>
+            <span class="phase-time">40 min</span>
+            <span class="phase-arrow">▶</span>
+          </div>
+          <div class="phase-body">
+            <div class="exercise">
+              <div class="ex-name">Jalón al pecho (polea o dominadas asistidas)</div>
+              <div class="ex-dose">3 × 10 reps · descanso 90 seg · peso moderado</div>
+              <div class="ex-how">Cómo: agarre prono ancho, tiramos de la barra hasta la clavícula. Control en la subida (excéntrico lento de 3 seg).</div>
+              <div class="ex-why"><strong>⚡ Por qué</strong>El jalón replica exactamente el patrón motor de la tracción en agua durante la brazada y el remolque. Fortalecer el dorsal ancho y el redondo mayor aumenta directamente la propulsión en el agua.</div>
+            </div>
+            <div class="exercise">
+              <div class="ex-name">Press de hombro con mancuernas (sentado)</div>
+              <div class="ex-dose">3 × 10 reps · descanso 90 seg</div>
+              <div class="ex-how">Cómo: sentado con espalda recta, mancuernas a la altura de la oreja, empujar verticalmente hasta extensión completa sin bloquear el codo.</div>
+              <div class="ex-why"><strong>⚡ Por qué</strong>El deltoides y los trapecios superiores estabilizan el hombro durante el agarre de la víctima en el remolque. Sin fuerza en este grupo, el hombro colapsa y se lesiona en distancias largas.</div>
+            </div>
+            <div class="exercise">
+              <div class="ex-name">Plancha isométrica frontal</div>
+              <div class="ex-dose">3 × 30 seg · descanso 45 seg</div>
+              <div class="ex-how">Cómo: posición de plancha sobre antebrazos, cuerpo recto desde talones a cabeza, glúteos apretados, no dejar caer caderas.</div>
+              <div class="ex-why"><strong>⚡ Por qué</strong>El core es el puente de fuerza entre piernas y brazos en el agua. Sin estabilidad del tronco, la energía se pierde en movimientos laterales inútiles. Esta semana usamos tiempo corto (30 seg) para valorar la base de Jesús.</div>
+            </div>
+            <div class="exercise">
+              <div class="ex-name">Sentadilla goblet con mancuerna</div>
+              <div class="ex-dose">3 × 12 reps · descanso 90 seg</div>
+              <div class="ex-how">Cómo: mancuerna sujeta con ambas manos al pecho, pies a la anchura de hombros, descender hasta los 90° de rodilla, empujar desde talones.</div>
+              <div class="ex-why"><strong>⚡ Por qué</strong>La batida de pies en el agua y el empuje al saltar a la piscina para un rescate dependen de la fuerza del cuádriceps y los glúteos. La sentadilla goblet es segura para principiantes y trabaja también el core.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="phase phase-cool open">
+          <div class="phase-header" onclick="this.parentElement.classList.toggle('open')">
+            <span class="phase-label">🌊 Vuelta a la Calma</span>
+            <span class="phase-time">8 min</span>
+            <span class="phase-arrow">▶</span>
+          </div>
+          <div class="phase-body">
+            <div class="exercise">
+              <div class="ex-name">Estiramiento de dorsal, pecho y cadera</div>
+              <div class="ex-dose">30 seg por posición · 2 lados</div>
+              <div class="ex-how">Cómo: estiramiento de dorsal en cuadrupedia (gato), cruce de brazo al pecho para pectoral, y paloma de yoga para flexor de cadera.</div>
+              <div class="ex-why"><strong>⚡ Por qué</strong>Previene la aparición de lesiones crónicas en hombro y zona lumbar, que son las más frecuentes en socorristas. Aumenta la longitud funcional del dorsal, mejorando la brazada en días posteriores.</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div><!-- /gym 1 -->
+  </div><!-- /grid semana 1 -->
+</div><!-- /semana 1 -->
+
+
+<!-- ===== SEMANA 2 ===== -->
+<div class="section-header">
+  <span class="tag">Bloque 2</span>
+  <h2>Semana 2</h2>
+  <div class="line"></div>
+</div>
+
+<div class="semana-block">
+  <div class="semana-title">
+    <div class="semana-num">02</div>
+    <div class="semana-info">
+      <h3>Incremento de Volumen y Técnica Específica</h3>
+      <p>Semana 2</p>
+      <span class="semana-focus">FOCO: +Volumen · Trabajo con aletas · Apnea dinámica</span>
+    </div>
+  </div>
+
+  <div class="sessions-grid">
+
+    <!-- PISCINA 2 -->
+    <div class="session-card">
+      <div class="card-header">
+        <div class="card-title-group">
+          <span class="card-type type-pool">🏊 Piscina · Sesión 2</span>
+          <h4>Resistencia Progresiva<br>y Aletas</h4>
+          <div class="session-date">Jesús Borreguero · TSEAS · Semana 2</div>
+        </div>
+        <div class="duration-badge">~60 MIN</div>
+      </div>
+      <div class="card-body">
+
+        <div class="obj-block">
+          <div class="obj-item"><strong>Objetivo 1</strong>Aumentar el volumen de nado hasta 400 m totales</div>
+          <div class="obj-item"><strong>Objetivo 2</strong>Introducir el trabajo con aletas y apnea dinámica</div>
+        </div>
+
+        <span class="mat-label">📦 MATERIAL</span>
+        <div class="material-row">
+          <span class="mat-tag">Gafas</span><span class="mat-tag">Gorro</span><span class="mat-tag">Aletas</span><span class="mat-tag">Pull buoy</span>
+        </div>
+
+        <div class="phase phase-warm open">
+          <div class="phase-header" onclick="this.parentElement.classList.toggle('open')">
+            <span class="phase-label">🔥 Calentamiento</span>
+            <span class="phase-time">10 min</span>
+            <span class="phase-arrow">▶</span>
+          </div>
+          <div class="phase-body">
+            <div class="exercise">
+              <div class="ex-name">200 m nado libre a ritmo suave + 50 m con pull buoy</div>
+              <div class="ex-dose">Continuo sin pausa</div>
+              <div class="ex-how">Cómo: los primeros 200 m a ritmo libre conversacional, los 50 m finales solo con pull buoy entre las piernas (sin patalear) para activar hombros.</div>
+              <div class="ex-why"><strong>⚡ Por qué</strong>El pull buoy eleva las caderas y elimina la carga de la patada, permitiendo concentrar el calentamiento en el tren superior. Prepara el hombro para la sesión con mayor volumen de esta semana.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="phase phase-main open">
+          <div class="phase-header" onclick="this.parentElement.classList.toggle('open')">
+            <span class="phase-label">⚡ Parte Principal</span>
+            <span class="phase-time">40 min</span>
+            <span class="phase-arrow">▶</span>
+          </div>
+          <div class="phase-body">
+            <div class="exercise">
+              <div class="ex-name">Series aeróbicas 4 × 100 m</div>
+              <div class="ex-dose">4 × 100 m · descanso 40 seg entre series</div>
+              <div class="ex-how">Cómo: nado libre a un ritmo que puedas mantener igual en las 4 series. No acelerar en la última. Respiración bilateral.</div>
+              <div class="ex-why"><strong>⚡ Por qué</strong>Pasamos del nado continuo de 300 m de la semana 1 a series cortas con descanso activo. Esto permite trabajar más volumen total (400 m) a una intensidad ligeramente superior, adaptando el sistema cardiovascular de forma progresiva hacia las pruebas de competición.</div>
+            </div>
+            <div class="exercise">
+              <div class="ex-name">Nado con aletas — 4 × 25 m</div>
+              <div class="ex-dose">4 × 25 m · descanso 30 seg</div>
+              <div class="ex-how">Cómo: aletas puestas, nado libre a ritmo alto aprovechando la propulsión de las aletas. Batido de pies desde la cadera. Cabeza alineada con el cuerpo.</div>
+              <div class="ex-why"><strong>⚡ Por qué</strong>Las pruebas de la Federación incluyen trabajo con aletas. Además, entrenar con aletas aumenta la velocidad de desplazamiento, sobrecarga el tren inferior de forma específica y mejora la propiocepción de los tobillos en el patrón de patada.</div>
+            </div>
+            <div class="exercise">
+              <div class="ex-name">Apnea dinámica en piscina — introducción</div>
+              <div class="ex-dose">3 × 12,5 m (media piscina) · recuperación 2 min entre intentos</div>
+              <div class="ex-how">Cómo: inspiración profunda, sumergirse y nadar bajo el agua brazada de braza, exhalar en los últimos metros. Sin hiperventilación. Siempre con supervisión.</div>
+              <div class="ex-why"><strong>⚡ Por qué</strong>La apnea dinámica es más exigente que la estática porque combina el consumo de oxígeno del movimiento con la contención de la respiración. Media piscina esta semana es un objetivo asequible para un nivel medio, que se ampliará en semanas siguientes de forma segura.</div>
+            </div>
+            <div class="exercise">
+              <div class="ex-name">Remolque de víctima — 2 × 25 m</div>
+              <div class="ex-dose">2 × 25 m · cambio de roles · descanso 2 min</div>
+              <div class="ex-how">Cómo: agarre axilar, cabeza de la víctima en el pecho del socorrista. Esta semana intentar mantener un ritmo de nado constante sin parar.</div>
+              <div class="ex-why"><strong>⚡ Por qué</strong>Duplicamos la distancia respecto a la semana 1. El objetivo es que Jesús empiece a sentir cómo la fatiga acumulada del remolque afecta a la mecánica de nado y comience a adaptarse a ese esfuerzo combinado.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="phase phase-cool open">
+          <div class="phase-header" onclick="this.parentElement.classList.toggle('open')">
+            <span class="phase-label">🌊 Vuelta a la Calma</span>
+            <span class="phase-time">8 min</span>
+            <span class="phase-arrow">▶</span>
+          </div>
+          <div class="phase-body">
+            <div class="exercise">
+              <div class="ex-name">100 m nado espalda + movilidad de tobillo en borde</div>
+              <div class="ex-dose">100 m espalda + 10 rotaciones por tobillo</div>
+              <div class="ex-how">Cómo: espalda suave, luego sentado en borde realizar rotaciones amplias de tobillo en ambos sentidos.</div>
+              <div class="ex-why"><strong>⚡ Por qué</strong>El tobillo trabaja en un rango extremo con aletas. Las rotaciones recuperan la movilidad articular post-esfuerzo y previenen tendinopatías del tendón de Aquiles, lesión frecuente en sesiones con aletas.</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- GYM 2 -->
+    <div class="session-card">
+      <div class="card-header">
+        <div class="card-title-group">
+          <span class="card-type type-gym">🏋️ Gimnasio · Sesión 2</span>
+          <h4>Fuerza de Tracción<br>y Core Dinámico</h4>
+          <div class="session-date">Jesús Borreguero · TSEAS · Semana 2</div>
+        </div>
+        <div class="duration-badge">~60 MIN</div>
+      </div>
+      <div class="card-body">
+
+        <div class="obj-block">
+          <div class="obj-item"><strong>Objetivo 1</strong>Aumentar la carga en jalones y remo para transferencia al remolque</div>
+          <div class="obj-item"><strong>Objetivo 2</strong>Introducir el core dinámico (anti-rotación)</div>
+        </div>
+
+        <span class="mat-label">📦 MATERIAL</span>
+        <div class="material-row">
+          <span class="mat-tag">Polea alta/baja</span><span class="mat-tag">Mancuernas</span><span class="mat-tag">TRX</span><span class="mat-tag">Balón medicinal</span>
+        </div>
+
+        <div class="phase phase-warm open">
+          <div class="phase-header" onclick="this.parentElement.classList.toggle('open')">
+            <span class="phase-label">🔥 Calentamiento</span>
+            <span class="phase-time">10 min</span>
+            <span class="phase-arrow">▶</span>
+          </div>
+          <div class="phase-body">
+            <div class="exercise">
+              <div class="ex-name">Remo TRX + activación de glúteo (puente)</div>
+              <div class="ex-dose">2 × 10 TRX · 2 × 15 puente</div>
+              <div class="ex-how">Cómo: TRX igual que semana 1 pero con menor inclinación (más carga). Puente tumbado: elevar cadera apretando glúteos, mantener 2 seg arriba.</div>
+              <div class="ex-why"><strong>⚡ Por qué</strong>El glúteo es el principal estabilizador de la cadera durante la patada y el remolque. Activarlo en el calentamiento garantiza que se reclute correctamente durante los ejercicios principales.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="phase phase-main open">
+          <div class="phase-header" onclick="this.parentElement.classList.toggle('open')">
+            <span class="phase-label">⚡ Parte Principal</span>
+            <span class="phase-time">40 min</span>
+            <span class="phase-arrow">▶</span>
+          </div>
+          <div class="phase-body">
+            <div class="exercise">
+              <div class="ex-name">Remo con mancuerna a una mano</div>
+              <div class="ex-dose">4 × 10 reps por lado · descanso 90 seg</div>
+              <div class="ex-how">Cómo: apoyar rodilla y mano en banco, espalda plana horizontal, tirar de la mancuerna hasta la cadera. Codo pegado al cuerpo.</div>
+              <div class="ex-why"><strong>⚡ Por qué</strong>Trabaja la fuerza unilateral del dorsal, que es exactamente cómo se aplica la fuerza en el remolque (un brazo tracciona mientras el otro da brazada). La posición con espalda horizontal replica la postura en agua.</div>
+            </div>
+            <div class="exercise">
+              <div class="ex-name">Fondos en paralelas o fondos en suelo</div>
+              <div class="ex-dose">3 × 10 reps · descanso 90 seg</div>
+              <div class="ex-how">Cómo: en paralelas, bajar hasta 90° de codo sin arquear la zona lumbar. Si hay dificultad, fondos en suelo con cuerpo recto.</div>
+              <div class="ex-why"><strong>⚡ Por qué</strong>El pectoral y el tríceps se activan en la fase de empuje de la brazada de crol. Fortalecer este grupo mejora la potencia por ciclo de brazada, permitiendo nadar más distancia con el mismo esfuerzo.</div>
+            </div>
+            <div class="exercise">
+              <div class="ex-name">Pallof Press (anti-rotación con polea)</div>
+              <div class="ex-dose">3 × 12 reps por lado · descanso 60 seg</div>
+              <div class="ex-how">Cómo: de pie lateral a la polea, agarre a la altura del pecho, extender brazos al frente resistiendo la rotación. Volver a la posición inicial con control.</div>
+              <div class="ex-why"><strong>⚡ Por qué</strong>Durante el remolque, el tronco debe resistir la rotación producida por el peso asimétrico de la víctima. El Pallof Press entrena exactamente esa capacidad de estabilización anti-rotatoria, transfiriéndose directamente a la eficiencia en el agua.</div>
+            </div>
+            <div class="exercise">
+              <div class="ex-name">Peso muerto rumano con mancuernas</div>
+              <div class="ex-dose">3 × 10 reps · descanso 90 seg</div>
+              <div class="ex-how">Cómo: de pie con mancuernas, inclinación de cadera hacia atrás manteniendo espalda recta, hasta sentir tensión en isquiotibiales. Subir empujando con cadera.</div>
+              <div class="ex-why"><strong>⚡ Por qué</strong>Los isquiotibiales y glúteos son responsables de la extensión de cadera en la patada de crol. Un déficit en este grupo es la causa más común de fatiga prematura en la patada durante pruebas largas como los 300 m.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="phase phase-cool open">
+          <div class="phase-header" onclick="this.parentElement.classList.toggle('open')">
+            <span class="phase-label">🌊 Vuelta a la Calma</span>
+            <span class="phase-time">8 min</span>
+            <span class="phase-arrow">▶</span>
+          </div>
+          <div class="phase-body">
+            <div class="exercise">
+              <div class="ex-name">Estiramiento de isquiotibiales, dorsal y pectoral</div>
+              <div class="ex-dose">30–40 seg por posición</div>
+              <div class="ex-how">Cómo: isquiotibiales en posición de corredor (pie adelantado sobre banco o suelo), dorsal en cuadrupedia extendida, pectoral con brazo en pared.</div>
+              <div class="ex-why"><strong>⚡ Por qué</strong>Recuperar la longitud muscular después de la carga es fundamental para mantener la amplitud de movimiento en el agua. Un dorsal o pectoral acortado limita la brazada y reduce la eficiencia hasta un 20%.</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div><!-- /semana 2 -->
+
+
+<!-- ===== SEMANA 3 ===== -->
+<div class="section-header">
+  <span class="tag">Bloque 3</span>
+  <h2>Semana 3</h2>
+  <div class="line"></div>
+</div>
+
+<div class="semana-block">
+  <div class="semana-title">
+    <div class="semana-num">03</div>
+    <div class="semana-info">
+      <h3>Intensidad y Pruebas Combinadas</h3>
+      <p>Semana 3</p>
+      <span class="semana-focus">FOCO: +Intensidad · Pruebas combinadas · Resistencia muscular</span>
+    </div>
+  </div>
+
+  <div class="sessions-grid">
+
+    <!-- PISCINA 3 -->
+    <div class="session-card">
+      <div class="card-header">
+        <div class="card-title-group">
+          <span class="card-type type-pool">🏊 Piscina · Sesión 3</span>
+          <h4>Series Intensivas y<br>Pruebas Combinadas</h4>
+          <div class="session-date">Jesús Borreguero · TSEAS · Semana 3</div>
+        </div>
+        <div class="duration-badge">~60 MIN</div>
+      </div>
+      <div class="card-body">
+
+        <div class="obj-block">
+          <div class="obj-item"><strong>Objetivo 1</strong>Trabajar a ritmos competitivos en distancias cortas</div>
+          <div class="obj-item"><strong>Objetivo 2</strong>Simular la exigencia de las pruebas combinadas</div>
+        </div>
+
+        <span class="mat-label">📦 MATERIAL</span>
+        <div class="material-row">
+          <span class="mat-tag">Aletas</span><span class="mat-tag">Pull buoy</span><span class="mat-tag">Gafas</span><span class="mat-tag">Compañero</span>
+        </div>
+
+        <div class="phase phase-warm open">
+          <div class="phase-header" onclick="this.parentElement.classList.toggle('open')">
+            <span class="phase-label">🔥 Calentamiento</span><span class="phase-time">12 min</span><span class="phase-arrow">▶</span>
+          </div>
+          <div class="phase-body">
+            <div class="exercise">
+              <div class="ex-name">300 m nado libre progresivo (3 × 100 m cada uno más rápido)</div>
+              <div class="ex-dose">1.er 100 m lento, 2.º 100 m medio, 3.er 100 m rápido</div>
+              <div class="ex-how">Cómo: los tres 100 m sin parar. Cada tramo debe ser claramente más rápido que el anterior. El tercero al 80–85% del máximo.</div>
+              <div class="ex-why"><strong>⚡ Por qué</strong>El calentamiento progresivo prepara al organismo para el trabajo de alta intensidad posterior, activando el metabolismo anaeróbico láctico gradualmente. Reducir el tiempo de calentamiento en semanas de alta intensidad aumenta el riesgo de lesión muscular.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="phase phase-main open">
+          <div class="phase-header" onclick="this.parentElement.classList.toggle('open')">
+            <span class="phase-label">⚡ Parte Principal</span><span class="phase-time">38 min</span><span class="phase-arrow">▶</span>
+          </div>
+          <div class="phase-body">
+            <div class="exercise">
+              <div class="ex-name">Series 6 × 50 m a ritmo competitivo</div>
+              <div class="ex-dose">6 × 50 m · descanso 45 seg · ritmo de prueba (85–90% máximo)</div>
+              <div class="ex-how">Cómo: salida desde la pared, ritmo sostenido y elevado en cada serie. Objetivo: que los 6 tiempos sean similares entre sí.</div>
+              <div class="ex-why"><strong>⚡ Por qué</strong>Entrenar a ritmo de competición enseña al cuerpo a gestionar el lactato a la intensidad real de las pruebas. Si Jesús solo nada lento en los entrenamientos, llegará a la prueba sin haber adaptado su sistema energético al ritmo exigido.</div>
+            </div>
+            <div class="exercise">
+              <div class="ex-name">Apnea dinámica — 3 × 25 m (piscina entera)</div>
+              <div class="ex-dose">3 intentos · recuperación 3 min completos entre intentos</div>
+              <div class="ex-how">Cómo: inspiración profunda y lenta (sin hiperventilación), sumergirse y recorrer los 25 m bajo el agua. Exhalar al tocar la pared.</div>
+              <div class="ex-why"><strong>⚡ Por qué</strong>Progresión desde los 12,5 m de la semana 2. Completar 25 m en apnea dinámica es el objetivo de muchas pruebas de socorrismo. La recuperación de 3 minutos es obligatoria por seguridad: el CO₂ debe eliminarse completamente antes del siguiente intento.</div>
+            </div>
+            <div class="exercise">
+              <div class="ex-name">Prueba combinada: natación + remolque</div>
+              <div class="ex-dose">2 repeticiones: 50 m nado + 25 m remolque · descanso 3 min</div>
+              <div class="ex-how">Cómo: nadar 50 m a ritmo alto, llegar a la "víctima" al otro lado, coger el agarre y remolcar 25 m de vuelta sin parar.</div>
+              <div class="ex-why"><strong>⚡ Por qué</strong>Las pruebas reales son combinadas: nadas para llegar a la víctima y luego la remolcas de vuelta agotado. Entrenar así reproduce la fatiga acumulada real. Muchos socorristas entrenan el remolque descansados pero fallan en la prueba porque no han replicado el estado de fatiga previo.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="phase phase-cool open">
+          <div class="phase-header" onclick="this.parentElement.classList.toggle('open')">
+            <span class="phase-label">🌊 Vuelta a la Calma</span><span class="phase-time">10 min</span><span class="phase-arrow">▶</span>
+          </div>
+          <div class="phase-body">
+            <div class="exercise">
+              <div class="ex-name">200 m nado muy suave (libre o espalda) + respiración consciente</div>
+              <div class="ex-dose">200 m continuos sin ritmo</div>
+              <div class="ex-how">Cómo: nadar sin objetivo, a lo que pida el cuerpo. Al acabar, 5 respiraciones profundas diafragmáticas de pie en el agua.</div>
+              <div class="ex-why"><strong>⚡ Por qué</strong>Tras sesiones de alta intensidad, el sistema nervioso necesita una señal de "bajada de guardia". La respiración consciente activa el sistema parasimpático, reduciendo el cortisol y facilitando la recuperación muscular para los días siguientes.</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- GYM 3 -->
+    <div class="session-card">
+      <div class="card-header">
+        <div class="card-title-group">
+          <span class="card-type type-gym">🏋️ Gimnasio · Sesión 3</span>
+          <h4>Resistencia Muscular<br>y Funcionalidad</h4>
+          <div class="session-date">Jesús Borreguero · TSEAS · Semana 3</div>
+        </div>
+        <div class="duration-badge">~60 MIN</div>
+      </div>
+      <div class="card-body">
+
+        <div class="obj-block">
+          <div class="obj-item"><strong>Objetivo 1</strong>Pasar de fuerza máxima a resistencia muscular (más reps, menos peso)</div>
+          <div class="obj-item"><strong>Objetivo 2</strong>Circuito funcional que simule la fatiga de una prueba real</div>
+        </div>
+
+        <span class="mat-label">📦 MATERIAL</span>
+        <div class="material-row">
+          <span class="mat-tag">TRX</span><span class="mat-tag">Mancuernas ligeras</span><span class="mat-tag">Gomas elásticas</span><span class="mat-tag">Colchoneta</span>
+        </div>
+
+        <div class="phase phase-warm open">
+          <div class="phase-header" onclick="this.parentElement.classList.toggle('open')">
+            <span class="phase-label">🔥 Calentamiento</span><span class="phase-time">10 min</span><span class="phase-arrow">▶</span>
+          </div>
+          <div class="phase-body">
+            <div class="exercise">
+              <div class="ex-name">Movilidad general + activación con goma elástica</div>
+              <div class="ex-dose">2 × 15 rotaciones externas de hombro con goma</div>
+              <div class="ex-how">Cómo: goma sujeta al poste a la altura del codo, codo a 90°, rotar el antebrazo hacia afuera sin mover el codo.</div>
+              <div class="ex-why"><strong>⚡ Por qué</strong>La rotación externa fortalece el manguito rotador (infraespinoso y redondo menor), que protege el hombro de lesiones por sobreuso. En la semana de mayor intensidad, esta activación es imprescindible antes de cargar.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="phase phase-main open">
+          <div class="phase-header" onclick="this.parentElement.classList.toggle('open')">
+            <span class="phase-label">⚡ Parte Principal</span><span class="phase-time">40 min</span><span class="phase-arrow">▶</span>
+          </div>
+          <div class="phase-body">
+            <div class="exercise">
+              <div class="ex-name">Circuito de resistencia muscular (3 vueltas)</div>
+              <div class="ex-dose">3 rondas · 45 seg trabajo · 15 seg descanso · 2 min entre rondas</div>
+              <div class="ex-how">Cómo (estaciones): 1) Remo TRX · 2) Sentadilla con salto · 3) Plancha lateral (izq) · 4) Fondos en rodillas · 5) Plancha lateral (der) · 6) Curl de bíceps con mancuernas. Pasar de una a otra rápido.</div>
+              <div class="ex-why"><strong>⚡ Por qué</strong>Las pruebas de socorrismo no son de fuerza máxima sino de resistencia muscular: el cuerpo trabaja durante varios minutos a intensidad moderada-alta. Este circuito replica esa demanda metabólica, entrenando la capacidad de recuperación entre esfuerzos repetidos.</div>
+            </div>
+            <div class="exercise">
+              <div class="ex-name">Plancha con desplazamiento lateral (spider plank)</div>
+              <div class="ex-dose">3 × 10 reps por lado · descanso 60 seg</div>
+              <div class="ex-how">Cómo: en posición de plancha frontal, llevar rodilla al codo del mismo lado, volver y alternar. Caderas estables, no rotar.</div>
+              <div class="ex-why"><strong>⚡ Por qué</strong>Combina estabilidad de core con movilidad de cadera y activación oblicua. Simula el movimiento del tronco durante el remolque y la natación, donde el core debe ser estable y a la vez permitir la rotación de brazos.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="phase phase-cool open">
+          <div class="phase-header" onclick="this.parentElement.classList.toggle('open')">
+            <span class="phase-label">🌊 Vuelta a la Calma</span><span class="phase-time">8 min</span><span class="phase-arrow">▶</span>
+          </div>
+          <div class="phase-body">
+            <div class="exercise">
+              <div class="ex-name">Foam roller en dorsal + isquiotibiales + TFL</div>
+              <div class="ex-dose">60 seg por zona</div>
+              <div class="ex-how">Cómo: apoyar la zona sobre el foam roller y rodar lentamente. Parar 5 seg en los puntos de mayor tensión.</div>
+              <div class="ex-why"><strong>⚡ Por qué</strong>El foam roller produce liberación miofascial, reduce la rigidez muscular post-ejercicio y mejora el flujo sanguíneo local. Es especialmente útil en la semana de mayor carga para llegar a la semana de simulación en óptimas condiciones.</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div><!-- /semana 3 -->
+
+
+<!-- ===== SEMANA 4 ===== -->
+<div class="section-header">
+  <span class="tag">Bloque 4 — Final</span>
+  <h2>Semana 4</h2>
+  <div class="line"></div>
+</div>
+
+<div class="semana-block">
+  <div class="semana-title">
+    <div class="semana-num">04</div>
+    <div class="semana-info">
+      <h3>Puesta a Punto y Simulación Real</h3>
+      <p>Semana 4</p>
+      <span class="semana-focus">FOCO: Reducción de volumen · Calidad técnica · Simulación de pruebas reales</span>
+    </div>
+  </div>
+
+  <div class="sessions-grid">
+
+    <!-- GYM 4 — primero el gym para descansar antes de la simulación -->
+    <div class="session-card">
+      <div class="card-header">
+        <div class="card-title-group">
+          <span class="card-type type-gym">🏋️ Gimnasio · Sesión 4</span>
+          <h4>Mantenimiento y<br>Prevención de Lesiones</h4>
+          <div class="session-date">Jesús Borreguero · TSEAS · Semana 4</div>
+        </div>
+        <div class="duration-badge">~55 MIN</div>
+      </div>
+      <div class="card-body">
+
+        <div class="obj-block">
+          <div class="obj-item"><strong>Objetivo 1</strong>Mantener el tono muscular sin acumular fatiga antes de la simulación</div>
+          <div class="obj-item"><strong>Objetivo 2</strong>Trabajo de prevención y movilidad de hombro</div>
+        </div>
+
+        <span class="mat-label">📦 MATERIAL</span>
+        <div class="material-row">
+          <span class="mat-tag">Gomas elásticas</span><span class="mat-tag">TRX</span><span class="mat-tag">Mancuernas ligeras</span><span class="mat-tag">Colchoneta</span>
+        </div>
+
+        <div class="phase phase-warm open">
+          <div class="phase-header" onclick="this.parentElement.classList.toggle('open')">
+            <span class="phase-label">🔥 Calentamiento</span><span class="phase-time">10 min</span><span class="phase-arrow">▶</span>
+          </div>
+          <div class="phase-body">
+            <div class="exercise">
+              <div class="ex-name">Movilidad articular completa (hombro, cadera, tobillo)</div>
+              <div class="ex-dose">2 min por zona</div>
+              <div class="ex-how">Cómo: círculos de hombro adelante/atrás, rotación interna y externa de cadera tumbado, y rotaciones de tobillo en descarga.</div>
+              <div class="ex-why"><strong>⚡ Por qué</strong>En la semana de tapering (reducción de carga precompetición), el objetivo es mantener la movilidad ganada durante las 3 semanas previas sin añadir fatiga. Un calentamiento largo de movilidad mantiene el sistema nervioso activo sin agotar las reservas musculares.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="phase phase-main open">
+          <div class="phase-header" onclick="this.parentElement.classList.toggle('open')">
+            <span class="phase-label">⚡ Parte Principal</span><span class="phase-time">36 min</span><span class="phase-arrow">▶</span>
+          </div>
+          <div class="phase-body">
+            <div class="exercise">
+              <div class="ex-name">Jalón en polea — peso reducido, volumen reducido</div>
+              <div class="ex-dose">2 × 8 reps al 60% del peso de semana 2</div>
+              <div class="ex-how">Cómo: mismo ejercicio que semanas anteriores pero con carga significativamente menor. El objetivo es activar la cadena muscular, no fatigarla.</div>
+              <div class="ex-why"><strong>⚡ Por qué</strong>Reducir la carga antes de una prueba es una estrategia de tapering clásica en la ciencia del entrenamiento. Mantiene el patrón neuromuscular activo (el cuerpo "recuerda" el movimiento) sin acumular el lactato y microdaño muscular que penalizarían el rendimiento el día de la prueba.</div>
+            </div>
+            <div class="exercise">
+              <div class="ex-name">Trabajo de manguito rotador con goma (4 ejercicios)</div>
+              <div class="ex-dose">2 × 15 reps cada ejercicio · goma ligera</div>
+              <div class="ex-how">Cómo: rotación externa, rotación interna, abducción en W (tumbado boca abajo) y curl de bíceps de pie. Movimientos lentos y controlados.</div>
+              <div class="ex-why"><strong>⚡ Por qué</strong>El manguito rotador es el grupo muscular más lesionado en socorristas y nadadores. Esta sesión de mantenimiento con gomas activa los músculos estabilizadores sin carga compresiva, protegiendo el hombro de cara a la prueba real.</div>
+            </div>
+            <div class="exercise">
+              <div class="ex-name">Plancha + Bird-Dog (estabilidad global)</div>
+              <div class="ex-dose">2 × 30 seg plancha + 2 × 10 reps Bird-Dog</div>
+              <div class="ex-how">Cómo: plancha estándar. Bird-Dog: en cuadrupedia, extender brazo y pierna contrarios simultáneamente, mantener 2 seg, volver.</div>
+              <div class="ex-why"><strong>⚡ Por qué</strong>Mantiene la estabilidad del core sin fatiga excesiva. El Bird-Dog activa multífidos y transverso abdominal, la musculatura más profunda de protección lumbar, que trabaja continuamente durante el remolque.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="phase phase-cool open">
+          <div class="phase-header" onclick="this.parentElement.classList.toggle('open')">
+            <span class="phase-label">🌊 Vuelta a la Calma</span><span class="phase-time">10 min</span><span class="phase-arrow">▶</span>
+          </div>
+          <div class="phase-body">
+            <div class="exercise">
+              <div class="ex-name">Sesión completa de estiramientos estáticos + visualización</div>
+              <div class="ex-dose">45 seg por grupo · todo el cuerpo</div>
+              <div class="ex-how">Cómo: estirar cada grupo muscular trabajado. Cerrar los ojos y visualizar la sesión de simulación de la semana: recorrer mentalmente cada prueba con éxito.</div>
+              <div class="ex-why"><strong>⚡ Por qué</strong>La visualización deportiva es una herramienta demostrada de mejora del rendimiento: activa los mismos patrones neuronales que el movimiento real. Terminar la última sesión de gimnasio con esta práctica activa el estado mental competitivo de cara a la simulación.</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- PISCINA 4 = SIMULACIÓN -->
+    <div class="session-card">
+      <div class="card-header">
+        <div class="card-title-group">
+          <span class="card-type type-pool">🏊 Piscina · Sesión 4</span>
+          <h4>🏅 SIMULACIÓN FINAL<br>de Pruebas Reales</h4>
+          <div class="session-date">Jesús Borreguero · TSEAS · Semana 4</div>
+        </div>
+        <div class="duration-badge">~60 MIN</div>
+      </div>
+      <div class="card-body">
+
+        <div class="obj-block">
+          <div class="obj-item"><strong>Objetivo 1</strong>Replicar las condiciones reales de las pruebas de la Federación</div>
+          <div class="obj-item"><strong>Objetivo 2</strong>Detectar puntos débiles antes del día de la prueba oficial</div>
+        </div>
+
+        <span class="mat-label">📦 MATERIAL</span>
+        <div class="material-row">
+          <span class="mat-tag">Aletas</span><span class="mat-tag">Pull buoy</span><span class="mat-tag">Gafas</span><span class="mat-tag">Compañero (víctima)</span><span class="mat-tag">Cronómetro</span>
+        </div>
+
+        <div class="phase phase-warm open">
+          <div class="phase-header" onclick="this.parentElement.classList.toggle('open')">
+            <span class="phase-label">🔥 Calentamiento</span><span class="phase-time">12 min</span><span class="phase-arrow">▶</span>
+          </div>
+          <div class="phase-body">
+            <div class="exercise">
+              <div class="ex-name">400 m nado progresivo (libre + espalda + libre con aletas)</div>
+              <div class="ex-dose">200 m libre · 100 m espalda · 100 m libre con aletas</div>
+              <div class="ex-how">Cómo: sin parar, cada tramo ligeramente más rápido. El último 100 m con aletas al 70% para activar el tren inferior.</div>
+              <div class="ex-why"><strong>⚡ Por qué</strong>Antes de una simulación, el calentamiento debe ser más completo que en sesiones normales. El cuerpo necesita llegar activado al 100% para que los tiempos de simulación sean representativos. Un mal calentamiento distorsiona los resultados.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="phase phase-main open">
+          <div class="phase-header" onclick="this.parentElement.classList.toggle('open')">
+            <span class="phase-label">⚡ SIMULACIÓN DE PRUEBAS</span><span class="phase-time">38 min</span><span class="phase-arrow">▶</span>
+          </div>
+          <div class="phase-body">
+            <div class="exercise">
+              <div class="ex-name">PRUEBA 1 — 200 m nado libre (cronometrado)</div>
+              <div class="ex-dose">1 intento · al máximo · anotar tiempo</div>
+              <div class="ex-how">Cómo: salida desde la pared (o bloque si disponible), ritmo de competición durante los 200 m. Respiración bilateral cada 3 tiempos.</div>
+              <div class="ex-why"><strong>⚡ Por qué</strong>Prueba oficial directa de la Federación. Realizarla cronometrada permite a Jesús conocer su marca real y comparar con el mínimo exigido. Es el punto de referencia más importante de todo el plan de entrenamiento.</div>
+            </div>
+            <div class="exercise">
+              <div class="ex-name">— Descanso entre pruebas: 5 minutos activos —</div>
+              <div class="ex-dose">Caminar o nado muy suave</div>
+              <div class="ex-how">Cómo: no sentarse, mantenerse en movimiento suave para no enfriar los músculos entre pruebas.</div>
+              <div class="ex-why"><strong>⚡ Por qué</strong>En las pruebas reales los tiempos de descanso son limitados. Acostumbrarse a recuperar activamente (y no tumbado) es una estrategia que mejora el rendimiento en la prueba siguiente.</div>
+            </div>
+            <div class="exercise">
+              <div class="ex-name">PRUEBA 2 — Apnea dinámica (máxima distancia controlada)</div>
+              <div class="ex-dose">1 intento · medir distancia · anotar</div>
+              <div class="ex-how">Cómo: inspiración profunda y tranquila, nadar bajo el agua lo máximo posible. Salir voluntariamente antes de sentir mareo. Siempre supervisado.</div>
+              <div class="ex-why"><strong>⚡ Por qué</strong>Medir la distancia de apnea dinámica permite cuantificar la mejora respecto a la semana 1 (donde empezamos con 12,5 m). Esta progresión justifica todo el trabajo de técnica respiratoria de las semanas anteriores.</div>
+            </div>
+            <div class="exercise">
+              <div class="ex-name">PRUEBA 3 — Nado con aletas 50 m (cronometrado)</div>
+              <div class="ex-dose">1 intento · cronometrado</div>
+              <div class="ex-how">Cómo: aletas puestas desde el principio, salida desde la pared, máximo esfuerzo.</div>
+              <div class="ex-why"><strong>⚡ Por qué</strong>Prueba específica de la Federación. Con 3 semanas de entrenamiento con aletas, Jesús debería notar una mejora técnica notable respecto al inicio. Cronometrar valida si el trabajo de patada y propulsión con aletas ha dado resultado.</div>
+            </div>
+            <div class="exercise">
+              <div class="ex-name">PRUEBA 4 — Prueba combinada: 100 m nado + 25 m remolque</div>
+              <div class="ex-dose">1 repetición · cronometrada · con compañero</div>
+              <div class="ex-how">Cómo: salida desde la pared, nadar 100 m al máximo, coger a la "víctima" en el otro extremo y remolcarla 25 m de vuelta sin soltar.</div>
+              <div class="ex-why"><strong>⚡ Por qué</strong>Esta es la prueba más representativa del rol del socorrista: llegar rápido y volver con la víctima. Combina resistencia aeróbica, explosividad y técnica de remolque en condiciones de fatiga real. Simularla completa en esta sesión pone a prueba todos los elementos del plan.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="phase phase-cool open">
+          <div class="phase-header" onclick="this.parentElement.classList.toggle('open')">
+            <span class="phase-label">🌊 Vuelta a la Calma</span><span class="phase-time">10 min</span><span class="phase-arrow">▶</span>
+          </div>
+          <div class="phase-body">
+            <div class="exercise">
+              <div class="ex-name">200 m nado muy suave + reflexión de resultados</div>
+              <div class="ex-dose">200 m libres + 5 min análisis con compañero o entrenador</div>
+              <div class="ex-how">Cómo: nado completamente libre, sin objetivo. Al salir del agua, apuntar los tiempos y sensaciones de cada prueba.</div>
+              <div class="ex-why"><strong>⚡ Por qué</strong>Registrar los resultados de la simulación es una herramienta de feedback imprescindible. Permite identificar en qué prueba Jesús necesita más trabajo antes del día oficial y refuerza la confianza en los puntos fuertes ya desarrollados.</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div><!-- /semana 4 -->
+
+
+<!-- ===== SESIÓN FINAL RESUMEN ===== -->
+<div class="section-header">
+  <span class="tag">Sesión Final</span>
+  <h2>Simulación Completa</h2>
+  <div class="line"></div>
+</div>
+
+<div class="simul-card">
+  <h3>🏅 Resumen de Pruebas — Simulación Final (Semana 4)</h3>
+  <p class="simul-sub">Jesús Borreguero · TSEAS · Esta sesión replica las pruebas reales de la Federación de Salvamento y Socorrismo de la Región de Murcia</p>
+
+  <div class="prueba-row">
+    <div class="prueba-num">01</div>
+    <div class="prueba-content">
+      <strong>200 m Nado Libre Cronometrado</strong>
+      <span>Prueba directa de resistencia en natación. Salida desde pared, ritmo máximo sostenido.</span>
+    </div>
+    <span class="prueba-badge pb-nat">NATACIÓN</span>
+  </div>
+  <div class="prueba-row">
+    <div class="prueba-num">02</div>
+    <div class="prueba-content">
+      <strong>Apnea Dinámica — Distancia Máxima Controlada</strong>
+      <span>Medir la distancia de apnea conseguida. Siempre con supervisión. Sin hiperventilación previa.</span>
+    </div>
+    <span class="prueba-badge pb-apn">APNEA</span>
+  </div>
+  <div class="prueba-row">
+    <div class="prueba-num">03</div>
+    <div class="prueba-content">
+      <strong>50 m Nado con Aletas (cronometrado)</strong>
+      <span>Prueba específica de la Federación. Evalúa técnica de patada y velocidad con material.</span>
+    </div>
+    <span class="prueba-badge pb-nat">MATERIAL</span>
+  </div>
+  <div class="prueba-row">
+    <div class="prueba-num">04</div>
+    <div class="prueba-content">
+      <strong>Prueba Combinada: 100 m nado + 25 m remolque de víctima</strong>
+      <span>La prueba más representativa del socorrismo real. Se realiza cronometrada y con compañero real.</span>
+    </div>
+    <span class="prueba-badge pb-comb">COMBINADA</span>
+  </div>
+</div>
+
+
+<!-- ===== CRITERIOS ===== -->
+<div class="section-header">
+  <span class="tag">Evaluación</span>
+  <h2>Cómo Este Plan Cumple los Criterios</h2>
+  <div class="line"></div>
+</div>
+
+<div class="criteria-grid">
+  <div class="crit-card">
+    <div class="crit-score">2/10</div>
+    <div class="crit-label">Coherencia del Plan</div>
+    <div class="crit-how">Las 8 sesiones siguen una estructura coherente: cada sesión de gym complementa la de piscina de la misma semana, y todas siguen calentamiento → parte principal → vuelta a la calma.</div>
+  </div>
+  <div class="crit-card">
+    <div class="crit-score">2/10</div>
+    <div class="crit-label">Progresión Adecuada</div>
+    <div class="crit-how">Semana 1: base y técnica → Semana 2: volumen e introducción de aletas → Semana 3: intensidad y pruebas combinadas → Semana 4: puesta a punto y simulación.</div>
+  </div>
+  <div class="crit-card">
+    <div class="crit-score">2/10</div>
+    <div class="crit-label">Relación con Pruebas Reales</div>
+    <div class="crit-how">Cada ejercicio tiene su "Por qué" vinculado a una prueba concreta de la Federación: 200/300 m, apnea dinámica, remolque y trabajo con aletas.</div>
+  </div>
+  <div class="crit-card">
+    <div class="crit-score">2/10</div>
+    <div class="crit-label">Creatividad</div>
+    <div class="crit-how">Inclusión de pruebas combinadas (fatiga acumulada), técnica de apnea con recuperación por CO₂, visualización deportiva y Pallof Press como ejercicio anti-rotatorio específico.</div>
+  </div>
+  <div class="crit-card">
+    <div class="crit-score">2/10</div>
+    <div class="crit-label">Justificación Explicada</div>
+    <div class="crit-how">Cada ejercicio incluye su explicación de ejecución y su justificación fisiológica y deportiva específica vinculada a las pruebas de socorrismo.</div>
+  </div>
+</div>
+
+</main>
+
+<footer>
+  <strong>Jesús Borreguero</strong> · TSEAS · Federación de Salvamento y Socorrismo · Región de Murcia<br>
+  Plan diseñado para las pruebas de Mayo / Junio 2025 · Nivel medio · 4 semanas · 8 sesiones
+</footer>
+
+<script>
+  // All phases start open; toggle on click already wired via onclick
+  // Auto-close phases that are not "open" by default for cleaner view
+  document.addEventListener('DOMContentLoaded', () => {
+    // phases already open via class — nothing needed
+  });
+</script>
+</body>
+</html>
