@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tarea 3.2 – Análisis de Situaciones de Rescate en Medio Acuático</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ocean-deep:   #03162b;
+    --ocean-mid:    #062a4e;
+    --ocean-light:  #0a4a7a;
+    --wave:         #0e7fc4;
+    --foam:         #3db4f2;
+    --white:        #f0f8ff;
+    --accent-warn:  #f5a623;
+    --accent-crit:  #e84a4a;
+    --accent-ok:    #2ecc6e;
+    --text-main:    #cde8fb;
+    --text-dim:     #7aabcc;
+    --card-bg:      rgba(6, 42, 78, 0.7);
+    --card-border:  rgba(61, 180, 242, 0.2);
+    --glass:        rgba(255,255,255,0.04);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background-color: var(--ocean-deep);
+    background-image:
+      radial-gradient(ellipse 80% 60% at 50% -10%, rgba(14,127,196,0.25) 0%, transparent 70%),
+      repeating-linear-gradient(
+        180deg,
+        transparent 0px,
+        transparent 59px,
+        rgba(61,180,242,0.03) 60px
+      );
+    color: var(--text-main);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ─────────────────────────────────────────── */
+  header {
+    position: relative;
+    overflow: hidden;
+    padding: 64px 40px 56px;
+    text-align: center;
+    border-bottom: 1px solid var(--card-border);
+  }
+  header::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(160deg, rgba(14,127,196,0.18) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .wave-deco {
+    position: absolute; bottom: -2px; left: 0; width: 100%;
+    opacity: 0.15;
+  }
+  header .subtitle-top {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--foam);
+    margin-bottom: 18px;
+  }
+  header h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(36px, 6vw, 72px);
+    letter-spacing: 2px;
+    color: var(--white);
+    line-height: 1.05;
+    margin-bottom: 12px;
+    text-shadow: 0 0 60px rgba(61,180,242,0.4);
+  }
+  header h1 span { color: var(--foam); }
+  .author-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 22px;
+    padding: 10px 24px;
+    border: 1px solid rgba(61,180,242,0.35);
+    border-radius: 40px;
+    background: rgba(14,127,196,0.12);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    color: var(--foam);
+  }
+  .author-badge .dot {
+    width: 6px; height: 6px;
+    background: var(--foam);
+    border-radius: 50%;
+  }
+
+  /* ── OBJECTIVES BAR ──────────────────────────────────── */
+  .objectives {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1px;
+    background: var(--card-border);
+    border-top: 1px solid var(--card-border);
+    border-bottom: 1px solid var(--card-border);
+  }
+  .obj-item {
+    padding: 20px 24px;
+    background: var(--ocean-deep);
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    transition: background 0.2s;
+  }
+  .obj-item:hover { background: var(--ocean-mid); }
+  .obj-icon {
+    font-size: 22px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .obj-item strong {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--white);
+    letter-spacing: 0.3px;
+  }
+  .obj-item span {
+    font-size: 12px;
+    color: var(--text-dim);
+  }
+
+  /* ── MAIN LAYOUT ─────────────────────────────────────── */
+  main {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 60px 24px 100px;
+  }
+
+  /* ── CASE CARD ───────────────────────────────────────── */
+  .case-card {
+    position: relative;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 16px;
+    margin-bottom: 48px;
+    overflow: hidden;
+    backdrop-filter: blur(6px);
+    animation: fadeUp 0.5s ease both;
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .case-card:nth-child(1) { animation-delay: 0.05s; }
+  .case-card:nth-child(2) { animation-delay: 0.10s; }
+  .case-card:nth-child(3) { animation-delay: 0.15s; }
+  .case-card:nth-child(4) { animation-delay: 0.20s; }
+  .case-card:nth-child(5) { animation-delay: 0.25s; }
+
+  .case-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--wave), var(--foam));
+  }
+
+  .case-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 28px 32px 24px;
+    border-bottom: 1px solid var(--card-border);
+  }
+  .case-number {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 42px;
+    color: var(--foam);
+    opacity: 0.25;
+    line-height: 1;
+    flex-shrink: 0;
+    min-width: 48px;
+  }
+  .case-header h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 26px;
+    letter-spacing: 1px;
+    color: var(--white);
+    line-height: 1.1;
+  }
+  .case-header h2 span {
+    display: block;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--foam);
+    margin-bottom: 4px;
+  }
+
+  .case-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+  }
+  @media (max-width: 680px) {
+    .case-body { grid-template-columns: 1fr; }
+    .case-header { padding: 20px; }
+  }
+
+  .case-section {
+    padding: 24px 32px;
+  }
+  .case-section + .case-section {
+    border-left: 1px solid var(--card-border);
+  }
+  @media (max-width: 680px) {
+    .case-section + .case-section {
+      border-left: none;
+      border-top: 1px solid var(--card-border);
+    }
+    .case-section { padding: 20px; }
+  }
+
+  .section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--foam);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--card-border);
+  }
+
+  /* description text */
+  .case-description {
+    font-size: 14px;
+    color: var(--text-main);
+    line-height: 1.75;
+    margin-bottom: 18px;
+  }
+
+  /* difficulties pills */
+  .difficulties {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .diff-pill {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 14px;
+    background: rgba(232, 74, 74, 0.08);
+    border: 1px solid rgba(232,74,74,0.2);
+    border-radius: 8px;
+    font-size: 13px;
+    color: #f4b3b3;
+  }
+  .diff-pill::before {
+    content: '⚠';
+    font-size: 11px;
+    color: var(--accent-warn);
+    flex-shrink: 0;
+  }
+
+  /* intervention steps */
+  .steps {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    counter-reset: step;
+  }
+  .step {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(61,180,242,0.07);
+    counter-increment: step;
+    font-size: 13.5px;
+    color: var(--text-main);
+  }
+  .step:last-child { border-bottom: none; }
+  .step::before {
+    content: counter(step, decimal-leading-zero);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--foam);
+    opacity: 0.5;
+    flex-shrink: 0;
+    margin-top: 3px;
+    min-width: 22px;
+  }
+  .step strong { color: var(--white); font-weight: 600; }
+
+  /* context text */
+  .context-text {
+    font-size: 13.5px;
+    line-height: 1.75;
+    color: var(--text-main);
+  }
+  .context-text strong { color: var(--white); font-weight: 600; }
+
+  /* alert note */
+  .alert-note {
+    margin-top: 18px;
+    padding: 12px 16px;
+    background: rgba(245,166,35,0.08);
+    border-left: 3px solid var(--accent-warn);
+    border-radius: 0 8px 8px 0;
+    font-size: 13px;
+    color: #f5d89e;
+    line-height: 1.6;
+  }
+
+  /* ── PRINCIPLES SECTION ──────────────────────────────── */
+  .principles {
+    margin-top: 16px;
+    background: var(--ocean-mid);
+    border: 1px solid var(--card-border);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+  .principles-header {
+    padding: 28px 32px 20px;
+    border-bottom: 1px solid var(--card-border);
+    text-align: center;
+  }
+  .principles-header h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 2px;
+    color: var(--white);
+  }
+  .principles-header p {
+    font-size: 13px;
+    color: var(--text-dim);
+    margin-top: 4px;
+  }
+  .principles-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1px;
+    background: var(--card-border);
+  }
+  .principle {
+    background: var(--ocean-deep);
+    padding: 24px 26px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    transition: background 0.2s;
+  }
+  .principle:hover { background: var(--ocean-mid); }
+  .principle-icon { font-size: 26px; }
+  .principle h3 {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--white);
+  }
+  .principle p {
+    font-size: 12.5px;
+    color: var(--text-dim);
+    line-height: 1.6;
+  }
+
+  /* ── FOOTER ──────────────────────────────────────────── */
+  footer {
+    text-align: center;
+    padding: 32px 20px;
+    border-top: 1px solid var(--card-border);
+    font-size: 12px;
+    color: var(--text-dim);
+    letter-spacing: 0.5px;
+  }
+  footer strong { color: var(--foam); }
+</style>
+</head>
+<body>
+
+<!-- ── HEADER ──────────────────────────────────────────── -->
+<header>
+  <p class="subtitle-top">TSEAS &nbsp;·&nbsp; Técnico Superior en Emergencias y Protección Civil</p>
+  <h1>Análisis de Situaciones de<br><span>Rescate en Medio Acuático</span></h1>
+  <p style="font-size:13px;color:var(--text-dim);margin-top:8px;">Tarea 3.2 — Identificación de riesgos, toma de decisiones y protocolos de salvamento</p>
+  <div class="author-badge">
+    <span class="dot"></span>
+    Jesús Manuel Borreguero Guillén
+    <span class="dot"></span>
+  </div>
+  <svg class="wave-deco" viewBox="0 0 1440 60" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0,30 C240,60 480,0 720,30 C960,60 1200,0 1440,30 L1440,60 L0,60 Z" fill="#3db4f2"/>
+  </svg>
+</header>
+
+<!-- ── OBJECTIVES BAR ───────────────────────────────────── -->
+<div class="objectives">
+  <div class="obj-item">
+    <div class="obj-icon">🔍</div>
+    <div><strong>Identificar peligros</strong><span>Para la víctima y el rescatador</span></div>
+  </div>
+  <div class="obj-item">
+    <div class="obj-icon">📋</div>
+    <div><strong>Analizar el estado</strong><span>Evaluar la situación de la víctima</span></div>
+  </div>
+  <div class="obj-item">
+    <div class="obj-icon">🚨</div>
+    <div><strong>Pasos del rescate</strong><span>Explicar el procedimiento completo</span></div>
+  </div>
+  <div class="obj-item">
+    <div class="obj-icon">✅</div>
+    <div><strong>Justificar decisiones</strong><span>Razonar cada acción tomada</span></div>
+  </div>
+</div>
+
+<!-- ── MAIN ─────────────────────────────────────────────── -->
+<main>
+
+  <!-- CASO 1 -->
+  <div class="case-card">
+    <div class="case-header">
+      <div class="case-number">01</div>
+      <h2><span>Caso 1</span>Corriente de Retorno en Playa Abierta</h2>
+    </div>
+    <div class="case-body">
+      <div class="case-section">
+        <div class="section-label">Contexto y dificultades</div>
+        <p class="context-text">
+          Nos encontramos ante una víctima atrapada en una corriente de retorno, una de las situaciones más peligrosas en playas abiertas. La corriente genera un flujo de agua hacia mar adentro que dificulta tanto la aproximación como el retorno. La víctima está consciente pero en pánico, lo que aumenta el riesgo de agarre peligroso al rescatador. Además, la fatiga extrema reduce su capacidad de colaboración. El principal problema técnico es <strong>gestionar la corriente sin luchar contra ella</strong>.
+        </p>
+        <div class="difficulties">
+          <div class="diff-pill">Corriente fuerte alejando hacia mar adentro</div>
+          <div class="diff-pill">Víctima en pánico con riesgo de agarre</div>
+          <div class="diff-pill">Posible fatiga extrema — poca colaboración</div>
+        </div>
+      </div>
+      <div class="case-section">
+        <div class="section-label">Intervención profesional</div>
+        <div class="steps">
+          <div class="step"><strong>Percepción y análisis</strong>: Identifico corriente de retorno, estado de pánico y agotamiento.</div>
+          <div class="step"><strong>Toma de decisión</strong>: Rescate con material (tabla o tubo) obligatorio. Nunca sin él.</div>
+          <div class="step"><strong>Activación de emergencias</strong>.</div>
+          <div class="step"><strong>Aproximación terrestre rápida</strong> hasta el punto óptimo de entrada (no siempre el más cercano).</div>
+          <div class="step"><strong>Entrada al agua segura</strong> (tipo carrera + zambullida controlada según condiciones).</div>
+          <div class="step"><strong>Nado técnico en diagonal</strong>, evitando oposición directa a la corriente.</div>
+          <div class="step"><strong>Contacto indirecto</strong>: me aproximo por detrás/lateral y ofrezco el material primero.</div>
+          <div class="step"><strong>Control verbal</strong>: reducir pánico ("agárrate, estás a salvo").</div>
+          <div class="step"><strong>Remolque estratégico</strong>: salida en diagonal fuera de la corriente (nunca frontal).</div>
+          <div class="step"><strong>Extracción y valoración final</strong>.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CASO 2 -->
+  <div class="case-card">
+    <div class="case-header">
+      <div class="case-number">02</div>
+      <h2><span>Caso 2</span>Víctima Inconsciente en Piscina Profunda</h2>
+    </div>
+    <div class="case-body">
+      <div class="case-section">
+        <div class="section-label">Contexto y dificultades</div>
+        <p class="context-text">
+          Víctima sumergida en el fondo de una piscina de 2,5 m con sospecha de parada cardiorrespiratoria. Es una situación de <strong>máxima prioridad vital</strong>, donde el tiempo de hipoxia cerebral es crítico. El rescate requiere apnea técnica y control del cuerpo en profundidad. La dificultad principal es combinar rapidez con eficacia técnica. La prioridad absoluta es <strong>sacar del agua e iniciar RCP lo antes posible</strong>.
+        </p>
+        <div class="difficulties">
+          <div class="diff-pill">Víctima sumergida en el fondo — apnea necesaria</div>
+          <div class="diff-pill">Posible parada cardiorrespiratoria</div>
+          <div class="diff-pill">Tiempo de hipoxia cerebral crítico</div>
+        </div>
+        <div class="alert-note">⚠ La prioridad absoluta es extraer a la víctima del agua lo antes posible para iniciar maniobras de reanimación cardiopulmonar.</div>
+      </div>
+      <div class="case-section">
+        <div class="section-label">Intervención profesional</div>
+        <div class="steps">
+          <div class="step"><strong>Percepción inmediata</strong>: víctima inmóvil en fondo → inconsciencia probable.</div>
+          <div class="step"><strong>Decisión crítica</strong>: rescate inmediato sin demora (segundos vitales).</div>
+          <div class="step"><strong>Aviso simultáneo a emergencias</strong>.</div>
+          <div class="step"><strong>Entrada rápida al agua</strong> (salto directo en piscina profunda).</div>
+          <div class="step"><strong>Apnea y descenso vertical controlado</strong>.</div>
+          <div class="step"><strong>Agarre seguro</strong> (axilas o control cervical si sospecha de lesión).</div>
+          <div class="step"><strong>Ascenso rápido</strong> manteniendo alineación corporal.</div>
+          <div class="step"><strong>Apertura de vía aérea en superficie</strong>.</div>
+          <div class="step"><strong>Extracción urgente</strong> (con ayuda si está disponible).</div>
+          <div class="step"><strong>Valoración ABC (respiración)</strong>.</div>
+          <div class="step"><strong>Inicio inmediato de RCP</strong>.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CASO 3 -->
+  <div class="case-card">
+    <div class="case-header">
+      <div class="case-number">03</div>
+      <h2><span>Caso 3</span>Rescate Nocturno con Mala Visibilidad</h2>
+    </div>
+    <div class="case-body">
+      <div class="case-section">
+        <div class="section-label">Contexto y dificultades</div>
+        <p class="context-text">
+          Rescate en embalse al atardecer con condiciones de baja visibilidad donde la referencia visual es mínima. Predomina la desorientación espacial y el riesgo de perder contacto con la víctima. La localización depende principalmente del sonido. Existe riesgo de hipotermia en la víctima y de error en la trayectoria del rescatador. La intervención exige <strong>orientación, comunicación constante y control emocional</strong>.
+        </p>
+        <div class="difficulties">
+          <div class="diff-pill">Baja visibilidad nocturna — desorientación espacial</div>
+          <div class="diff-pill">Localización solo por sonido (gritos débiles)</div>
+          <div class="diff-pill">Posible hipotermia de la víctima</div>
+        </div>
+        <div class="alert-note">💡 Usar linterna, silbato y comunicación verbal constante para mantener el contacto con la víctima durante la aproximación.</div>
+      </div>
+      <div class="case-section">
+        <div class="section-label">Intervención profesional</div>
+        <div class="steps">
+          <div class="step"><strong>Percepción auditiva</strong>: localización por gritos débiles.</div>
+          <div class="step"><strong>Análisis del entorno</strong>: visibilidad baja, riesgo de desorientación.</div>
+          <div class="step"><strong>Activación de emergencias</strong>.</div>
+          <div class="step"><strong>Uso de medios auxiliares</strong>: linterna, silbato.</div>
+          <div class="step"><strong>Comunicación constante</strong> para mantener referencia ("¡sigue hablando!").</div>
+          <div class="step"><strong>Entrada con material de flotación obligatoria</strong>.</div>
+          <div class="step"><strong>Nado orientado por sonido/luz</strong>.</div>
+          <div class="step"><strong>Aproximación lenta y controlada</strong> (evitar perder contacto).</div>
+          <div class="step"><strong>Contacto seguro y aporte de flotación inmediato</strong>.</div>
+          <div class="step"><strong>Remolque</strong> manteniendo comunicación continua.</div>
+          <div class="step"><strong>Extracción y control térmico</strong>.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CASO 4 -->
+  <div class="case-card">
+    <div class="case-header">
+      <div class="case-number">04</div>
+      <h2><span>Caso 4</span>Víctima Agresiva en Zona de Rocas</h2>
+    </div>
+    <div class="case-body">
+      <div class="case-section">
+        <div class="section-label">Contexto y dificultades</div>
+        <p class="context-text">
+          Escenario de alto riesgo por impacto contra rocas y oleaje. La víctima presenta comportamiento agresivo, probablemente por traumatismo craneoencefálico. Esto convierte el rescate en una situación peligrosa para el socorrista. El entorno es dinámico e impredecible. La prioridad es <strong>proteger al rescatador y evitar contacto directo peligroso</strong>.
+        </p>
+        <div class="difficulties">
+          <div class="diff-pill">Golpes contra las rocas por el oleaje</div>
+          <div class="diff-pill">Víctima agresiva — no colaboradora</div>
+          <div class="diff-pill">Riesgo elevado para el rescatador</div>
+        </div>
+        <div class="alert-note">⚠ La agresividad puede deberse a traumatismo craneal. Nunca enfrentarse directamente a la víctima: usar el tubo de rescate como barrera de protección.</div>
+      </div>
+      <div class="case-section">
+        <div class="section-label">Intervención profesional</div>
+        <div class="steps">
+          <div class="step"><strong>Análisis del entorno</strong>: oleaje, rompientes, zonas de impacto.</div>
+          <div class="step"><strong>Evaluación de la víctima</strong>: agresividad → riesgo alto.</div>
+          <div class="step"><strong>Decisión</strong>: rescate SIEMPRE con material (tubo).</div>
+          <div class="step"><strong>Activación de emergencias</strong>.</div>
+          <div class="step"><strong>Aproximación indirecta y segura</strong>, aprovechando momentos de menor oleaje.</div>
+          <div class="step"><strong>Uso del tubo como barrera de seguridad</strong>.</div>
+          <div class="step"><strong>Nunca contacto frontal directo</strong>.</div>
+          <div class="step"><strong>Control desde atrás</strong> cuando sea viable.</div>
+          <div class="step"><strong>Asegurar a la víctima al material</strong> antes de moverla.</div>
+          <div class="step"><strong>Salida sincronizada con el oleaje</strong>.</div>
+          <div class="step"><strong>Extracción rápida</strong> fuera de zona de impacto.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CASO 5 -->
+  <div class="case-card">
+    <div class="case-header">
+      <div class="case-number">05</div>
+      <h2><span>Caso 5</span>Múltiples Víctimas tras Vuelco de Kayak</h2>
+    </div>
+    <div class="case-body">
+      <div class="case-section">
+        <div class="section-label">Contexto y dificultades</div>
+        <p class="context-text">
+          Rescate con múltiples víctimas en mar abierto, lo que implica toma de decisiones bajo presión. Una víctima está estable (con chaleco salvavidas), la otra en riesgo vital (sin flotación y agotada). El principal reto es la <strong>priorización correcta</strong> y la gestión de recursos. Existe riesgo de que ambas víctimas empeoren si no se actúa correctamente.
+        </p>
+        <div class="difficulties">
+          <div class="diff-pill">Dos víctimas simultáneas en mar abierto</div>
+          <div class="diff-pill">Diferente nivel de riesgo entre ellas</div>
+          <div class="diff-pill">Toma de decisiones prioritaria bajo presión</div>
+        </div>
+        <div class="alert-note">🎯 La víctima sin chaleco y con signos de agotamiento extremo es la prioridad absoluta. La víctima con chaleco puede mantenerse a flote mientras se atiende a la más crítica.</div>
+      </div>
+      <div class="case-section">
+        <div class="section-label">Intervención profesional</div>
+        <div class="steps">
+          <div class="step"><strong>Percepción global</strong>: número de víctimas y estado de cada una.</div>
+          <div class="step"><strong>Análisis rápido</strong>: una estable (chaleco), otra crítica (sin flotación).</div>
+          <div class="step"><strong>Priorización</strong>: primero la víctima sin chaleco (riesgo vital).</div>
+          <div class="step"><strong>Activación de emergencias</strong>.</div>
+          <div class="step"><strong>Entrada con material de rescate</strong>.</div>
+          <div class="step"><strong>Aproximación directa a la víctima crítica</strong>.</div>
+          <div class="step"><strong>Aporte inmediato de flotación</strong>.</div>
+          <div class="step"><strong>Aseguramiento</strong> (evitar hundimiento).</div>
+          <div class="step"><strong>Estabilización antes de traslado</strong>.</div>
+          <div class="step"><strong>Remolque o espera de apoyo</strong> según distancia y esfuerzo.</div>
+          <div class="step"><strong>Coordinación para segunda víctima</strong>.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PRINCIPIOS FUNDAMENTALES -->
+  <div class="principles">
+    <div class="principles-header">
+      <h2>Principios Fundamentales del Rescate Acuático</h2>
+      <p>Base teórica y ética de toda intervención en medio acuático</p>
+    </div>
+    <div class="principles-grid">
+      <div class="principle">
+        <div class="principle-icon">🛡️</div>
+        <h3>Tu seguridad primero</h3>
+        <p>Un rescatador en peligro se convierte en una víctima más. Evalúa siempre antes de actuar.</p>
+      </div>
+      <div class="principle">
+        <div class="principle-icon">🏊</div>
+        <h3>Usa siempre material</h3>
+        <p>El material de rescate protege tanto a la víctima como al socorrista. Nunca entres al agua sin él si puedes evitarlo.</p>
+      </div>
+      <div class="principle">
+        <div class="principle-icon">📡</div>
+        <h3>Comunica y coordina</h3>
+        <p>Activa el sistema de emergencias desde el primer momento y mantén comunicación constante con tu equipo.</p>
+      </div>
+      <div class="principle">
+        <div class="principle-icon">⚡</div>
+        <h3>Prioriza según gravedad</h3>
+        <p>En situaciones con múltiples víctimas, evalúa rápidamente y actúa primero sobre quien más riesgo vital presenta.</p>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<!-- ── FOOTER ───────────────────────────────────────────── -->
+<footer>
+  <strong>Jesús Manuel Borreguero Guillén</strong> &nbsp;·&nbsp; TSEAS &nbsp;·&nbsp; Tarea 3.2 — Análisis de Situaciones de Rescate en Medio Acuático
+</footer>
+
+</body>
+</html>
