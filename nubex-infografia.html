@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NubeX – Tu nube, pero inteligente</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --sky: #0ea5e9;
+    --electric: #38bdf8;
+    --deep: #0f172a;
+    --midnight: #1e293b;
+    --card: #1e293b;
+    --accent: #f0f9ff;
+    --gold: #fbbf24;
+    --green: #34d399;
+    --rose: #fb7185;
+    --purple: #a78bfa;
+    --text: #e2e8f0;
+    --muted: #94a3b8;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--deep);
+    color: var(--text);
+    overflow-x: hidden;
+  }
+
+  /* ANIMATED BACKGROUND */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 50% at 20% 10%, rgba(14,165,233,0.18) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 40% at 80% 80%, rgba(167,139,250,0.12) 0%, transparent 50%),
+      radial-gradient(ellipse 40% 30% at 60% 40%, rgba(56,189,248,0.08) 0%, transparent 40%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .wrapper { position: relative; z-index: 1; max-width: 960px; margin: 0 auto; padding: 40px 20px 80px; }
+
+  /* HERO */
+  .hero {
+    text-align: center;
+    padding: 80px 20px 60px;
+    position: relative;
+  }
+
+  .cloud-icon {
+    font-size: 72px;
+    display: block;
+    animation: float 3.5s ease-in-out infinite;
+    margin-bottom: 16px;
+    filter: drop-shadow(0 0 30px rgba(14,165,233,0.6));
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-12px); }
+  }
+
+  .hero-badge {
+    display: inline-block;
+    background: rgba(14,165,233,0.15);
+    border: 1px solid rgba(14,165,233,0.4);
+    color: var(--electric);
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 6px 18px;
+    border-radius: 100px;
+    margin-bottom: 20px;
+  }
+
+  .hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(42px, 8vw, 80px);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -2px;
+    background: linear-gradient(135deg, #fff 30%, var(--electric) 70%, var(--sky) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 8px;
+  }
+
+  .slogan {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(18px, 3.5vw, 26px);
+    font-weight: 600;
+    color: var(--gold);
+    margin-bottom: 16px;
+    letter-spacing: -0.5px;
+  }
+
+  .hero-desc {
+    font-size: 17px;
+    color: var(--muted);
+    max-width: 540px;
+    margin: 0 auto 40px;
+    line-height: 1.7;
+  }
+
+  .hero-stats {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+  }
+
+  .stat {
+    text-align: center;
+    animation: fadeUp 0.7s ease both;
+  }
+
+  .stat-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 32px;
+    font-weight: 800;
+    color: var(--electric);
+    display: block;
+  }
+
+  .stat-label {
+    font-size: 12px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+  }
+
+  /* DIVIDER */
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(14,165,233,0.4), transparent);
+    margin: 48px 0;
+  }
+
+  /* SECTION TITLES */
+  .section-label {
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--sky);
+    margin-bottom: 10px;
+  }
+
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(24px, 4vw, 34px);
+    font-weight: 800;
+    letter-spacing: -1px;
+    color: #fff;
+    margin-bottom: 36px;
+  }
+
+  /* FEATURES GRID */
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    margin-bottom: 20px;
+  }
+
+  .feature-card {
+    background: rgba(30,41,59,0.8);
+    border: 1px solid rgba(56,189,248,0.12);
+    border-radius: 20px;
+    padding: 28px 26px;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    cursor: default;
+  }
+
+  .feature-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--card-accent, linear-gradient(90deg, var(--sky), var(--electric)));
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4), 0 0 30px rgba(14,165,233,0.1);
+    border-color: rgba(56,189,248,0.3);
+  }
+
+  .feature-card:hover::before { opacity: 1; }
+
+  .feature-emoji {
+    font-size: 36px;
+    margin-bottom: 14px;
+    display: block;
+    filter: drop-shadow(0 0 12px rgba(14,165,233,0.4));
+  }
+
+  .feature-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: var(--sky);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .feature-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 10px;
+    letter-spacing: -0.3px;
+  }
+
+  .feature-desc {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.65;
+    margin-bottom: 14px;
+  }
+
+  .feature-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .feature-list li {
+    font-size: 13.5px;
+    color: var(--text);
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    line-height: 1.5;
+  }
+
+  .feature-list li::before {
+    content: '→';
+    color: var(--sky);
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .example-tag {
+    margin-top: 14px;
+    background: rgba(14,165,233,0.1);
+    border: 1px solid rgba(14,165,233,0.25);
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-size: 12.5px;
+    color: var(--electric);
+    line-height: 1.5;
+  }
+
+  .example-tag strong {
+    color: #fff;
+    font-weight: 600;
+  }
+
+  /* STUDENT MODE CARD - highlighted */
+  .feature-card.student {
+    border-color: rgba(251,191,36,0.3);
+    background: rgba(30,41,59,0.9);
+  }
+
+  .feature-card.student::before {
+    background: linear-gradient(90deg, var(--gold), #f59e0b);
+  }
+
+  .feature-card.student:hover {
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4), 0 0 30px rgba(251,191,36,0.15);
+    border-color: rgba(251,191,36,0.5);
+  }
+
+  /* DEVICES */
+  .devices-row {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+
+  .device-pill {
+    background: rgba(30,41,59,0.8);
+    border: 1px solid rgba(56,189,248,0.15);
+    border-radius: 60px;
+    padding: 16px 28px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'Syne', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: #fff;
+    transition: all 0.3s;
+    cursor: default;
+  }
+
+  .device-pill:hover {
+    background: rgba(14,165,233,0.12);
+    border-color: rgba(56,189,248,0.4);
+    transform: scale(1.04);
+  }
+
+  .device-pill span { font-size: 26px; }
+
+  /* PRICING TABLE */
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+    margin-bottom: 20px;
+  }
+
+  .plan-card {
+    background: rgba(30,41,59,0.8);
+    border: 1px solid rgba(56,189,248,0.12);
+    border-radius: 24px;
+    padding: 30px 24px 28px;
+    text-align: center;
+    position: relative;
+    transition: transform 0.3s, box-shadow 0.3s;
+    cursor: default;
+  }
+
+  .plan-card:hover { transform: translateY(-6px); }
+
+  .plan-card.popular {
+    background: linear-gradient(160deg, rgba(14,165,233,0.15) 0%, rgba(30,41,59,0.95) 60%);
+    border-color: rgba(14,165,233,0.5);
+    box-shadow: 0 0 40px rgba(14,165,233,0.15);
+  }
+
+  .popular-badge {
+    position: absolute;
+    top: -14px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(90deg, var(--sky), var(--electric));
+    color: var(--deep);
+    font-family: 'Syne', sans-serif;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 5px 16px;
+    border-radius: 100px;
+    white-space: nowrap;
+  }
+
+  .plan-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 12px;
+  }
+
+  .plan-price {
+    font-family: 'Syne', sans-serif;
+    font-size: 48px;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -2px;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .plan-price sup {
+    font-size: 22px;
+    vertical-align: super;
+    letter-spacing: 0;
+    color: var(--muted);
+  }
+
+  .plan-price span {
+    font-size: 14px;
+    color: var(--muted);
+    font-weight: 400;
+    letter-spacing: 0;
+  }
+
+  .plan-storage {
+    font-family: 'Syne', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--electric);
+    margin: 12px 0 16px;
+  }
+
+  .plan-features {
+    list-style: none;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 24px;
+  }
+
+  .plan-features li {
+    font-size: 13px;
+    color: var(--text);
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+    line-height: 1.5;
+  }
+
+  .plan-features li .check {
+    color: var(--green);
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .plan-btn {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    border-radius: 12px;
+    border: none;
+    font-family: 'Syne', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+
+  .plan-btn.outline {
+    background: transparent;
+    border: 1.5px solid rgba(56,189,248,0.3);
+    color: var(--electric);
+  }
+
+  .plan-btn.outline:hover {
+    background: rgba(14,165,233,0.1);
+    border-color: var(--electric);
+  }
+
+  .plan-btn.filled {
+    background: linear-gradient(135deg, var(--sky), #0284c7);
+    color: #fff;
+    box-shadow: 0 8px 24px rgba(14,165,233,0.3);
+  }
+
+  .plan-btn.filled:hover {
+    box-shadow: 0 12px 32px rgba(14,165,233,0.5);
+    transform: translateY(-1px);
+  }
+
+  .plan-btn.gold {
+    background: linear-gradient(135deg, var(--gold), #f59e0b);
+    color: var(--deep);
+    box-shadow: 0 8px 24px rgba(251,191,36,0.3);
+  }
+
+  .plan-btn.gold:hover {
+    box-shadow: 0 12px 32px rgba(251,191,36,0.5);
+    transform: translateY(-1px);
+  }
+
+  /* WHY SECTION */
+  .why-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+  }
+
+  .why-card {
+    background: rgba(30,41,59,0.6);
+    border: 1px solid rgba(56,189,248,0.1);
+    border-radius: 16px;
+    padding: 22px 20px;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    transition: all 0.3s;
+  }
+
+  .why-card:hover {
+    border-color: rgba(56,189,248,0.3);
+    background: rgba(30,41,59,0.9);
+    transform: translateX(4px);
+  }
+
+  .why-icon {
+    font-size: 28px;
+    flex-shrink: 0;
+    filter: drop-shadow(0 0 8px rgba(14,165,233,0.3));
+  }
+
+  .why-text strong {
+    font-family: 'Syne', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: #fff;
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .why-text p {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  /* CTA */
+  .cta-box {
+    background: linear-gradient(135deg, rgba(14,165,233,0.15) 0%, rgba(167,139,250,0.08) 100%);
+    border: 1px solid rgba(14,165,233,0.3);
+    border-radius: 28px;
+    padding: 52px 40px;
+    text-align: center;
+    margin-top: 64px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cta-box::before {
+    content: '☁️';
+    position: absolute;
+    font-size: 200px;
+    opacity: 0.04;
+    top: -30px;
+    right: -20px;
+    pointer-events: none;
+  }
+
+  .cta-box h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(22px, 4vw, 36px);
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 12px;
+    letter-spacing: -1px;
+  }
+
+  .cta-box p {
+    font-size: 16px;
+    color: var(--muted);
+    max-width: 440px;
+    margin: 0 auto 28px;
+    line-height: 1.6;
+  }
+
+  .cta-btn {
+    display: inline-block;
+    padding: 16px 40px;
+    background: linear-gradient(135deg, var(--sky), #0284c7);
+    color: #fff;
+    font-family: 'Syne', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    border-radius: 100px;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 8px 32px rgba(14,165,233,0.4);
+    transition: all 0.3s;
+    letter-spacing: 0.3px;
+    text-decoration: none;
+  }
+
+  .cta-btn:hover {
+    box-shadow: 0 16px 48px rgba(14,165,233,0.6);
+    transform: translateY(-2px);
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .animate { animation: fadeUp 0.7s ease both; }
+  .delay-1 { animation-delay: 0.1s; }
+  .delay-2 { animation-delay: 0.2s; }
+  .delay-3 { animation-delay: 0.3s; }
+  .delay-4 { animation-delay: 0.4s; }
+  .delay-5 { animation-delay: 0.5s; }
+
+  /* FOOTER */
+  .footer {
+    text-align: center;
+    padding: 40px 20px 20px;
+    font-size: 13px;
+    color: rgba(148,163,184,0.4);
+  }
+</style>
+</head>
+<body>
+
+<div class="wrapper">
+
+  <!-- HERO -->
+  <div class="hero animate">
+    <span class="cloud-icon">☁️</span>
+    <div class="hero-badge">Presentación de producto · 2026</div>
+    <h1>NubeX</h1>
+    <div class="slogan">✨ "Guarda menos, encuentra más."</div>
+    <p class="hero-desc">El primer servicio de almacenamiento en la nube con inteligencia artificial integrada. No solo guarda tus archivos — los organiza, protege y potencia automáticamente.</p>
+    <div class="hero-stats">
+      <div class="stat animate delay-1">
+        <span class="stat-num">15 GB</span>
+        <span class="stat-label">Gratis siempre</span>
+      </div>
+      <div class="stat animate delay-2">
+        <span class="stat-num">+40%</span>
+        <span class="stat-label">Más espacio que rivales</span>
+      </div>
+      <div class="stat animate delay-3">
+        <span class="stat-num">IA</span>
+        <span class="stat-label">Integrada 100%</span>
+      </div>
+      <div class="stat animate delay-4">
+        <span class="stat-num">4</span>
+        <span class="stat-label">Dispositivos conectados</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- FEATURES -->
+  <div class="animate delay-1">
+    <div class="section-label">¿Qué hace especial a NubeX?</div>
+    <div class="section-title">6 superpoderes en tu bolsillo</div>
+  </div>
+
+  <div class="features-grid">
+
+    <div class="feature-card animate delay-1">
+      <span class="feature-emoji">🧠</span>
+      <div class="feature-num">01 — IA</div>
+      <div class="feature-title">Organización automática</div>
+      <p class="feature-desc">La IA detecta y clasifica tus archivos sin que toques nada.</p>
+      <ul class="feature-list">
+        <li>Detecta fotos, apuntes, vídeos…</li>
+        <li>Crea carpetas automáticamente</li>
+        <li>Nombra archivos de forma inteligente</li>
+      </ul>
+      <div class="example-tag">📌 Subes una foto → se guarda en <strong>Fotos / 2026 / Abril</strong> sola</div>
+    </div>
+
+    <div class="feature-card animate delay-2">
+      <span class="feature-emoji">🔍</span>
+      <div class="feature-num">02 — Búsqueda</div>
+      <div class="feature-title">Búsqueda por lenguaje natural</div>
+      <p class="feature-desc">Busca como si hablaras con una persona. No necesitas recordar el nombre del archivo.</p>
+      <ul class="feature-list">
+        <li>"apuntes de historia"</li>
+        <li>"foto en la playa"</li>
+        <li>Encuentra aunque no recuerdes el nombre</li>
+      </ul>
+    </div>
+
+    <div class="feature-card animate delay-3">
+      <span class="feature-emoji">🔒</span>
+      <div class="feature-num">03 — Seguridad</div>
+      <div class="feature-title">Seguridad de nivel bancario</div>
+      <p class="feature-desc">Tus archivos están protegidos con la misma tecnología que los bancos.</p>
+      <ul class="feature-list">
+        <li>Cifrado total de extremo a extremo</li>
+        <li>Doble verificación de identidad</li>
+        <li>Carpeta secreta con contraseña propia</li>
+      </ul>
+    </div>
+
+    <div class="feature-card animate delay-1">
+      <span class="feature-emoji">⚡</span>
+      <div class="feature-num">04 — Sync</div>
+      <div class="feature-title">Sincronización instantánea</div>
+      <p class="feature-desc">Cambia algo en el móvil y aparece al instante en el ordenador.</p>
+      <ul class="feature-list">
+        <li>Actualización en tiempo real</li>
+        <li>Funciona incluso con mala conexión</li>
+        <li>Sin conflictos entre dispositivos</li>
+      </ul>
+    </div>
+
+    <div class="feature-card animate delay-2">
+      <span class="feature-emoji">🤝</span>
+      <div class="feature-num">05 — Equipo</div>
+      <div class="feature-title">Trabajo en grupo mejorado</div>
+      <p class="feature-desc">Colabora con tus compañeros de clase o trabajo sin complicaciones.</p>
+      <ul class="feature-list">
+        <li>Compartir con un solo clic</li>
+        <li>Edición de documentos en tiempo real</li>
+        <li>Chat integrado dentro de las carpetas</li>
+      </ul>
+    </div>
+
+    <div class="feature-card student animate delay-3">
+      <span class="feature-emoji">🎮</span>
+      <div class="feature-num">06 — ★ EXCLUSIVO</div>
+      <div class="feature-title">Modo Estudiante</div>
+      <p class="feature-desc">Diseñado específicamente para ti. La nube que por fin entiende lo que necesitas en clase.</p>
+      <ul class="feature-list">
+        <li>Detecta apuntes automáticamente</li>
+        <li>Resume documentos largos con IA</li>
+        <li>Convierte fotos de apuntes en texto editable</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- DEVICES -->
+  <div class="animate">
+    <div class="section-label">Compatibilidad</div>
+    <div class="section-title">Disponible en todos tus dispositivos</div>
+  </div>
+
+  <div class="devices-row animate delay-2">
+    <div class="device-pill"><span>📱</span> Móvil</div>
+    <div class="device-pill"><span>💻</span> Ordenador</div>
+    <div class="device-pill"><span>📲</span> Tablet</div>
+    <div class="device-pill"><span>🌐</span> Navegador web</div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- PRICING -->
+  <div class="animate">
+    <div class="section-label">Planes y precios</div>
+    <div class="section-title">Elige el tuyo 💳</div>
+  </div>
+
+  <div class="pricing-grid">
+
+    <div class="plan-card animate delay-1">
+      <div class="plan-name">Free</div>
+      <div class="plan-price">0<sup>€</sup></div>
+      <div class="plan-storage">15 GB</div>
+      <ul class="plan-features">
+        <li><span class="check">✓</span> Organización con IA básica</li>
+        <li><span class="check">✓</span> Sincronización en 2 dispositivos</li>
+        <li><span class="check">✓</span> Búsqueda inteligente</li>
+        <li><span class="check">✓</span> Seguridad cifrada</li>
+      </ul>
+      <button class="plan-btn outline">Empezar gratis</button>
+    </div>
+
+    <div class="plan-card popular animate delay-2">
+      <div class="popular-badge">⭐ Más popular</div>
+      <div class="plan-name">Estudiante</div>
+      <div class="plan-price">2<sup>€</sup><span>/mes</span></div>
+      <div class="plan-storage">100 GB</div>
+      <ul class="plan-features">
+        <li><span class="check">✓</span> Todo lo del plan Free</li>
+        <li><span class="check">✓</span> Modo Estudiante completo</li>
+        <li><span class="check">✓</span> Resumen de documentos con IA</li>
+        <li><span class="check">✓</span> Fotos de apuntes → texto</li>
+        <li><span class="check">✓</span> Sincronización en 5 dispositivos</li>
+        <li><span class="check">✓</span> Carpeta secreta</li>
+      </ul>
+      <button class="plan-btn filled">Elegir plan</button>
+    </div>
+
+    <div class="plan-card animate delay-3">
+      <div class="plan-name">Pro</div>
+      <div class="plan-price">5<sup>€</sup><span>/mes</span></div>
+      <div class="plan-storage">1 TB</div>
+      <ul class="plan-features">
+        <li><span class="check">✓</span> Todo lo del plan Estudiante</li>
+        <li><span class="check">✓</span> Dispositivos ilimitados</li>
+        <li><span class="check">✓</span> Trabajo colaborativo avanzado</li>
+        <li><span class="check">✓</span> Chat en carpetas</li>
+        <li><span class="check">✓</span> Soporte prioritario 24/7</li>
+        <li><span class="check">✓</span> Historial de versiones 60 días</li>
+      </ul>
+      <button class="plan-btn outline">Elegir plan</button>
+    </div>
+
+    <div class="plan-card animate delay-4">
+      <div class="plan-name">Familia / Grupo</div>
+      <div class="plan-price">9<sup>€</sup><span>/mes</span></div>
+      <div class="plan-storage">5 TB compartidos</div>
+      <ul class="plan-features">
+        <li><span class="check">✓</span> Hasta 6 cuentas incluidas</li>
+        <li><span class="check">✓</span> Todo lo del plan Pro</li>
+        <li><span class="check">✓</span> Panel de administración familiar</li>
+        <li><span class="check">✓</span> Almacenamiento compartido flexible</li>
+        <li><span class="check">✓</span> Control parental opcional</li>
+        <li><span class="check">✓</span> Historial de versiones 1 año</li>
+      </ul>
+      <button class="plan-btn gold">Elegir plan</button>
+    </div>
+
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- WHY NUBEX -->
+  <div class="animate">
+    <div class="section-label">¿Por qué NubeX?</div>
+    <div class="section-title">Tu nube. Pero mejor.</div>
+  </div>
+
+  <div class="why-grid animate delay-1">
+    <div class="why-card">
+      <span class="why-icon">🆓</span>
+      <div class="why-text">
+        <strong>Más espacio gratis</strong>
+        <p>15 GB sin pagar nada, frente a los 5 GB de la competencia.</p>
+      </div>
+    </div>
+    <div class="why-card">
+      <span class="why-icon">🤖</span>
+      <div class="why-text">
+        <strong>IA de verdad integrada</strong>
+        <p>No es un añadido. La inteligencia artificial es el núcleo de NubeX.</p>
+      </div>
+    </div>
+    <div class="why-card">
+      <span class="why-icon">🎓</span>
+      <div class="why-text">
+        <strong>Pensado para estudiantes</strong>
+        <p>El único servicio con funciones diseñadas específicamente para ti.</p>
+      </div>
+    </div>
+    <div class="why-card">
+      <span class="why-icon">🧩</span>
+      <div class="why-text">
+        <strong>Más fácil de usar</strong>
+        <p>Interfaz intuitiva. Sin curva de aprendizaje. Funciona desde el primer día.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-box animate">
+    <h2>¿Listo para subir a la nube inteligente? 🚀</h2>
+    <p>Únete a miles de estudiantes que ya organizan su vida digital con NubeX. Empieza gratis hoy.</p>
+    <a href="#" class="cta-btn">Probar NubeX gratis →</a>
+  </div>
+
+</div>
+
+<div class="footer">NubeX · Tu nube, pero inteligente · © 2026</div>
+
+<script>
+  // Intersection Observer para animar elementos al hacer scroll
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.opacity = '1';
+        entry.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.feature-card, .plan-card, .why-card, .device-pill').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(20px)';
+    el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+    observer.observe(el);
+  });
+</script>
+
+</body>
+</html>
