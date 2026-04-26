@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Informe de Inspección — Piscina Municipal</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1a2e;
+    --water: #0077b6;
+    --water-light: #00b4d8;
+    --water-pale: #caf0f8;
+    --danger: #d62828;
+    --danger-light: #f7e8e8;
+    --warn: #e07b39;
+    --warn-light: #fdf0e6;
+    --ok: #2d6a4f;
+    --ok-light: #e8f5ef;
+    --paper: #f9f6f0;
+    --rule: #d9d3c8;
+    --white: #ffffff;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-weight: 300;
+    line-height: 1.75;
+    font-size: 16px;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: var(--ink);
+    color: var(--white);
+    padding: 3.5rem 2rem 2.5rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      -45deg,
+      transparent,
+      transparent 18px,
+      rgba(0,180,216,.05) 18px,
+      rgba(0,180,216,.05) 20px
+    );
+    pointer-events: none;
+  }
+
+  .header-label {
+    font-family: 'Source Serif 4', serif;
+    font-size: .75rem;
+    font-weight: 600;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: var(--water-light);
+    margin-bottom: .75rem;
+  }
+
+  header h1 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-weight: 900;
+    font-size: clamp(2rem, 5vw, 3.4rem);
+    line-height: 1.1;
+    letter-spacing: -.02em;
+    margin-bottom: .5rem;
+  }
+
+  header h2 {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 300;
+    font-style: italic;
+    font-size: clamp(1rem, 2.5vw, 1.35rem);
+    color: rgba(255,255,255,.65);
+    margin-bottom: 1.5rem;
+  }
+
+  .meta-row {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+    font-size: .8rem;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,.45);
+  }
+
+  /* ── LAYOUT ── */
+  main {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 2.5rem 1.5rem 5rem;
+  }
+
+  /* ── SECTION ── */
+  .section {
+    margin-bottom: 3.5rem;
+    animation: fadeUp .5s ease both;
+  }
+
+  @keyframes fadeUp {
+    from { opacity:0; transform: translateY(18px); }
+    to   { opacity:1; transform: translateY(0); }
+  }
+
+  .section:nth-child(1) { animation-delay: .05s; }
+  .section:nth-child(2) { animation-delay: .15s; }
+  .section:nth-child(3) { animation-delay: .25s; }
+  .section:nth-child(4) { animation-delay: .35s; }
+  .section:nth-child(5) { animation-delay: .45s; }
+  .section:nth-child(6) { animation-delay: .55s; }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding-bottom: .75rem;
+    border-bottom: 2px solid var(--rule);
+    margin-bottom: 1.5rem;
+  }
+
+  .section-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.8rem;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--rule);
+    flex-shrink: 0;
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.45rem;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+
+  .section-icon {
+    font-size: 1.5rem;
+    flex-shrink: 0;
+  }
+
+  /* ── CARDS ── */
+  .cards {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  }
+
+  .card {
+    border-radius: 6px;
+    padding: 1.1rem 1.2rem;
+    border-left: 4px solid transparent;
+    font-size: .95rem;
+  }
+
+  .card-ok   { background: var(--ok-light);   border-color: var(--ok);    }
+  .card-risk { background: var(--danger-light);border-color: var(--danger); }
+  .card-warn { background: var(--warn-light);  border-color: var(--warn);  }
+  .card-blue { background: var(--water-pale);  border-color: var(--water); }
+
+  .card strong {
+    display: block;
+    font-weight: 600;
+    font-size: 1rem;
+    margin-bottom: .3rem;
+  }
+
+  /* ── RISK BLOCKS ── */
+  .risk-block {
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 1.2rem;
+  }
+
+  .risk-block-header {
+    background: var(--danger);
+    color: #fff;
+    padding: .6rem 1.1rem;
+    font-weight: 600;
+    font-family: 'Source Serif 4', serif;
+    font-size: .95rem;
+    letter-spacing: .04em;
+  }
+
+  .risk-block-header.warn { background: var(--warn); }
+  .risk-block-header.water { background: var(--water); }
+  .risk-block-header.dark { background: #444; }
+
+  .risk-block-body {
+    padding: 1rem 1.2rem;
+    background: var(--white);
+  }
+
+  .risk-block-body ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .risk-block-body ul li {
+    padding: .3rem 0 .3rem 1.3rem;
+    position: relative;
+    font-size: .95rem;
+  }
+
+  .risk-block-body ul li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: var(--danger);
+    font-size: .75rem;
+    top: .45rem;
+  }
+
+  .risk-block-header.warn ~ .risk-block-body ul li::before { color: var(--warn); }
+  .risk-block-header.water ~ .risk-block-body ul li::before { color: var(--water); }
+  .risk-block-header.dark ~ .risk-block-body ul li::before { color: #666; }
+
+  .consequence {
+    margin-top: .7rem;
+    padding: .55rem .9rem;
+    background: var(--danger-light);
+    border-radius: 4px;
+    font-size: .88rem;
+    font-style: italic;
+    color: var(--danger);
+    border-left: 3px solid var(--danger);
+  }
+
+  /* ── IMPROVEMENTS ── */
+  .improve-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1.1rem;
+  }
+
+  .improve-item {
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    padding: 1.1rem 1.2rem;
+    background: var(--white);
+    transition: box-shadow .2s;
+  }
+
+  .improve-item:hover {
+    box-shadow: 0 4px 18px rgba(0,119,182,.12);
+  }
+
+  .improve-item h4 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: .5rem;
+    color: var(--water);
+  }
+
+  .improve-item ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .improve-item ul li {
+    padding: .25rem 0 .25rem 1.2rem;
+    position: relative;
+    font-size: .9rem;
+  }
+
+  .improve-item ul li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--water-light);
+    font-size: .8rem;
+    top: .35rem;
+  }
+
+  /* ── PERSONAL TABLE ── */
+  .personal-box {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.2rem;
+  }
+
+  @media (max-width: 580px) {
+    .personal-box { grid-template-columns: 1fr; }
+    .cards { grid-template-columns: 1fr; }
+    .improve-grid { grid-template-columns: 1fr; }
+  }
+
+  .personal-col {
+    border-radius: 8px;
+    padding: 1.2rem;
+    font-size: .92rem;
+  }
+
+  .personal-col.bad  { background: var(--danger-light); border: 1px solid #e8b4b4; }
+  .personal-col.good { background: var(--ok-light);     border: 1px solid #a8d5bb; }
+
+  .personal-col h4 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem;
+    margin-bottom: .75rem;
+  }
+
+  .personal-col.bad  h4 { color: var(--danger); }
+  .personal-col.good h4 { color: var(--ok); }
+
+  .personal-col ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .personal-col ul li {
+    padding: .25rem 0;
+    padding-left: 1.3rem;
+    position: relative;
+  }
+
+  .personal-col.bad  ul li::before { content: '✗'; position:absolute; left:0; color: var(--danger); }
+  .personal-col.good ul li::before { content: '✓'; position:absolute; left:0; color: var(--ok); }
+
+  /* ── CONCLUSION ── */
+  .conclusion {
+    background: var(--ink);
+    color: #fff;
+    border-radius: 10px;
+    padding: 2rem 2.2rem;
+    margin-top: 1rem;
+  }
+
+  .conclusion h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    margin-bottom: 1rem;
+    color: var(--water-light);
+  }
+
+  .conclusion p {
+    color: rgba(255,255,255,.8);
+    font-size: .97rem;
+    margin-bottom: 1rem;
+  }
+
+  .conclusion-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .6rem;
+    margin-top: .5rem;
+  }
+
+  .pill {
+    background: var(--danger);
+    color: #fff;
+    border-radius: 99px;
+    padding: .3rem .85rem;
+    font-size: .82rem;
+    font-family: 'Source Serif 4', serif;
+    font-weight: 600;
+    letter-spacing: .04em;
+  }
+
+  /* ── PROSE ── */
+  p.prose {
+    color: #3a3a4a;
+    margin-bottom: .75rem;
+    font-size: .97rem;
+  }
+
+  /* ── DIVIDER ── */
+  hr.wave {
+    border: none;
+    border-top: 1px solid var(--rule);
+    margin: 3rem 0;
+  }
+
+  footer {
+    text-align: center;
+    padding: 1.5rem;
+    font-size: .78rem;
+    color: #aaa;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    border-top: 1px solid var(--rule);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <p class="header-label">Técnico en Actividades Acuáticas &nbsp;·&nbsp; Temporada de Verano</p>
+  <h1>Informe de Inspección</h1>
+  <h2>Piscina Municipal — Evaluación Previa a la Apertura</h2>
+  <div class="meta-row">
+    <span>Inspección previa apertura</span>
+    <span>Alta afluencia prevista</span>
+    <span>Familias con niños y personas mayores</span>
+  </div>
+</header>
+
+<main>
+
+  <!-- ── 1. ELEMENTOS ADECUADOS ── -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-num">01</span>
+      <span class="section-icon">✔️</span>
+      <h3 class="section-title">Elementos que cumplen mínimos de seguridad</h3>
+    </div>
+
+    <p class="prose">Antes de señalar las deficiencias, conviene reconocer lo que ya existe y funciona como punto de partida. La instalación cuenta con una base operativa aceptable:</p>
+
+    <div class="cards">
+      <div class="card card-ok">
+        <strong>Dos vasos diferenciados</strong>
+        Vaso principal de 25 m (1,20–2 m de profundidad) y vaso infantil (máx. 0,6 m), lo que permite separar usuarios por edad y nivel de habilidad.
+      </div>
+      <div class="card card-ok">
+        <strong>Zona de descanso</strong>
+        Área de césped con hamacas que garantiza un espacio de reposo cómodo para los usuarios.
+      </div>
+      <div class="card card-ok">
+        <strong>Servicios básicos</strong>
+        Vestuarios, duchas, botiquín junto a la entrada y almacén de material. Infraestructura mínima presente.
+      </div>
+      <div class="card card-ok">
+        <strong>Presencia de socorrista</strong>
+        Existe al menos un socorrista asignado, lo que cumple la vigilancia mínima legalmente exigida.
+      </div>
+      <div class="card card-ok">
+        <strong>Carteles de normas básicas</strong>
+        Señalización con prohibiciones elementales (no correr, ducharse antes de entrar…) que ayuda a prevenir conductas de riesgo.
+      </div>
+      <div class="card card-ok">
+        <strong>Aro salvavidas disponible</strong>
+        Existe al menos un aro de rescate visible, lo que indica cierta dotación de material de emergencia.
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 2. RIESGOS DETECTADOS ── -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-num">02</span>
+      <span class="section-icon">⚠️</span>
+      <h3 class="section-title">Riesgos detectados y su peligrosidad real</h3>
+    </div>
+
+    <p class="prose">Cada deficiencia observada no es un simple incumplimiento burocrático: tiene consecuencias directas sobre la seguridad de las personas. A continuación se detalla cada riesgo y por qué importa.</p>
+
+    <div class="risk-block">
+      <div class="risk-block-header">Vigilancia insuficiente</div>
+      <div class="risk-block-body">
+        <ul>
+          <li>Un único socorrista para dos vasos, actividades dirigidas (aquagym) y posible saturación en horas punta.</li>
+          <li>Silla baja sin torre elevada: campo de visión severamente reducido.</li>
+          <li>El vaso infantil no queda completamente en el ángulo de visión del socorrista.</li>
+        </ul>
+        <div class="consequence">⚡ Consecuencia directa: un ahogamiento en el vaso infantil podría no ser detectado a tiempo, con resultados fatales.</div>
+      </div>
+    </div>
+
+    <div class="risk-block">
+      <div class="risk-block-header warn">Señalización deficiente</div>
+      <div class="risk-block-body">
+        <ul>
+          <li>La profundidad no está indicada en todos los puntos del vaso principal (varía entre 1,20 y 2 m).</li>
+          <li>No existen carteles visibles sobre actuación en caso de emergencia.</li>
+          <li>Ausencia de señalización del acceso para vehículos de emergencia.</li>
+        </ul>
+        <div class="consequence" style="color:var(--warn);background:#fdf0e6;border-color:var(--warn);">⚡ Consecuencia directa: un usuario desinformado puede lanzarse en una zona de mayor profundidad o perder tiempo crítico por no saber cómo actuar ante un accidente.</div>
+      </div>
+    </div>
+
+    <div class="risk-block">
+      <div class="risk-block-header">Material de rescate insuficiente</div>
+      <div class="risk-block-body">
+        <ul>
+          <li>Solo un aro salvavidas para toda la instalación.</li>
+          <li>No se observan pértigas de rescate accesibles.</li>
+          <li>Parte del material se encuentra guardado en el almacén, no disponible de inmediato.</li>
+        </ul>
+        <div class="consequence">⚡ Consecuencia directa: en un rescate acuático, cada segundo cuenta. Un equipo inaccesible o insuficiente puede ser la diferencia entre la vida y la muerte.</div>
+      </div>
+    </div>
+
+    <div class="risk-block">
+      <div class="risk-block-header dark">Carencias en primeros auxilios</div>
+      <div class="risk-block-body">
+        <ul>
+          <li>No hay desfibrilador (DESA) en la instalación.</li>
+          <li>No existen protocolos de actuación visibles para el personal ni para usuarios.</li>
+          <li>El acceso de ambulancias no está señalizado, lo que puede retrasar la atención de emergencias.</li>
+        </ul>
+        <div class="consequence" style="color:#444;background:#f5f5f5;border-color:#aaa;">⚡ Consecuencia directa: ante una parada cardiorrespiratoria, la ausencia de DESA y de protocolos claros reduce drásticamente las posibilidades de supervivencia.</div>
+      </div>
+    </div>
+
+    <div class="risk-block">
+      <div class="risk-block-header water">Entorno resbaladizo y saturación de usuarios</div>
+      <div class="risk-block-body">
+        <ul>
+          <li>Zonas del borde mojadas sin pavimento antideslizante.</li>
+          <li>Sombra escasa en la zona de descanso, favoreciendo golpes de calor e insolaciones.</li>
+          <li>Alta presencia simultánea de niños, personas mayores y actividades dirigidas (aquagym): riesgo de sobreocupación y choques.</li>
+        </ul>
+        <div class="consequence" style="color:var(--water);background:var(--water-pale);border-color:var(--water);">⚡ Consecuencia directa: caídas, traumatismos y golpes de calor; la saturación dificulta la vigilancia y aumenta la probabilidad de accidentes.</div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ── 3. QUÉ FALTA ── -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-num">03</span>
+      <span class="section-icon">🛠️</span>
+      <h3 class="section-title">Elementos ausentes obligatorios y recomendables</h3>
+    </div>
+
+    <p class="prose">Más allá de lo que puede mejorarse, hay elementos que directamente <strong>no están</strong> y cuya ausencia representa un incumplimiento de la seguridad básica de la instalación.</p>
+
+    <div class="cards">
+      <div class="card card-risk">
+        <strong>Más aros salvavidas</strong>
+        Deben distribuirse estratégicamente a lo largo del perímetro de ambos vasos, no concentrarse en un único punto.
+      </div>
+      <div class="card card-risk">
+        <strong>Pértigas de rescate</strong>
+        Obligatorias y deben estar accesibles (no guardadas), visibles y próximas al agua.
+      </div>
+      <div class="card card-risk">
+        <strong>Desfibrilador (DESA)</strong>
+        Imprescindible en instalaciones deportivas con alta afluencia. Su ausencia es un riesgo grave ante paradas cardíacas.
+      </div>
+      <div class="card card-warn">
+        <strong>Tabla espinal</strong>
+        Elemento recomendable para la gestión de traumatismos cervicales en rescates acuáticos.
+      </div>
+      <div class="card card-warn">
+        <strong>Señalización de profundidad completa</strong>
+        Indicadores claramente visibles en todo el perímetro del vaso principal, especialmente en los puntos de cambio de cota.
+      </div>
+      <div class="card card-warn">
+        <strong>Protocolos de emergencia visibles</strong>
+        Carteles con pasos a seguir en caso de accidente, tanto para el personal como como información de referencia para usuarios.
+      </div>
+      <div class="card card-blue">
+        <strong>Pavimento antideslizante</strong>
+        En los bordes de ambos vasos y zonas de tránsito húmedo. Reduce caídas, especialmente con niños pequeños.
+      </div>
+      <div class="card card-blue">
+        <strong>Acceso de emergencias señalizado</strong>
+        La entrada para ambulancias debe estar marcada con claridad para no perder tiempo en situaciones críticas.
+      </div>
+      <div class="card card-blue">
+        <strong>Segundo (y tercer) socorrista</strong>
+        No es un lujo: con dos vasos activos y actividades dirigidas simultáneas, un solo vigilante es insuficiente.
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 4. MEJORAS ── -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-num">04</span>
+      <span class="section-icon">🔄</span>
+      <h3 class="section-title">Propuestas de mejora</h3>
+    </div>
+
+    <p class="prose">Las siguientes propuestas son realistas, priorizadas y justificadas. Se ordenan de mayor a menor urgencia para facilitar la toma de decisiones del ayuntamiento antes de la apertura.</p>
+
+    <div class="improve-grid">
+      <div class="improve-item">
+        <h4>👁️ Vigilancia y cobertura</h4>
+        <ul>
+          <li>Incorporar al menos un segundo socorrista, con posición fija en el vaso infantil.</li>
+          <li>Instalar una torre o puesto elevado para ampliar el campo visual.</li>
+          <li>Establecer turnos y rotaciones claras para evitar fatiga visual.</li>
+        </ul>
+      </div>
+      <div class="improve-item">
+        <h4>🛟 Material de rescate</h4>
+        <ul>
+          <li>Añadir mínimo dos aros salvavidas más, distribuidos en puntos estratégicos.</li>
+          <li>Colocar pértigas en soportes visibles junto a cada vaso.</li>
+          <li>Sacar todo el material del almacén y hacerlo accesible al instante.</li>
+        </ul>
+      </div>
+      <div class="improve-item">
+        <h4>🚑 Emergencias y primeros auxilios</h4>
+        <ul>
+          <li>Adquirir e instalar un DESA con señalización luminosa.</li>
+          <li>Publicar protocolos de actuación en carteles plastificados en zonas clave.</li>
+          <li>Señalizar con pintura y cartel el acceso para vehículos de emergencia.</li>
+        </ul>
+      </div>
+      <div class="improve-item">
+        <h4>🪧 Señalización</h4>
+        <ul>
+          <li>Instalar indicadores de profundidad cada 2–3 metros en el vaso principal.</li>
+          <li>Añadir carteles de emergencia (teléfonos, pasos a seguir) en español y, si es localidad turística, en inglés.</li>
+        </ul>
+      </div>
+      <div class="improve-item">
+        <h4>🌿 Entorno y confort</h4>
+        <ul>
+          <li>Aplicar bandas antideslizantes en los bordes de ambos vasos.</li>
+          <li>Instalar sombrillas o pérgolas en la zona de descanso.</li>
+          <li>Establecer un protocolo de secado frecuente en zonas de paso.</li>
+        </ul>
+      </div>
+      <div class="improve-item">
+        <h4>👥 Gestión de usuarios</h4>
+        <ul>
+          <li>Definir aforos máximos por vaso y controlarlos en horas punta.</li>
+          <li>Delimitar físicamente la zona de aquagym para evitar interferencias con bañistas libres.</li>
+          <li>Separar zonas de juego infantil de las de actividades dirigidas.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 5. PERSONAL ── -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-num">05</span>
+      <span class="section-icon">👷</span>
+      <h3 class="section-title">Organización del personal</h3>
+    </div>
+
+    <p class="prose">Este es quizá el punto más crítico del informe. La organización actual del personal <strong>no es adecuada</strong> para la complejidad de esta instalación y el perfil de sus usuarios.</p>
+
+    <div class="personal-box">
+      <div class="personal-col bad">
+        <h4>❌ Situación actual</h4>
+        <ul>
+          <li>Un solo socorrista para ambos vasos.</li>
+          <li>Sin torre elevada: visión limitada.</li>
+          <li>El vaso infantil no está en su campo visual completo.</li>
+          <li>Responsable simultáneo de actividades dirigidas (aquagym).</li>
+          <li>Sin cobertura en caso de emergencia que le obligue a intervenir.</li>
+        </ul>
+      </div>
+      <div class="personal-col good">
+        <h4>✅ Organización recomendada</h4>
+        <ul>
+          <li>Mínimo 2 socorristas en horario normal.</li>
+          <li>3 socorristas en horas punta (mañanas de fin de semana).</li>
+          <li>Uno asignado al vaso grande + actividades dirigidas.</li>
+          <li>Otro dedicado exclusivamente al vaso infantil.</li>
+          <li>Posiciones elevadas y con visión cruzada entre ambos.</li>
+        </ul>
+      </div>
+    </div>
+
+    <p class="prose" style="margin-top:1rem;">Un socorrista que deba atender un rescate en el vaso grande deja el vaso infantil sin vigilancia. Con niños de corta edad, esto es un riesgo inaceptable. La normativa recomienda que ningún vaso quede sin cobertura visual en ningún momento de la jornada.</p>
+  </section>
+
+  <!-- ── CONCLUSIÓN ── -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-num">—</span>
+      <span class="section-icon">📌</span>
+      <h3 class="section-title">Conclusión</h3>
+    </div>
+
+    <div class="conclusion">
+      <h3>Valoración final del técnico</h3>
+      <p>La instalación dispone de una infraestructura base funcional, pero presenta deficiencias serias que impiden garantizar la seguridad de los usuarios con alta afluencia. Abrir en estas condiciones, sin adoptar las medidas correctoras indicadas, supondría asumir riesgos que podrían derivar en accidentes graves o fatales.</p>
+      <p>Se recomienda no proceder a la apertura hasta subsanar, al menos, los puntos críticos: incorporar un segundo socorrista, instalar un DESA, poner a disposición inmediata todo el material de rescate y señalizar la profundidad en todo el vaso principal.</p>
+      <p>Principales puntos críticos identificados:</p>
+      <div class="conclusion-pills">
+        <span class="pill">Vigilancia insuficiente</span>
+        <span class="pill">Sin DESA</span>
+        <span class="pill">Material de rescate inaccesible</span>
+        <span class="pill">Señalización incompleta</span>
+        <span class="pill">Entorno resbaladizo</span>
+        <span class="pill">Sin protocolos visibles</span>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  Informe elaborado por técnico en actividades acuáticas &nbsp;·&nbsp; Evaluación previa apertura temporada de verano
+</footer>
+
+</body>
+</html>
