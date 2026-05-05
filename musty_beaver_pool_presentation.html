@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Musty Beaver Swimming Pool – Grand Opening</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,600;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --blue-deep: #0a1628;
+    --blue-mid: #0d3b6e;
+    --blue-bright: #0ea5e9;
+    --blue-light: #7dd3fc;
+    --aqua: #06b6d4;
+    --white: #f0f8ff;
+    --gold: #fbbf24;
+    --slide-w: 100vw;
+    --slide-h: 100vh;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--blue-deep);
+    color: var(--white);
+    overflow: hidden;
+    cursor: default;
+    user-select: none;
+  }
+
+  /* ── WAVE BG ── */
+  .wave-bg {
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    overflow: hidden;
+  }
+  .wave-bg svg { position: absolute; bottom: -10px; width: 200%; opacity: 0.08; animation: waveMove 12s linear infinite; }
+  .wave-bg svg:nth-child(2) { bottom: 30px; opacity: 0.05; animation-duration: 18s; animation-direction: reverse; }
+  @keyframes waveMove { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+
+  /* ── BUBBLES ── */
+  .bubbles { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+  .bubble {
+    position: absolute; border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, rgba(14,165,233,0.4), transparent 70%);
+    border: 1px solid rgba(14,165,233,0.2);
+    animation: rise linear infinite;
+  }
+  @keyframes rise {
+    0%   { transform: translateY(110vh) scale(0.8); opacity: 0; }
+    10%  { opacity: 1; }
+    90%  { opacity: 0.6; }
+    100% { transform: translateY(-20vh) scale(1.1); opacity: 0; }
+  }
+
+  /* ── SLIDESHOW ── */
+  .slides-wrapper { position: relative; z-index: 10; width: 100vw; height: 100vh; overflow: hidden; }
+  .slide {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    padding: 60px 80px;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.7s ease, transform 0.7s ease;
+    transform: translateY(30px);
+  }
+  .slide.active {
+    opacity: 1; pointer-events: all; transform: translateY(0);
+  }
+
+  /* ── TYPOGRAPHY ── */
+  .slide-label {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(11px, 1.1vw, 14px);
+    letter-spacing: 0.35em;
+    color: var(--aqua);
+    margin-bottom: 18px;
+    text-transform: uppercase;
+  }
+  h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(60px, 9vw, 130px);
+    line-height: 0.9;
+    letter-spacing: 0.02em;
+    color: var(--white);
+    text-align: center;
+  }
+  h1 span { color: var(--blue-bright); }
+  h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(36px, 5vw, 72px);
+    letter-spacing: 0.04em;
+    color: var(--white);
+    margin-bottom: 28px;
+    text-align: center;
+  }
+  h2 span { color: var(--gold); }
+  .subtitle {
+    font-size: clamp(14px, 1.6vw, 20px);
+    font-weight: 300;
+    color: var(--blue-light);
+    text-align: center;
+    max-width: 680px;
+    line-height: 1.7;
+    margin-bottom: 12px;
+  }
+  .body-text {
+    font-size: clamp(13px, 1.4vw, 18px);
+    font-weight: 300;
+    color: var(--blue-light);
+    text-align: center;
+    max-width: 780px;
+    line-height: 1.8;
+  }
+
+  /* ── DIVIDER ── */
+  .divider {
+    width: 80px; height: 3px;
+    background: linear-gradient(90deg, var(--blue-bright), var(--aqua));
+    border-radius: 2px;
+    margin: 24px auto;
+  }
+
+  /* ── CARDS GRID ── */
+  .cards {
+    display: grid;
+    gap: 20px;
+    width: 100%;
+    max-width: 1100px;
+    margin-top: 10px;
+  }
+  .cards.col2 { grid-template-columns: 1fr 1fr; }
+  .cards.col3 { grid-template-columns: 1fr 1fr 1fr; }
+  .cards.col4 { grid-template-columns: repeat(4,1fr); }
+
+  .card {
+    background: rgba(13,59,110,0.45);
+    border: 1px solid rgba(14,165,233,0.25);
+    border-radius: 16px;
+    padding: 28px 24px;
+    backdrop-filter: blur(10px);
+    transition: border-color 0.3s, transform 0.3s;
+    text-align: center;
+  }
+  .card:hover { border-color: var(--blue-bright); transform: translateY(-4px); }
+  .card-icon { font-size: 36px; margin-bottom: 12px; display: block; }
+  .card-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(18px, 2vw, 26px);
+    letter-spacing: 0.06em;
+    color: var(--white);
+    margin-bottom: 8px;
+  }
+  .card-body {
+    font-size: clamp(11px, 1.1vw, 14px);
+    font-weight: 300;
+    color: var(--blue-light);
+    line-height: 1.6;
+  }
+  .card-accent { color: var(--gold); font-weight: 600; }
+
+  /* ── SCHEDULE TABLE ── */
+  .sched-table {
+    width: 100%; max-width: 900px;
+    border-collapse: separate; border-spacing: 0 10px;
+    margin-top: 10px;
+  }
+  .sched-table th {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(14px, 1.5vw, 20px);
+    letter-spacing: 0.1em;
+    color: var(--aqua);
+    padding: 0 20px 8px;
+    text-align: left;
+  }
+  .sched-table td {
+    padding: 14px 20px;
+    font-size: clamp(12px, 1.2vw, 15px);
+    font-weight: 300;
+    color: var(--blue-light);
+    background: rgba(13,59,110,0.4);
+    border-top: 1px solid rgba(14,165,233,0.12);
+    border-bottom: 1px solid rgba(14,165,233,0.12);
+  }
+  .sched-table tr td:first-child { border-left: 1px solid rgba(14,165,233,0.12); border-radius: 10px 0 0 10px; }
+  .sched-table tr td:last-child  { border-right: 1px solid rgba(14,165,233,0.12); border-radius: 0 10px 10px 0; }
+  .sched-table tr:hover td { background: rgba(14,165,233,0.12); }
+  .tag {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  .tag.blue  { background: rgba(14,165,233,0.2); color: var(--blue-bright); }
+  .tag.gold  { background: rgba(251,191,36,0.2);  color: var(--gold); }
+  .tag.aqua  { background: rgba(6,182,212,0.2);   color: var(--aqua); }
+  .tag.green { background: rgba(34,197,94,0.2);   color: #4ade80; }
+
+  /* ── BENEFITS LIST ── */
+  .benefit-row {
+    display: flex; align-items: flex-start; gap: 18px;
+    text-align: left; max-width: 800px; margin: 10px 0;
+  }
+  .benefit-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 48px; line-height: 1;
+    color: rgba(14,165,233,0.3);
+    min-width: 54px;
+  }
+  .benefit-text strong {
+    display: block;
+    font-size: clamp(14px, 1.5vw, 18px);
+    font-weight: 600;
+    color: var(--white);
+    margin-bottom: 4px;
+  }
+  .benefit-text span {
+    font-size: clamp(12px, 1.1vw, 14px);
+    font-weight: 300;
+    color: var(--blue-light);
+    line-height: 1.6;
+  }
+
+  /* ── PRICING ── */
+  .price-box {
+    background: rgba(13,59,110,0.5);
+    border: 1px solid rgba(14,165,233,0.3);
+    border-radius: 20px;
+    padding: 32px 28px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s;
+  }
+  .price-box:hover { transform: translateY(-6px); }
+  .price-box.featured { border-color: var(--gold); }
+  .price-box.featured::before {
+    content: '★ MOST POPULAR';
+    position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+    background: var(--gold); color: var(--blue-deep);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 12px; letter-spacing: 0.15em;
+    padding: 4px 20px; border-radius: 0 0 12px 12px;
+  }
+  .price-label { font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--aqua); margin-bottom: 10px; }
+  .price-amount {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(42px, 5vw, 64px);
+    color: var(--white); line-height: 1;
+  }
+  .price-amount sup { font-size: 0.45em; vertical-align: super; color: var(--blue-light); }
+  .price-period { font-size: 13px; color: var(--blue-light); margin-bottom: 16px; }
+  .price-features { font-size: 12px; font-weight: 300; color: var(--blue-light); line-height: 2; }
+
+  /* ── CTA SLIDE ── */
+  .cta-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--blue-bright), var(--aqua));
+    color: var(--blue-deep);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(16px, 2vw, 24px);
+    letter-spacing: 0.15em;
+    padding: 14px 42px;
+    border-radius: 50px;
+    margin-top: 20px;
+    box-shadow: 0 0 40px rgba(14,165,233,0.4);
+    animation: pulse 2.5s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%,100% { box-shadow: 0 0 30px rgba(14,165,233,0.4); }
+    50%      { box-shadow: 0 0 60px rgba(14,165,233,0.7); }
+  }
+  .big-number {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(80px, 12vw, 160px);
+    line-height: 1;
+    background: linear-gradient(135deg, var(--blue-bright), var(--aqua));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* ── NAV ── */
+  .nav {
+    position: fixed; bottom: 36px; left: 50%; transform: translateX(-50%);
+    z-index: 100; display: flex; align-items: center; gap: 16px;
+  }
+  .nav-btn {
+    background: rgba(13,59,110,0.8);
+    border: 1px solid rgba(14,165,233,0.4);
+    color: var(--white); font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px; letter-spacing: 0.1em;
+    padding: 12px 28px; border-radius: 50px; cursor: pointer;
+    backdrop-filter: blur(8px);
+    transition: background 0.2s, border-color 0.2s;
+  }
+  .nav-btn:hover { background: rgba(14,165,233,0.25); border-color: var(--blue-bright); }
+
+  .dots { display: flex; gap: 8px; }
+  .dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: rgba(14,165,233,0.25);
+    cursor: pointer; transition: background 0.3s, transform 0.3s;
+  }
+  .dot.active { background: var(--blue-bright); transform: scale(1.4); }
+
+  /* ── SLIDE COUNT ── */
+  .slide-count {
+    position: fixed; top: 32px; right: 40px; z-index: 100;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 16px; letter-spacing: 0.2em;
+    color: rgba(125,211,252,0.5);
+  }
+
+  /* ── LOGO TOP LEFT ── */
+  .logo-fixed {
+    position: fixed; top: 28px; left: 40px; z-index: 100;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px; letter-spacing: 0.1em;
+    color: rgba(14,165,233,0.6);
+  }
+
+  /* ── PROGRESS BAR ── */
+  .progress-bar {
+    position: fixed; top: 0; left: 0; height: 3px;
+    background: linear-gradient(90deg, var(--blue-bright), var(--aqua));
+    z-index: 200; transition: width 0.5s ease;
+    box-shadow: 0 0 12px var(--blue-bright);
+  }
+
+  /* ── ANIMATIONS ── */
+  .fade-in-up { animation: fadeInUp 0.7s ease both; }
+  @keyframes fadeInUp {
+    from { opacity:0; transform:translateY(20px); }
+    to   { opacity:1; transform:translateY(0); }
+  }
+  .delay-1 { animation-delay: 0.15s; }
+  .delay-2 { animation-delay: 0.30s; }
+  .delay-3 { animation-delay: 0.45s; }
+  .delay-4 { animation-delay: 0.60s; }
+
+  /* keyboard hint */
+  .key-hint {
+    position: fixed; top: 32px; left: 50%; transform: translateX(-50%);
+    z-index: 100; font-size: 11px; letter-spacing: 0.15em;
+    color: rgba(125,211,252,0.35); text-transform: uppercase;
+  }
+</style>
+</head>
+<body>
+
+<!-- WAVE BG -->
+<div class="wave-bg">
+  <svg viewBox="0 0 1440 120" xmlns="http://www.w3.org/2000/svg">
+    <path fill="var(--blue-bright)" d="M0,60 C360,120 720,0 1080,60 C1260,90 1380,30 1440,60 L1440,120 L0,120Z"/>
+  </svg>
+  <svg viewBox="0 0 1440 120" xmlns="http://www.w3.org/2000/svg">
+    <path fill="var(--aqua)" d="M0,80 C240,20 480,100 720,60 C960,20 1200,100 1440,60 L1440,120 L0,120Z"/>
+  </svg>
+</div>
+
+<!-- BUBBLES -->
+<div class="bubbles" id="bubbles"></div>
+
+<!-- PROGRESS -->
+<div class="progress-bar" id="progress"></div>
+
+<!-- LOGO -->
+<div class="logo-fixed">🦫 MUSTY BEAVER</div>
+
+<!-- SLIDE COUNT -->
+<div class="slide-count" id="slideCount">1 / 8</div>
+
+<!-- KEY HINT -->
+<div class="key-hint">← → or click arrows to navigate</div>
+
+<!-- ═══════════════════════════════════════════
+     SLIDES
+════════════════════════════════════════════ -->
+<div class="slides-wrapper" id="slidesWrapper">
+
+  <!-- SLIDE 1 · COVER -->
+  <div class="slide active" id="slide-0">
+    <div class="slide-label fade-in-up">Your neighbourhood sports centre presents</div>
+    <h1 class="fade-in-up delay-1">MUSTY<br><span>BEAVER</span><br>SWIMMING POOL</h1>
+    <div class="divider fade-in-up delay-2"></div>
+    <p class="subtitle fade-in-up delay-3">Welcome to our Open Day — we're thrilled to have you here.<br>Let us show you everything our brand-new pool has to offer.</p>
+    <div class="cta-badge fade-in-up delay-4">DIVE IN &nbsp;🏊‍♂️</div>
+  </div>
+
+  <!-- SLIDE 2 · ABOUT -->
+  <div class="slide" id="slide-1">
+    <div class="slide-label">About us</div>
+    <h2>A <span>New Era</span> of Swimming</h2>
+    <div class="divider"></div>
+    <p class="body-text">The Musty Beaver Swimming Pool is the newest addition to our neighbourhood sports centre. Our state-of-the-art facility has been designed with <strong style="color:var(--white)">every member of the community in mind</strong> — from toddlers taking their first splash to seniors keeping active.</p>
+    <br>
+    <div class="cards col3" style="margin-top:28px">
+      <div class="card fade-in-up">
+        <span class="card-icon">🏊</span>
+        <div class="card-title">25-metre Pool</div>
+        <div class="card-body">Olympic-standard lanes, temperature-controlled water at <span class="card-accent">28°C</span> year-round.</div>
+      </div>
+      <div class="card fade-in-up delay-1">
+        <span class="card-icon">🚿</span>
+        <div class="card-title">Modern Facilities</div>
+        <div class="card-body">Spacious changing rooms, lockers, showers, and a <span class="card-accent">poolside lounge</span>.</div>
+      </div>
+      <div class="card fade-in-up delay-2">
+        <span class="card-icon">♿</span>
+        <div class="card-title">Fully Accessible</div>
+        <div class="card-body">Ramps, hoists, and adapted programmes for all abilities and needs.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 3 · ACTIVITIES -->
+  <div class="slide" id="slide-2">
+    <div class="slide-label">What we offer</div>
+    <h2>Our <span>Activities</span></h2>
+    <div class="divider"></div>
+    <div class="cards col4">
+      <div class="card fade-in-up">
+        <span class="card-icon">🌊</span>
+        <div class="card-title">Free Swimming</div>
+        <div class="card-body">Open lanes for everyone. Swim at your own pace, whenever you like during open hours.</div>
+      </div>
+      <div class="card fade-in-up delay-1">
+        <span class="card-icon">🧒</span>
+        <div class="card-title">Swimming Courses</div>
+        <div class="card-body">Structured lessons from <span class="card-accent">4 years old</span> upwards. Grouped by age and ability level.</div>
+      </div>
+      <div class="card fade-in-up delay-2">
+        <span class="card-icon">💪</span>
+        <div class="card-title">Aqua Fitness</div>
+        <div class="card-body">Aquagym, Aqua Zumba, and Water Pilates. Fun, low-impact, and highly effective.</div>
+      </div>
+      <div class="card fade-in-up delay-3">
+        <span class="card-icon">🏆</span>
+        <div class="card-title">Competitive Training</div>
+        <div class="card-body">Coached sessions for competitive swimmers looking to improve technique and speed.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 4 · COURSES BY AGE -->
+  <div class="slide" id="slide-3">
+    <div class="slide-label">Courses by age group</div>
+    <h2>Something for <span>Everyone</span></h2>
+    <div class="divider"></div>
+    <table class="sched-table">
+      <thead>
+        <tr>
+          <th>Group</th>
+          <th>Age</th>
+          <th>Programme</th>
+          <th>Level</th>
+          <th>Duration</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>🍼 Little Dippers</td>
+          <td>4 – 6 yrs</td>
+          <td>Water confidence, basic floats</td>
+          <td><span class="tag blue">Beginner</span></td>
+          <td>45 min</td>
+        </tr>
+        <tr>
+          <td>🐠 Junior Swimmers</td>
+          <td>7 – 12 yrs</td>
+          <td>All 4 strokes, starts & turns</td>
+          <td><span class="tag aqua">Intermediate</span></td>
+          <td>45 min</td>
+        </tr>
+        <tr>
+          <td>⚡ Teen Squad</td>
+          <td>13 – 17 yrs</td>
+          <td>Technique, endurance, competition prep</td>
+          <td><span class="tag gold">Advanced</span></td>
+          <td>60 min</td>
+        </tr>
+        <tr>
+          <td>🧑 Adults</td>
+          <td>18 – 59 yrs</td>
+          <td>Learn to swim or improve fitness</td>
+          <td><span class="tag blue">All levels</span></td>
+          <td>50 min</td>
+        </tr>
+        <tr>
+          <td>🧓 Silver Swimmers</td>
+          <td>60+ yrs</td>
+          <td>Gentle swimming + Aquagym</td>
+          <td><span class="tag green">Adapted</span></td>
+          <td>45 min</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- SLIDE 5 · SCHEDULES -->
+  <div class="slide" id="slide-4">
+    <div class="slide-label">Opening hours & timetable</div>
+    <h2>Pool <span>Schedule</span></h2>
+    <div class="divider"></div>
+    <div class="cards col2" style="max-width:860px">
+      <div class="card fade-in-up">
+        <span class="card-icon">🌅</span>
+        <div class="card-title">Morning Session</div>
+        <div class="card-body" style="font-size:14px; line-height:2">
+          <strong style="color:var(--gold); font-size:20px">8:00 AM – 12:00 PM</strong><br>
+          Free swimming · 8:00–10:00<br>
+          Children's courses · 9:00–11:00<br>
+          Aquagym · 10:00–11:00<br>
+          Senior Silver Swim · 11:00–12:00
+        </div>
+      </div>
+      <div class="card fade-in-up delay-1">
+        <span class="card-icon">🌆</span>
+        <div class="card-title">Afternoon Session</div>
+        <div class="card-body" style="font-size:14px; line-height:2">
+          <strong style="color:var(--gold); font-size:20px">3:00 PM – 8:00 PM</strong><br>
+          Teen Squad training · 3:00–4:30<br>
+          Adult courses · 4:30–6:00<br>
+          Aqua Zumba · 5:00–6:00<br>
+          Free swimming · 6:00–8:00
+        </div>
+      </div>
+    </div>
+    <p class="body-text" style="margin-top:20px; font-size:13px; color:rgba(125,211,252,0.6)">
+      📅 Open Monday to Saturday &nbsp;·&nbsp; Sunday: 9:00 AM – 1:00 PM (free swim only)
+    </p>
+  </div>
+
+  <!-- SLIDE 6 · BENEFITS -->
+  <div class="slide" id="slide-5">
+    <div class="slide-label">Why swimming?</div>
+    <h2>The <span>Benefits</span></h2>
+    <div class="divider"></div>
+    <div style="display:flex; flex-direction:column; gap:6px; align-items:center">
+      <div class="benefit-row fade-in-up">
+        <div class="benefit-num">01</div>
+        <div class="benefit-text">
+          <strong>Full-body workout, zero impact</strong>
+          <span>Swimming works every major muscle group while protecting your joints — ideal for all ages and fitness levels.</span>
+        </div>
+      </div>
+      <div class="benefit-row fade-in-up delay-1">
+        <div class="benefit-num">02</div>
+        <div class="benefit-text">
+          <strong>Cardiovascular & respiratory health</strong>
+          <span>Regular swimming strengthens your heart, improves lung capacity, and reduces the risk of chronic disease.</span>
+        </div>
+      </div>
+      <div class="benefit-row fade-in-up delay-2">
+        <div class="benefit-num">03</div>
+        <div class="benefit-text">
+          <strong>Mental wellbeing</strong>
+          <span>Water has a proven calming effect. Swimming reduces stress, anxiety, and helps you sleep better.</span>
+        </div>
+      </div>
+      <div class="benefit-row fade-in-up delay-3">
+        <div class="benefit-num">04</div>
+        <div class="benefit-text">
+          <strong>Community & social connection</strong>
+          <span>Group classes and shared sessions create friendships and a sense of belonging right in your neighbourhood.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 7 · MEMBERSHIP -->
+  <div class="slide" id="slide-6">
+    <div class="slide-label">Membership plans</div>
+    <h2>Join <span>Today</span></h2>
+    <div class="divider"></div>
+    <div class="cards col3" style="max-width:900px">
+      <div class="price-box fade-in-up">
+        <div class="price-label">🌊 Basic</div>
+        <div class="price-amount"><sup>€</sup>25</div>
+        <div class="price-period">per month</div>
+        <div class="price-features">
+          Free swimming access<br>
+          Morning sessions only<br>
+          Locker included<br>
+          —
+        </div>
+      </div>
+      <div class="price-box featured fade-in-up delay-1">
+        <div class="price-label">⭐ Full Access</div>
+        <div class="price-amount"><sup>€</sup>42</div>
+        <div class="price-period">per month</div>
+        <div class="price-features">
+          All sessions & both slots<br>
+          1 group course included<br>
+          Guest pass / month<br>
+          Priority lane booking
+        </div>
+      </div>
+      <div class="price-box fade-in-up delay-2">
+        <div class="price-label">👨‍👩‍👧 Family</div>
+        <div class="price-amount"><sup>€</sup>70</div>
+        <div class="price-period">per month</div>
+        <div class="price-features">
+          Up to 4 members<br>
+          All sessions included<br>
+          2 courses included<br>
+          10% café discount
+        </div>
+      </div>
+    </div>
+    <p class="body-text" style="margin-top:18px; font-size:13px; color:rgba(125,211,252,0.6)">
+      🎉 Open Day Special: Sign up today and get your <strong style="color:var(--gold)">first month FREE</strong>
+    </p>
+  </div>
+
+  <!-- SLIDE 8 · CTA CLOSE -->
+  <div class="slide" id="slide-7">
+    <div class="slide-label">Thank you for coming</div>
+    <div class="big-number fade-in-up">DIVE<br>IN!</div>
+    <div class="divider fade-in-up delay-1"></div>
+    <p class="subtitle fade-in-up delay-2">The water is warm, the lanes are open, and the community is waiting.<br>Sign up at the welcome desk before you leave today.</p>
+    <div style="display:flex; gap:28px; margin-top:28px" class="fade-in-up delay-3">
+      <div style="text-align:center">
+        <div style="font-size:28px">📍</div>
+        <div style="font-size:13px; color:var(--blue-light); margin-top:6px">Neighbourhood<br>Sports Centre</div>
+      </div>
+      <div style="text-align:center">
+        <div style="font-size:28px">📞</div>
+        <div style="font-size:13px; color:var(--blue-light); margin-top:6px">Reception<br>always open</div>
+      </div>
+      <div style="text-align:center">
+        <div style="font-size:28px">🌐</div>
+        <div style="font-size:13px; color:var(--blue-light); margin-top:6px">mustybeaverpool<br>.es</div>
+      </div>
+    </div>
+    <div class="cta-badge fade-in-up delay-4">🦫 MUSTY BEAVER SWIMMING POOL</div>
+  </div>
+
+</div><!-- /slides-wrapper -->
+
+<!-- NAV -->
+<nav class="nav">
+  <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)">←</button>
+  <div class="dots" id="dots"></div>
+  <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">→</button>
+</nav>
+
+<script>
+  const TOTAL = 8;
+  let current = 0;
+
+  // ── Bubbles ──
+  const bubbleContainer = document.getElementById('bubbles');
+  for (let i = 0; i < 18; i++) {
+    const b = document.createElement('div');
+    b.className = 'bubble';
+    const size = Math.random() * 40 + 10;
+    b.style.cssText = `
+      width:${size}px; height:${size}px;
+      left:${Math.random()*100}%;
+      animation-duration:${Math.random()*12+8}s;
+      animation-delay:${Math.random()*10}s;
+    `;
+    bubbleContainer.appendChild(b);
+  }
+
+  // ── Dots ──
+  const dotsEl = document.getElementById('dots');
+  for (let i = 0; i < TOTAL; i++) {
+    const d = document.createElement('div');
+    d.className = 'dot' + (i === 0 ? ' active' : '');
+    d.onclick = () => goTo(i);
+    dotsEl.appendChild(d);
+  }
+
+  function goTo(n) {
+    document.getElementById(`slide-${current}`).classList.remove('active');
+    dotsEl.children[current].classList.remove('active');
+    current = (n + TOTAL) % TOTAL;
+    document.getElementById(`slide-${current}`).classList.add('active');
+    dotsEl.children[current].classList.add('active');
+    document.getElementById('slideCount').textContent = `${current+1} / ${TOTAL}`;
+    document.getElementById('progress').style.width = `${((current+1)/TOTAL)*100}%`;
+  }
+
+  function changeSlide(dir) { goTo(current + dir); }
+
+  // Keyboard
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === ' ') changeSlide(1);
+    if (e.key === 'ArrowLeft') changeSlide(-1);
+  });
+
+  // Init progress
+  document.getElementById('progress').style.width = `${(1/TOTAL)*100}%`;
+</script>
+</body>
+</html>
