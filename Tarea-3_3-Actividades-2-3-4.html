@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tarea 3.3 — Plan de Transformación Digital</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Libre+Franklin:wght@300;400;500;600&family=Libre+Franklin:ital,wght@1,300&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg:      #faf7f2;
+      --cream:   #f2ece0;
+      --paper:   #ede5d4;
+      --ink:     #1c1710;
+      --ink2:    #3d3626;
+      --muted:   #8c7f6a;
+      --border:  #d5c9b2;
+      --rust:    #c44b2b;
+      --rust2:   #e8633f;
+      --sage:    #4a6b52;
+      --sage2:   #6b9474;
+      --gold:    #b8860b;
+      --gold2:   #d4a520;
+      --red-vf:  #c0392b;
+      --green-vf:#2d6a3f;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'Libre Franklin', sans-serif;
+      font-size: 15px;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ── DECORATIVE TEXTURE ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        radial-gradient(circle at 20% 20%, rgba(196,75,43,.04) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(74,107,82,.04) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── HEADER ── */
+    header {
+      position: relative;
+      background: var(--ink);
+      color: var(--bg);
+      padding: 64px 56px 52px;
+      overflow: hidden;
+    }
+    header::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 5px;
+      background: linear-gradient(90deg, var(--rust) 0%, var(--gold2) 50%, var(--sage) 100%);
+    }
+    header::after {
+      content: '3.3';
+      position: absolute;
+      right: 40px;
+      bottom: -20px;
+      font-family: 'Playfair Display', serif;
+      font-size: 180px;
+      font-weight: 900;
+      color: rgba(255,255,255,.03);
+      line-height: 1;
+      pointer-events: none;
+      user-select: none;
+    }
+    .header-inner { max-width: 1080px; margin: 0 auto; position: relative; z-index: 1; }
+    .eyebrow {
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--gold2);
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+    header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(28px, 4.5vw, 54px);
+      font-weight: 900;
+      line-height: 1.1;
+      color: var(--bg);
+    }
+    header h1 em { color: var(--rust2); font-style: normal; }
+    header .sub {
+      margin-top: 14px;
+      color: rgba(250,247,242,.5);
+      font-size: 13.5px;
+      font-style: italic;
+      font-family: 'Libre Franklin', sans-serif;
+    }
+    .nav-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 36px;
+    }
+    .nav-chip {
+      padding: 7px 18px;
+      border: 1px solid rgba(255,255,255,.15);
+      border-radius: 2px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: rgba(255,255,255,.55);
+      transition: all .25s;
+    }
+    .nav-chip:hover {
+      border-color: var(--rust2);
+      color: var(--rust2);
+      background: rgba(196,75,43,.08);
+    }
+
+    /* ── LAYOUT ── */
+    main { max-width: 1080px; margin: 0 auto; padding: 0 56px 100px; position: relative; z-index: 1; }
+
+    section.act {
+      padding: 80px 0;
+      border-bottom: 1px solid var(--border);
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity .7s ease, transform .7s ease;
+    }
+    section.act.visible { opacity: 1; transform: translateY(0); }
+
+    .act-header {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 0 28px;
+      align-items: start;
+      margin-bottom: 48px;
+    }
+    .act-num-block {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0;
+    }
+    .act-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 64px;
+      font-weight: 900;
+      line-height: 1;
+      color: var(--rust);
+    }
+    .act-num-line {
+      width: 2px;
+      height: 40px;
+      background: linear-gradient(to bottom, var(--rust), transparent);
+      margin-top: 6px;
+    }
+    .act-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 24px;
+      font-weight: 700;
+      line-height: 1.25;
+      color: var(--ink);
+      padding-top: 12px;
+    }
+    .act-title .tag {
+      display: inline-block;
+      background: var(--rust);
+      color: white;
+      font-family: 'Libre Franklin', sans-serif;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 2px;
+      vertical-align: middle;
+      margin-left: 8px;
+    }
+    .act-desc { color: var(--muted); font-size: 13.5px; margin-top: 6px; font-style: italic; }
+
+    /* ── BUBBLE MAP ── */
+    .bubble-wrap {
+      background: var(--cream);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    #bubbleMap { width: 100%; display: block; }
+
+    .bubble-info {
+      padding: 22px 28px;
+      border-top: 1px solid var(--border);
+      min-height: 80px;
+      background: var(--paper);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      transition: all .3s;
+    }
+    .bi-icon { font-size: 26px; flex-shrink: 0; }
+    .bubble-info h4 {
+      font-family: 'Playfair Display', serif;
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--rust);
+    }
+    .bubble-info p { font-size: 13px; color: var(--ink2); margin-top: 2px; }
+    .bi-default { color: var(--muted); font-size: 13px; font-style: italic; }
+    .bubble-hint {
+      text-align: center;
+      font-size: 12px;
+      color: var(--muted);
+      padding: 10px;
+      font-style: italic;
+      border-top: 1px solid var(--border);
+      background: var(--cream);
+    }
+
+    /* ── TRUE / FALSE ── */
+    .tf-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+    .tf-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+      box-shadow: 0 2px 12px rgba(28,23,16,.05);
+      transition: transform .2s, box-shadow .2s;
+    }
+    .tf-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 24px rgba(28,23,16,.1);
+    }
+
+    .tf-card-top {
+      padding: 22px 24px 18px;
+    }
+    .tf-letter {
+      font-family: 'Playfair Display', serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+    .tf-statement {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--ink);
+      line-height: 1.55;
+      font-style: italic;
+    }
+
+    .tf-verdict {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 24px;
+      border-top: 1px solid var(--border);
+    }
+    .tf-verdict.verdadero { background: #f0faf3; border-top-color: #b8dfca; }
+    .tf-verdict.falso     { background: #fdf2f1; border-top-color: #f0c4bf; }
+
+    .vf-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 14px;
+      border-radius: 2px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      flex-shrink: 0;
+    }
+    .vf-badge.v { background: var(--green-vf); color: white; }
+    .vf-badge.f { background: var(--red-vf);   color: white; }
+    .vf-badge .vf-icon { font-size: 12px; }
+
+    .tf-explain {
+      font-size: 13px;
+      color: var(--ink2);
+      line-height: 1.55;
+    }
+    .tf-explain strong { color: var(--ink); }
+
+    /* ── ACTIVITY 4 ── */
+    .ai-prompt-box {
+      background: var(--ink);
+      color: var(--bg);
+      border-radius: 4px;
+      padding: 28px 32px;
+      margin-bottom: 36px;
+      position: relative;
+      overflow: hidden;
+    }
+    .ai-prompt-box::before {
+      content: '';
+      position: absolute;
+      inset: 0 0 auto 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--rust) 0%, var(--gold2) 100%);
+    }
+    .ai-prompt-box .prompt-label {
+      font-size: 10px;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--gold2);
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+    .ai-prompt-box p {
+      font-size: 14px;
+      color: rgba(250,247,242,.75);
+      font-style: italic;
+      line-height: 1.6;
+    }
+
+    .plan-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 16px;
+      margin-bottom: 36px;
+    }
+    .plan-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 22px 20px;
+      box-shadow: 0 2px 8px rgba(28,23,16,.04);
+      transition: transform .2s;
+    }
+    .plan-card:hover { transform: translateY(-2px); }
+    .pc-icon { font-size: 26px; margin-bottom: 10px; }
+    .plan-card h4 {
+      font-family: 'Playfair Display', serif;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 10px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+    .plan-card ul { padding-left: 16px; }
+    .plan-card li { font-size: 13px; color: var(--ink2); margin-bottom: 5px; }
+    .plan-card p { font-size: 13px; color: var(--ink2); margin-bottom: 5px; }
+
+    .analysis-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+    .a-card {
+      border-radius: 4px;
+      padding: 24px 22px;
+      border: 1px solid;
+    }
+    .a-card.str { background: #f2f9f4; border-color: #b8dfca; }
+    .a-card.lim { background: #fdf8f0; border-color: #e8d4a0; }
+    .a-card.rec { background: #f2f4f9; border-color: #b8c4df; }
+    .ac-head {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .ac-icon { font-size: 20px; }
+    .a-card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--ink);
+    }
+    .a-card ul { padding-left: 18px; }
+    .a-card li { font-size: 13px; color: var(--ink2); margin-bottom: 6px; }
+
+    .conclusion-box {
+      background: var(--ink);
+      color: var(--bg);
+      border-radius: 4px;
+      padding: 28px 32px;
+      font-size: 14.5px;
+      line-height: 1.75;
+      position: relative;
+      overflow: hidden;
+    }
+    .conclusion-box::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 4px;
+      background: linear-gradient(to bottom, var(--rust), var(--gold2));
+    }
+    .conclusion-box strong { color: var(--gold2); }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center;
+      padding: 32px;
+      font-size: 12px;
+      color: var(--muted);
+      letter-spacing: 1px;
+      border-top: 1px solid var(--border);
+    }
+
+    @media (max-width: 680px) {
+      header { padding: 40px 24px 36px; }
+      main { padding: 0 24px 60px; }
+      .act-header { grid-template-columns: 1fr; }
+      .act-num-block { flex-direction: row; gap: 12px; }
+      .act-num-line { width: 30px; height: 2px; margin-top: 0; align-self: center; background: linear-gradient(to right, var(--rust), transparent); }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="eyebrow">Tarea 3.3 · Transformación Digital</div>
+    <h1>El Plan de <em>Transformación</em><br>Digital</h1>
+    <p class="sub">Análisis, reflexión y práctica — Bodyfitness Sport Archena</p>
+    <nav class="nav-row">
+      <a href="#act2" class="nav-chip">② Mapa de Burbuja</a>
+      <a href="#act3" class="nav-chip">③ Verdadero o Falso</a>
+      <a href="#act4" class="nav-chip">④ IA y Plan Digital</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <!-- ════════════════════════════════════════════
+       ACTIVIDAD 2 — MAPA DE BURBUJA
+  ════════════════════════════════════════════ -->
+  <section class="act" id="act2">
+    <div class="act-header">
+      <div class="act-num-block">
+        <div class="act-num">02</div>
+        <div class="act-num-line"></div>
+      </div>
+      <div>
+        <h2 class="act-title">Mapa de Burbuja <span class="tag">Interactivo</span></h2>
+        <p class="act-desc">Objetivos estratégicos del Plan de Transformación Digital de Bodyfitness Sport Archena. Haz clic en cada burbuja para explorar el detalle de cada objetivo.</p>
+      </div>
+    </div>
+
+    <div class="bubble-wrap">
+      <svg id="bubbleMap" viewBox="0 0 800 430" xmlns="http://www.w3.org/2000/svg" style="cursor:pointer">
+        <defs>
+          <radialGradient id="bgGrad" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#ede5d4"/>
+            <stop offset="100%" stop-color="#e8dcc8"/>
+          </radialGradient>
+          <!-- Satellite gradients -->
+          <radialGradient id="g0" cx="40%" cy="35%" r="60%">
+            <stop offset="0%" stop-color="#e8633f"/>
+            <stop offset="100%" stop-color="#c44b2b"/>
+          </radialGradient>
+          <radialGradient id="g1" cx="40%" cy="35%" r="60%">
+            <stop offset="0%" stop-color="#6b9474"/>
+            <stop offset="100%" stop-color="#4a6b52"/>
+          </radialGradient>
+          <radialGradient id="g2" cx="40%" cy="35%" r="60%">
+            <stop offset="0%" stop-color="#d4a520"/>
+            <stop offset="100%" stop-color="#b8860b"/>
+          </radialGradient>
+          <radialGradient id="g3" cx="40%" cy="35%" r="60%">
+            <stop offset="0%" stop-color="#c44b2b"/>
+            <stop offset="100%" stop-color="#8c3318"/>
+          </radialGradient>
+          <radialGradient id="g4" cx="40%" cy="35%" r="60%">
+            <stop offset="0%" stop-color="#4a6b52"/>
+            <stop offset="100%" stop-color="#2e4733"/>
+          </radialGradient>
+          <radialGradient id="g5" cx="40%" cy="35%" r="60%">
+            <stop offset="0%" stop-color="#b8860b"/>
+            <stop offset="100%" stop-color="#7a5a07"/>
+          </radialGradient>
+          <radialGradient id="g6" cx="40%" cy="35%" r="60%">
+            <stop offset="0%" stop-color="#7a5a9e"/>
+            <stop offset="100%" stop-color="#573d78"/>
+          </radialGradient>
+          <radialGradient id="centerGrad" cx="40%" cy="35%" r="60%">
+            <stop offset="0%" stop-color="#2e2418"/>
+            <stop offset="100%" stop-color="#1c1710"/>
+          </radialGradient>
+          <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+            <feDropShadow dx="0" dy="3" stdDeviation="6" flood-color="rgba(28,23,16,.2)"/>
+          </filter>
+        </defs>
+
+        <rect width="800" height="430" fill="url(#bgGrad)"/>
+
+        <!-- Subtle grid lines -->
+        <g stroke="#d5c9b2" stroke-width=".5" opacity=".4">
+          <line x1="0" y1="215" x2="800" y2="215"/>
+          <line x1="400" y1="0" x2="400" y2="430"/>
+        </g>
+
+        <!-- Connector lines -->
+        <g stroke="#c44b2b" stroke-width="1.2" stroke-dasharray="4 4" opacity=".35">
+          <line x1="400" y1="215" x2="135" y2="110"/>
+          <line x1="400" y1="215" x2="665" y2="110"/>
+          <line x1="400" y1="215" x2="120" y2="270"/>
+          <line x1="400" y1="215" x2="680" y2="270"/>
+          <line x1="400" y1="215" x2="210" y2="370"/>
+          <line x1="400" y1="215" x2="590" y2="370"/>
+          <line x1="400" y1="215" x2="400" y2="62"/>
+        </g>
+
+        <!-- Center bubble -->
+        <g class="bubble-center" filter="url(#shadow)">
+          <circle cx="400" cy="215" r="72" fill="url(#centerGrad)"/>
+          <circle cx="400" cy="215" r="72" fill="none" stroke="#c44b2b" stroke-width="2"/>
+          <text x="400" y="207" text-anchor="middle" font-family="'Playfair Display',serif" font-size="12" fill="#faf7f2" font-weight="700">PLAN DE</text>
+          <text x="400" y="223" text-anchor="middle" font-family="'Playfair Display',serif" font-size="12" fill="#faf7f2" font-weight="700">TRANSFORMACIÓN</text>
+          <text x="400" y="239" text-anchor="middle" font-family="'Playfair Display',serif" font-size="12" fill="#d4a520" font-weight="700">DIGITAL</text>
+        </g>
+
+        <!-- Satellite bubbles -->
+        <!-- 0: Top center -->
+        <g class="bubble-node" data-id="0" filter="url(#shadow)" style="cursor:pointer">
+          <circle class="bub" cx="400" cy="62" r="44" fill="url(#g0)" stroke="rgba(255,255,255,.25)" stroke-width="1.5"/>
+          <text x="400" y="56" text-anchor="middle" font-size="18" fill="white">📲</text>
+          <text x="400" y="72" text-anchor="middle" font-family="'Libre Franklin',sans-serif" font-size="9.5" fill="rgba(255,255,255,.9)" font-weight="600">REDES SOCIALES</text>
+        </g>
+
+        <!-- 1: Top-left -->
+        <g class="bubble-node" data-id="1" filter="url(#shadow)" style="cursor:pointer">
+          <circle class="bub" cx="135" cy="110" r="50" fill="url(#g1)" stroke="rgba(255,255,255,.25)" stroke-width="1.5"/>
+          <text x="135" y="102" text-anchor="middle" font-size="20" fill="white">⚙️</text>
+          <text x="135" y="118" text-anchor="middle" font-family="'Libre Franklin',sans-serif" font-size="9" fill="rgba(255,255,255,.9)" font-weight="600">GESTIÓN</text>
+          <text x="135" y="129" text-anchor="middle" font-family="'Libre Franklin',sans-serif" font-size="9" fill="rgba(255,255,255,.9)" font-weight="600">DIGITALIZADA</text>
+        </g>
+
+        <!-- 2: Top-right -->
+        <g class="bubble-node" data-id="2" filter="url(#shadow)" style="cursor:pointer">
+          <circle class="bub" cx="665" cy="110" r="50" fill="url(#g2)" stroke="rgba(255,255,255,.25)" stroke-width="1.5"/>
+          <text x="665" y="102" text-anchor="middle" font-size="20" fill="white">🏋️</text>
+          <text x="665" y="118" text-anchor="middle" font-family="'Libre Franklin',sans-serif" font-size="9" fill="rgba(255,255,255,.9)" font-weight="600">CROSSFIT</text>
+          <text x="665" y="129" text-anchor="middle" font-family="'Libre Franklin',sans-serif" font-size="9" fill="rgba(255,255,255,.9)" font-weight="600">DIGITAL</text>
+        </g>
+
+        <!-- 3: Middle-left -->
+        <g class="bubble-node" data-id="3" filter="url(#shadow)" style="cursor:pointer">
+          <circle class="bub" cx="120" cy="270" r="46" fill="url(#g3)" stroke="rgba(255,255,255,.25)" stroke-width="1.5"/>
+          <text x="120" y="262" text-anchor="middle" font-size="19" fill="white">📊</text>
+          <text x="120" y="278" text-anchor="middle" font-family="'Libre Franklin',sans-serif" font-size="9" fill="rgba(255,255,255,.9)" font-weight="600">SEGUIMIENTO</text>
+          <text x="120" y="289" text-anchor="middle" font-family="'Libre Franklin',sans-serif" font-size="9" fill="rgba(255,255,255,.9)" font-weight="600">CLIENTES</text>
+        </g>
+
+        <!-- 4: Middle-right -->
+        <g class="bubble-node" data-id="4" filter="url(#shadow)" style="cursor:pointer">
+          <circle class="bub" cx="680" cy="270" r="46" fill="url(#g4)" stroke="rgba(255,255,255,.25)" stroke-width="1.5"/>
+          <text x="680" y="262" text-anchor="middle" font-size="19" fill="white">🔍</text>
+          <text x="680" y="278" text-anchor="middle" font-family="'Libre Franklin',sans-serif" font-size="9" fill="rgba(255,255,255,.9)" font-weight="600">ANÁLISIS</text>
+          <text x="680" y="289" text-anchor="middle" font-family="'Libre Franklin',sans-serif" font-size="9" fill="rgba(255,255,255,.9)" font-weight="600">DE DATOS</text>
+        </g>
+
+        <!-- 5: Bottom-left -->
+        <g class="bubble-node" data-id="5" filter="url(#shadow)" style="cursor:pointer">
+          <circle class="bub" cx="210" cy="370" r="44" fill="url(#g5)" stroke="rgba(255,255,255,.25)" stroke-width="1.5"/>
+          <text x="210" y="362" text-anchor="middle" font-size="18" fill="white">💳</text>
+          <text x="210" y="378" text-anchor="middle" font-family="'Libre Franklin',sans-serif" font-size="9" fill="rgba(255,255,255,.9)" font-weight="600">PAGOS &amp; QR</text>
+        </g>
+
+        <!-- 6: Bottom-right -->
+        <g class="bubble-node" data-id="6" filter="url(#shadow)" style="cursor:pointer">
+          <circle class="bub" cx="590" cy="370" r="44" fill="url(#g6)" stroke="rgba(255,255,255,.25)" stroke-width="1.5"/>
+          <text x="590" y="362" text-anchor="middle" font-size="18" fill="white">🎓</text>
+          <text x="590" y="378" text-anchor="middle" font-family="'Libre Franklin',sans-serif" font-size="9" fill="rgba(255,255,255,.9)" font-weight="600">FORMACIÓN</text>
+        </g>
+      </svg>
+
+      <div class="bubble-info" id="bubbleInfo">
+        <span class="bi-default">← Haz clic en cualquier burbuja para ver el detalle del objetivo estratégico</span>
+      </div>
+      <div class="bubble-hint">7 objetivos estratégicos · Plan de Transformación Digital · Bodyfitness Sport Archena</div>
+    </div>
+  </section>
+
+
+  <!-- ════════════════════════════════════════════
+       ACTIVIDAD 3 — VERDADERO O FALSO
+  ════════════════════════════════════════════ -->
+  <section class="act" id="act3">
+    <div class="act-header">
+      <div class="act-num-block">
+        <div class="act-num">03</div>
+        <div class="act-num-line"></div>
+      </div>
+      <div>
+        <h2 class="act-title">Verdadero o Falso</h2>
+        <p class="act-desc">Análisis razonado de afirmaciones sobre la transformación digital empresarial.</p>
+      </div>
+    </div>
+
+    <div class="tf-grid">
+
+      <!-- A -->
+      <div class="tf-card">
+        <div class="tf-card-top">
+          <div class="tf-letter">Afirmación A</div>
+          <p class="tf-statement">"Un plan de transformación digital ayuda a que la empresa se adapte mejor al entorno digital y a los cambios del mercado."</p>
+        </div>
+        <div class="tf-verdict verdadero">
+          <span class="vf-badge v"><span class="vf-icon">✓</span> Verdadero</span>
+          <p class="tf-explain">Esta es la <strong>función principal</strong> de un plan de transformación digital: proporcionar una hoja de ruta estructurada que permita a la empresa anticiparse y responder a los cambios del entorno digital de forma ordenada y coherente.</p>
+        </div>
+      </div>
+
+      <!-- B -->
+      <div class="tf-card">
+        <div class="tf-card-top">
+          <div class="tf-letter">Afirmación B</div>
+          <p class="tf-statement">"La transformación digital solo tiene sentido si implica cambiar todas las tecnologías de la empresa."</p>
+        </div>
+        <div class="tf-verdict falso">
+          <span class="vf-badge f"><span class="vf-icon">✗</span> Falso</span>
+          <p class="tf-explain">La transformación digital <strong>no exige sustituir toda la tecnología existente</strong>. Consiste en integrar la tecnología de manera estratégica, aprovechando lo que ya funciona y añadiendo soluciones donde realmente aporten valor. Un cambio total no siempre es necesario ni recomendable.</p>
+        </div>
+      </div>
+
+      <!-- C -->
+      <div class="tf-card">
+        <div class="tf-card-top">
+          <div class="tf-letter">Afirmación C</div>
+          <p class="tf-statement">"Uno de los objetivos del plan es mejorar la experiencia del cliente utilizando herramientas digitales."</p>
+        </div>
+        <div class="tf-verdict verdadero">
+          <span class="vf-badge v"><span class="vf-icon">✓</span> Verdadero</span>
+          <p class="tf-explain">La <strong>mejora de la experiencia del cliente</strong> es uno de los pilares centrales de cualquier plan de transformación digital. Herramientas como reservas online, seguimiento personalizado o acceso QR están directamente orientadas a ofrecer un servicio más cómodo, ágil y satisfactorio.</p>
+        </div>
+      </div>
+
+      <!-- D -->
+      <div class="tf-card">
+        <div class="tf-card-top">
+          <div class="tf-letter">Afirmación D</div>
+          <p class="tf-statement">"La planificación digital también incluye preparar a las personas para los cambios que se van a producir en la organización."</p>
+        </div>
+        <div class="tf-verdict verdadero">
+          <span class="vf-badge v"><span class="vf-icon">✓</span> Verdadero</span>
+          <p class="tf-explain">La <strong>gestión del cambio y la formación del equipo humano</strong> son componentes inseparables de un plan digital bien diseñado. Sin la preparación adecuada de las personas, las herramientas tecnológicas no se implementan correctamente ni generan el valor esperado.</p>
+        </div>
+      </div>
+
+      <!-- E -->
+      <div class="tf-card">
+        <div class="tf-card-top">
+          <div class="tf-letter">Afirmación E</div>
+          <p class="tf-statement">"Un plan de transformación digital solo se aplica a grandes empresas."</p>
+        </div>
+        <div class="tf-verdict falso">
+          <span class="vf-badge f"><span class="vf-icon">✗</span> Falso</span>
+          <p class="tf-explain">La transformación digital es <strong>aplicable a cualquier empresa, independientemente de su tamaño</strong>. Las pymes y negocios locales, como un gimnasio de barrio, pueden beneficiarse enormemente de la digitalización adaptando las soluciones a su escala y presupuesto real.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ════════════════════════════════════════════
+       ACTIVIDAD 4 — IA Y PLAN DIGITAL
+  ════════════════════════════════════════════ -->
+  <section class="act" id="act4">
+    <div class="act-header">
+      <div class="act-num-block">
+        <div class="act-num">04</div>
+        <div class="act-num-line"></div>
+      </div>
+      <div>
+        <h2 class="act-title">IA y el Plan de Transformación Digital <span class="tag">Análisis Crítico</span></h2>
+        <p class="act-desc">Uso de inteligencia artificial para generar un plan digital y evaluación crítica de sus fortalezas y limitaciones.</p>
+      </div>
+    </div>
+
+    <div class="ai-prompt-box">
+      <div class="prompt-label">Prompt utilizado con la IA</div>
+      <p>"Actúa como consultor experto en transformación digital. Elabora un plan de transformación digital para Bodyfitness Sport Archena, un gimnasio local situado en Archena (Murcia). El gimnasio dispone de zona de musculación, clases colectivas y un espacio funcional/CrossFit actualmente desaprovechado. Incluye objetivos, acciones concretas, KPIs y un cronograma de implementación."</p>
+    </div>
+
+    <div class="plan-grid">
+      <div class="plan-card">
+        <div class="pc-icon">🎯</div>
+        <h4>Objetivos Estratégicos</h4>
+        <ul>
+          <li>Aumentar visibilidad online</li>
+          <li>Digitalizar la gestión interna</li>
+          <li>Activar el espacio CrossFit</li>
+          <li>Mejorar fidelización de socios</li>
+          <li>Optimizar toma de decisiones</li>
+        </ul>
+      </div>
+      <div class="plan-card">
+        <div class="pc-icon">📲</div>
+        <h4>Acciones — Marketing</h4>
+        <ul>
+          <li>Reels semanales de ejercicios</li>
+          <li>Retos deportivos mensuales</li>
+          <li>Campañas de Meta Ads segmentadas</li>
+          <li>Newsletter mensual a socios</li>
+        </ul>
+      </div>
+      <div class="plan-card">
+        <div class="pc-icon">⚙️</div>
+        <h4>Acciones — Gestión</h4>
+        <ul>
+          <li>Software de reservas online</li>
+          <li>Pagos automáticos por domiciliación</li>
+          <li>Control de acceso por QR</li>
+          <li>CRM básico de clientes</li>
+        </ul>
+      </div>
+      <div class="plan-card">
+        <div class="pc-icon">🏋️</div>
+        <h4>CrossFit &amp; App</h4>
+        <ul>
+          <li>App Wodbuster para WODs diarios</li>
+          <li>Rankings y retos mensuales</li>
+          <li>Clases por niveles (básico/avanzado)</li>
+          <li>Registro de marcas personales</li>
+        </ul>
+      </div>
+      <div class="plan-card">
+        <div class="pc-icon">📊</div>
+        <h4>KPIs propuestos</h4>
+        <ul>
+          <li>Tasa de retención de socios</li>
+          <li>Nuevos leads desde RRSS</li>
+          <li>% de reservas digitales vs presencial</li>
+          <li>Engagement en redes sociales</li>
+        </ul>
+      </div>
+      <div class="plan-card">
+        <div class="pc-icon">📅</div>
+        <h4>Cronograma</h4>
+        <p>Fase 1 (mes 1–2): RRSS y reservas online</p>
+        <p>Fase 2 (mes 3–4): CrossFit app + QR</p>
+        <p>Fase 3 (mes 5–6): Análisis y ajustes</p>
+        <p>Fase 4 (mes 7+): Escalado</p>
+      </div>
+    </div>
+
+    <div class="analysis-grid">
+      <div class="a-card str">
+        <div class="ac-head">
+          <span class="ac-icon">✅</span>
+          <h3>Puntos Fuertes</h3>
+        </div>
+        <ul>
+          <li>Estructura clara y fácil de seguir</li>
+          <li>Propone herramientas reales del sector (Wodbuster, Meta Ads)</li>
+          <li>Incluye KPIs medibles y concretos</li>
+          <li>Adapta el plan al contexto del fitness</li>
+          <li>Ahorra tiempo en la fase de redacción inicial</li>
+          <li>El cronograma es progresivo y ordenado</li>
+        </ul>
+      </div>
+      <div class="a-card lim">
+        <div class="ac-head">
+          <span class="ac-icon">⚠️</span>
+          <h3>Limitaciones Detectadas</h3>
+        </div>
+        <ul>
+          <li>Desconoce el presupuesto real del negocio</li>
+          <li>No contempla la posible resistencia al cambio</li>
+          <li>Algunas herramientas pueden no estar disponibles localmente</li>
+          <li>No analiza la competencia específica de Archena</li>
+          <li>Las estimaciones de tiempo pueden ser optimistas</li>
+          <li>Falta visita in-situ y entrevistas al personal</li>
+        </ul>
+      </div>
+      <div class="a-card rec">
+        <div class="ac-head">
+          <span class="ac-icon">💡</span>
+          <h3>Recomendación Final</h3>
+        </div>
+        <ul>
+          <li>Usar la IA como punto de partida, no como solución definitiva</li>
+          <li>Complementar con entrevistas y observación directa</li>
+          <li>Validar presupuestos con proveedores locales</li>
+          <li>Adaptar el cronograma a la realidad del negocio</li>
+          <li>El criterio profesional es insustituible</li>
+          <li>Revisar y ajustar el plan cada trimestre</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="conclusion-box">
+      La inteligencia artificial demuestra ser una <strong>herramienta poderosa</strong> para acelerar la redacción de planes de transformación digital. En este caso, generó en segundos una estructura coherente, con acciones concretas y métricas medibles. Sin embargo, su mayor limitación es la <strong>falta de contexto real</strong>: no conoce el presupuesto, el equipo ni la competencia local de Archena. Por tanto, el plan generado debe tratarse como un <strong>borrador de trabajo</strong> que un profesional debe revisar, adaptar y validar sobre el terreno. El juicio crítico y la experiencia humana siguen siendo insustituibles para garantizar el éxito de cualquier proceso de digitalización empresarial.
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  Tarea 3.3 · Plan de Transformación Digital · TSEAS — Bodyfitness Sport Archena
+</footer>
+
+<script>
+  // ─── BUBBLE MAP ────────────────────────────────────────
+  const bubbleData = [
+    {
+      icon: '📲',
+      title: 'Redes Sociales y Marketing Digital',
+      desc: 'Publicar contenido de valor semanalmente: reels de ejercicios, consejos de salud, retos y transformaciones físicas. Objetivo: captar nuevos clientes y mejorar la imagen de marca.'
+    },
+    {
+      icon: '⚙️',
+      title: 'Digitalización de la Gestión',
+      desc: 'Implementar software para reservas online, gestión de cuotas y comunicación automática con socios. Reduce la carga administrativa y mejora la organización interna.'
+    },
+    {
+      icon: '🏋️',
+      title: 'Espacio Funcional / CrossFit Digital',
+      desc: 'Aprovechar el área funcional mediante apps como Wodbuster: WODs diarios, rankings, retos mensuales y clases por niveles. Diferenciación clave frente a otros gimnasios de la zona.'
+    },
+    {
+      icon: '📊',
+      title: 'Seguimiento Personalizado de Clientes',
+      desc: 'Ofrecer rutinas digitales, control de progresos físicos y seguimiento corporal. Aumenta la motivación del socio y reduce la tasa de abandono del gimnasio.'
+    },
+    {
+      icon: '🔍',
+      title: 'Análisis de Datos',
+      desc: 'Analizar horas de mayor afluencia, actividades más demandadas y perfil de los clientes. Permite tomar mejores decisiones sobre horarios, precios y servicios.'
+    },
+    {
+      icon: '💳',
+      title: 'Pagos Automatizados y Acceso QR',
+      desc: 'Implantar pagos por domiciliación, facturación automática y sistema de acceso mediante código QR. Mayor comodidad para el usuario y eficiencia operativa para el negocio.'
+    },
+    {
+      icon: '🎓',
+      title: 'Formación del Personal',
+      desc: 'Capacitar al equipo en el uso de las nuevas herramientas digitales. Sin formación adecuada, las iniciativas digitales no se implementan correctamente ni generan valor real.'
+    }
+  ];
+
+  document.querySelectorAll('.bubble-node').forEach(node => {
+    node.addEventListener('click', () => {
+      const id = parseInt(node.dataset.id);
+      const d  = bubbleData[id];
+      document.getElementById('bubbleInfo').innerHTML = `
+        <div class="bi-icon">${d.icon}</div>
+        <div>
+          <h4>${d.title}</h4>
+          <p>${d.desc}</p>
+        </div>
+      `;
+      // Reset all
+      document.querySelectorAll('.bubble-node .bub').forEach(b => {
+        b.setAttribute('stroke', 'rgba(255,255,255,.25)');
+        b.setAttribute('stroke-width', '1.5');
+      });
+      // Highlight selected
+      node.querySelector('.bub').setAttribute('stroke', '#c44b2b');
+      node.querySelector('.bub').setAttribute('stroke-width', '3');
+    });
+  });
+
+  // ─── SCROLL REVEAL ─────────────────────────────────────
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.08 });
+
+  document.querySelectorAll('.act').forEach(s => io.observe(s));
+</script>
+</body>
+</html>
