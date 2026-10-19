@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Baloncesto · Tarea UT1</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0a0c;--li:#e8ff3c;--cy:#3cffe8;--or:#f58a1f;--tx:#f1f1f1;box-sizing:border-box}
+*{box-sizing:border-box}html,body{height:100%;margin:0}
+body{background:var(--bg) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'%3E%3Cg fill='none' stroke='%23e8ff3c' stroke-opacity='.09' stroke-width='2'%3E%3Ccircle cx='200' cy='150' r='55'/%3E%3Cpath d='M200 0V300M0 100H70V200H0M400 100H330V200H400'/%3E%3C/g%3E%3C/svg%3E") center/cover;color:var(--tx);font:16px/1.5 'DM Sans',system-ui,sans-serif;padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px);display:flex;flex-direction:column;overflow:hidden}
+h1,h2,h3{font-family:'Bebas Neue',Impact,sans-serif;font-weight:400;letter-spacing:.04em;margin:0}
+header{text-align:center;padding:18px 14px 0}
+h1{font-size:clamp(52px,11vw,110px);line-height:.9;color:var(--li)}
+header p{font:400 clamp(18px,3.5vw,26px) 'Bebas Neue';letter-spacing:.14em;color:var(--cy);margin:4px 0 0}
+#row{flex:1;display:flex;flex-wrap:wrap;gap:clamp(14px,3vw,34px);align-items:center;justify-content:center;padding:14px}
+.b{background:none;border:0;color:var(--tx);cursor:pointer;text-align:center;animation:drop .6s backwards}
+.ball{--z:clamp(92px,21vw,150px);width:var(--z);height:var(--z);border-radius:50%;position:relative;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at 32% 28%,#ffb55a,var(--or) 40%,#b24a05 100%);box-shadow:0 12px 20px #000a,inset -7px -9px 16px #0006;transition:transform .2s;margin:auto}
+.ball::before{content:"";position:absolute;inset:0;border-radius:50%;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cg fill='none' stroke='%23201000' stroke-width='2.2'%3E%3Cpath d='M50 0V100M0 50H100'/%3E%3Cpath d='M16 14Q38 50 16 86M84 14Q62 50 84 86'/%3E%3C/g%3E%3C/svg%3E") center/100%;opacity:.75}
+.ball i{position:relative;font:normal 400 clamp(40px,9vw,64px)/1 'Bebas Neue';color:#fff;text-shadow:0 2px 5px #000,0 0 10px #000;background:#0006;border-radius:50%;width:56%;aspect-ratio:1;display:flex;align-items:center;justify-content:center}
+.b:hover .ball{transform:translateY(-10px) scale(1.07)}
+.b.v .ball{outline:3px solid var(--li);outline-offset:4px}
+.b span{display:block;margin-top:12px;font:400 clamp(18px,3.4vw,26px) 'Bebas Neue';letter-spacing:.06em}
+@keyframes drop{from{transform:translateY(-90px);opacity:0}}
+#ov{position:fixed;inset:0;background:#000c;display:none;align-items:center;justify-content:center;padding:14px;z-index:9}#ov.on{display:flex}
+#card{background:#15161a;border:2px solid var(--or);border-radius:22px;max-width:640px;width:100%;max-height:92vh;overflow:auto;padding:20px 22px;box-shadow:0 20px 60px #000}
+.hd{display:flex;align-items:center;gap:12px;margin-bottom:6px}
+.hd .l{font:400 52px/1 'Bebas Neue';color:#000;background:var(--or);border-radius:50%;width:58px;height:58px;display:flex;align-items:center;justify-content:center;flex:none}
+.hd h2{font-size:clamp(30px,6vw,42px);color:var(--li);line-height:1;flex:1}
+.x,.nv{background:none;border:1px solid #fff4;color:var(--tx);border-radius:99px;font:700 14px 'DM Sans';padding:7px 14px;cursor:pointer}
+.x{width:36px;height:36px;padding:0;font-size:18px}
+.big{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:10px;margin:10px 0}
+.big div{background:#ffffff0f;border-radius:12px;padding:8px 10px;text-align:center}
+.big b{display:block;font:400 34px/1 'Bebas Neue';color:var(--cy)}.big small{color:#bbb}
+svg.v{display:block;max-width:100%;margin:8px auto}
+.ch{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.ch button{font:700 14px 'DM Sans';background:#ffffff12;color:var(--tx);border:1px solid #fff3;border-radius:99px;padding:7px 13px;cursor:pointer}
+.ch button.on{background:var(--li);color:#000;border-color:var(--li)}
+#ln{min-height:48px;border-left:3px solid var(--cy);padding:6px 12px;color:#e6e6e6}
+.rv{display:none;border-left:3px solid var(--li);padding-left:12px;margin-top:8px}.rv.on{display:block}
+.go{font:700 14px 'DM Sans';background:var(--li);color:#000;border:0;border-radius:99px;padding:8px 16px;cursor:pointer;margin-top:6px}
+.t{display:inline-block;background:var(--cy);color:#000;font-weight:700;font-size:11px;border-radius:5px;padding:0 7px;margin-right:6px}
+.ft{display:flex;justify-content:space-between;margin-top:14px}
+</style></head><body>
+<header><h1>BALONCESTO</h1><p>TAREA UT1 · PULSA UN BALÓN</p></header>
+<div id="row"></div>
+<div id="ov"><div id="card"></div></div>
+<script>
+const $=s=>document.querySelector(s);
+const hoop=`<svg class="v" width="150" viewBox="0 0 150 120"><rect x="35" y="6" width="80" height="50" rx="4" fill="#fff2" stroke="#e8ff3c" stroke-width="3"/><rect x="60" y="28" width="30" height="22" fill="none" stroke="#e8ff3c" stroke-width="2"/><ellipse cx="75" cy="62" rx="26" ry="6" fill="none" stroke="#f58a1f" stroke-width="5"/><path d="M50 64L60 100M62 66L66 100M75 68V100M88 66L84 100M100 64L90 100M56 80H94" stroke="#fff" stroke-opacity=".7" fill="none"/></svg>`;
+const dots=[[1,150,222],[2,52,168],[3,250,150],[4,104,84],[5,150,52]].map(p=>`<circle cx="${p[1]}" cy="${p[2]}" r="14" fill="#e8ff3c"/><text x="${p[1]}" y="${p[2]+5}" text-anchor="middle" font-family="Bebas Neue" font-size="18" fill="#000">${p[0]}</text>`).join('');
+const court=`<svg class="v" width="270" viewBox="0 0 300 250"><g fill="none" stroke="#3cffe8" stroke-width="2.5"><rect x="4" y="2" width="292" height="246" rx="3" stroke-opacity=".4"/><rect x="110" y="2" width="80" height="108"/><circle cx="150" cy="110" r="36"/><path d="M36 2V80A114 114 0 0 0 264 80V2"/><circle cx="150" cy="24" r="8" stroke="#f58a1f"/></g>${dots}</svg>`;
+const L=[
+{k:"A",n:"Presentación",h:()=>`${hoop}<div class="big"><div><b>1891</b><small>Springfield (EE. UU.)</small></div><div><b>Naismith</b><small>profe de la YMCA</small></div><div><b>3,05 m</b><small>altura del aro</small></div></div><div class="big"><div><b>1932</b><small>FIBA</small></div><div><b>1936</b><small>JJ. OO.</small></div><div><b>1946</b><small>NBA</small></div><div><b>1992</b><small>Dream Team</small></div></div><p>Deporte de interior para el invierno, con poco contacto. Hoy: NBA · Euroliga · ACB.</p>`},
+{k:"B",n:"¿Cómo se juega?",h:()=>`${court}<div class="big"><div><b>5 vs 5</b><small>jugadores</small></div><div><b>4×10'</b><small>FIBA (NBA 12')</small></div><div><b>1·2·3</b><small>libre · campo · triple</small></div></div><p>1 Base · 2 Escolta · 3 Alero · 4 Ala-pívot · 5 Pívot. Gana quien anota más.</p>`},
+{k:"C",n:"Reglamento",ch:[["Pasos","Máx. 2 pasos con balón en mano"],["Dobles","Botar, parar y volver a botar"],["Campo atrás","No devolver el balón a tu campo tras controlarlo en ataque"],["3 s","Máx. 3 s en la zona rival"],["5 s","5 s para pasar, tirar o botar si te presionan (y en el saque)"],["8 s","8 s para pasar al campo contrario"],["24 s","24 s para lanzar"],["Falta personal","Contacto ilegal → saque o tiros libres"],["Técnica / antideportiva","Conducta impropia o contacto no legítimo → tiros libres"],["Fuera de banda","Balón para el rival del último que lo tocó"]]},
+{k:"D",n:"Nomenclatura",ch:[["Asistencia","Pase que acaba en canasta"],["Rebote","Recuperar el balón tras un tiro fallado"],["Tapón","Desviar legalmente el tiro rival"],["Robo","Quitar el balón sin falta"],["Pick and roll","Bloqueo y corte hacia el aro"],["Contraataque","Ataque rápido tras recuperar"],["Bandeja","Tiro cerca del aro tras dos pasos"],["Triple","Canasta desde detrás de la línea · 3 pts"],["Bloqueo","Frenar legalmente al defensor"],["Tiro libre","Tiro sin oposición tras falta · 1 pt"],["Mate","Meter el balón desde arriba"],["Tiempo muerto","Pausa pedida por el entrenador"]]},
+{k:"E",n:"Árbitro por un día",h:()=>`<p style="font-size:44px;margin:0;text-align:center">🧑‍⚖️ 🏀</p>`+[["1 · Pasos tras saltar","Un atacante salta para lanzar, no suelta el balón y cae con él en las dos manos.","No es legal.","Pasos · saque para el rival."],["2 · Contacto en un triple","Lanza un triple, el defensor golpea su brazo y el tiro falla.","No es legal.","Falta personal · 3 tiros libres."]].map(s=>`<h3 style="color:var(--li);font-size:26px;margin-top:12px">${s[0]}</h3><p><span class="t">JUGADA</span>${s[1]}</p><button class="go" onclick="this.nextElementSibling.classList.toggle('on')">¿Qué señala el árbitro?</button><div class="rv"><p><span class="t">¿LEGAL?</span>${s[2]}</p><p><span class="t">DECISIÓN</span>${s[3]}</p></div>`).join('')}
+];
+let cur=0;
+$('#row').innerHTML=L.map((p,i)=>`<button class="b" style="animation-delay:${i*.1}s" onclick="op(${i})"><div class="ball"><i>${p.k}</i></div><span>${p.n}</span></button>`).join('');
+function op(i){cur=(i+L.length)%L.length;const p=L[cur];
+document.querySelectorAll('.b')[cur].classList.add('v');
+$('#card').innerHTML=`<div class="hd"><div class="l">${p.k}</div><h2>${p.n}</h2><button class="x" onclick="cl()">×</button></div>`+(p.ch?`<div class="ch">${p.ch.map((c,j)=>`<button onclick="ln(${j},this)">${c[0]}</button>`).join('')}</div><div id="ln">Toca un concepto</div>`:p.h())+`<div class="ft"><button class="nv" onclick="op(cur-1)">← ${L[(cur+L.length-1)%L.length].k}</button><button class="nv" onclick="op(cur+1)">${L[(cur+1)%L.length].k} →</button></div>`;
+$('#ov').classList.add('on');$('#card').scrollTop=0}
+function ln(j,b){document.querySelectorAll('.ch button').forEach(x=>x.classList.remove('on'));b.classList.add('on');$('#ln').textContent=L[cur].ch[j][1]}
+function cl(){$('#ov').classList.remove('on')}
+$('#ov').onclick=e=>{if(e.target.id=='ov')cl()};
+addEventListener('keydown',e=>{if(e.key=='Escape')cl();if($('#ov').classList.contains('on')){if(e.key=='ArrowRight')op(cur+1);if(e.key=='ArrowLeft')op(cur-1)}});
+</script></body></html>
