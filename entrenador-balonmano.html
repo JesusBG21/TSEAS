@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>El Entrenador de Balonmano</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--o:#ff6b1a;--y:#ffd23f;--w:#f4f8fb;--c:#145a8a}
+*{box-sizing:border-box;margin:0}html,body{height:100%}
+body{background:radial-gradient(circle at 50% 0,#0e3a66,#07182e 70%);color:var(--w);font:400 clamp(15px,1.5vw,19px)/1.45 Barlow,system-ui,sans-serif;overflow:hidden}
+body::before{content:"";position:fixed;left:50%;top:-45vh;width:90vh;height:90vh;border:4px solid rgba(255,255,255,.07);border-radius:50%;transform:translateX(-50%)}
+.s{position:absolute;inset:0 0 62px;padding:3vh 5vw;display:none;flex-direction:column;justify-content:center;gap:2vh;overflow:auto}
+.s.on{display:flex;animation:in .45s}
+@keyframes in{from{opacity:0;transform:translateX(40px)}}
+h1,h2{font-family:'Bebas Neue',Impact,sans-serif;letter-spacing:.03em;line-height:1;font-weight:400}
+h1{font-size:clamp(3rem,9vw,7rem)}h2{font-size:clamp(2rem,4.5vw,3.4rem)}
+h2::after{content:"";display:block;width:90px;height:6px;margin-top:8px;background:var(--o);border-radius:3px}
+.tag{align-self:flex-start;background:var(--o);color:#fff;font-weight:600;font-size:.8em;padding:2px 12px;border-radius:20px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:3vw;align-items:center}
+@media(max-width:800px){.g2{grid-template-columns:1fr}.s{padding:2vh 4vw}.dots{display:none}}
+.box{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);border-radius:14px;padding:12px 16px}
+svg.ct{width:100%;max-height:58vh;border-radius:14px;box-shadow:0 8px 30px #0008}
+.b{background:var(--o);color:#fff;border:0;border-radius:30px;padding:8px 18px;font:600 1em Barlow;cursor:pointer;margin:4px 6px 4px 0;transition:.2s}
+.b:hover{transform:translateY(-2px)}.b.act{background:var(--y);color:#07182e}
+.pl{cursor:pointer}.pl circle{fill:var(--o);stroke:#fff;stroke-width:2.5;transition:.2s}.pl.d circle{fill:#e63946}.pl.gh{pointer-events:none;opacity:.7}
+.pl text{fill:#fff;font:600 12px Barlow,sans-serif;text-anchor:middle;pointer-events:none}.pl:hover circle{stroke:var(--y)}.pl.sel circle{stroke:var(--y);stroke-width:5}
+.ball{transition:transform .7s ease-in-out}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}@media(max-width:800px){.cards{grid-template-columns:repeat(2,1fr)}}
+.card{height:21vh;min-height:140px;perspective:800px;cursor:pointer}
+.iw{position:relative;width:100%;height:100%;transition:.6s;transform-style:preserve-3d}.card.f .iw{transform:rotateY(180deg)}
+.fa,.fb{position:absolute;inset:0;border-radius:14px;padding:10px;backface-visibility:hidden;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center}
+.fa{background:linear-gradient(135deg,#145a8a,#0e3a66);border:2px solid rgba(255,255,255,.3);font:1.9rem 'Bebas Neue',sans-serif}
+.fb{background:var(--o);transform:rotateY(180deg);font-size:.86em;line-height:1.3}
+details{background:rgba(255,255,255,.08);border-radius:10px;margin:6px 0;padding:8px 14px}summary{cursor:pointer;font-weight:600;color:var(--y)}details p{margin-top:6px}
+.rl{list-style:none;margin-top:6px;padding:0}.rl li{padding:6px 10px;margin:4px 0;border-radius:8px;background:rgba(255,255,255,.08);cursor:pointer}.rl li::before{content:"⬜ "}.rl li.ck{background:#2a9d4a66;text-decoration:line-through}.rl li.ck::before{content:"✅ "}
+table{width:100%;border-collapse:collapse}td,th{padding:6px;border-bottom:1px solid #fff3;text-align:left}
+input{width:64px;padding:4px;border-radius:6px;border:0;font:inherit;text-align:center}.up{color:#5be37d}.dn{color:#ff7b7b}
+.qs{display:grid;grid-template-columns:1fr 1fr;gap:12px}@media(max-width:800px){.qs{grid-template-columns:1fr}}
+.opt{display:block;width:100%;text-align:left;margin-top:6px;padding:5px 10px;border-radius:8px;border:1px solid #fff4;background:#0003;color:#fff;font:inherit;cursor:pointer}.opt:hover{border-color:var(--y)}.ok{background:#2a9d4a}.no{background:#c0392b}
+.ballsvg{width:min(30vw,200px);animation:bounce 1.1s ease-in infinite alternate}@keyframes bounce{to{transform:translateY(-8vh)}}
+.shadow{width:min(24vw,150px);height:14px;border-radius:50%;background:#0006;margin:0 auto}
+.cover{display:flex;align-items:center;gap:4vw;flex-wrap:wrap}
+nav{position:fixed;bottom:0;left:0;right:0;height:62px;display:flex;align-items:center;justify-content:space-between;padding:0 4vw;background:#04101f}
+#bar{position:absolute;top:0;left:0;height:4px;background:var(--o);transition:.4s}
+.dots button{width:10px;height:10px;border-radius:50%;border:0;background:#fff4;margin:0 3px;cursor:pointer}.dots button.a{background:var(--o);transform:scale(1.4)}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style></head><body>
+
+<section class="s">
+<div class="cover"><div><span class="tag">Sesión para equipos de 14-16 años</span><h1>El Entrenador<br>de Balonmano</h1>
+<p style="margin:2vh 0">Fundamentos, táctica, ejercicios y un reto final contra la defensa 6:0.</p>
+<p>Presenta: <b style="color:var(--y)">Jesús Borreguero</b></p>
+<p style="margin-top:2vh">
+<button class="b" onclick="go(1)">Fundamentos</button><button class="b" onclick="go(2)">Táctica</button><button class="b" onclick="go(4)">Ejercicios</button><button class="b" onclick="go(7)">Reto final</button></p></div>
+<div><svg class="ballsvg" viewBox="-70 -70 140 140"><circle r="62" fill="#ff6b1a" stroke="#fff" stroke-width="3"/><path d="M-62 0Q0-32 62 0M-62 0Q0 32 62 0M0-62Q-32 0 0 62M0-62Q32 0 0 62" fill="none" stroke="#fff" stroke-width="3" opacity=".85"/></svg><div class="shadow"></div></div></div>
+</section>
+
+<section class="s"><span class="tag">Parte 1 · Fundamentos técnicos</span><h2>Seis acciones básicas</h2><p>Toca cada tarjeta para darle la vuelta.</p><div class="cards" id="fc"></div></section>
+
+<section class="s"><span class="tag">Parte 2 · Sistemas defensivos</span><h2>Defensa 6:0 y 5:1</h2>
+<div class="g2"><svg class="ct" id="c1" viewBox="0 0 400 240"></svg>
+<div><p><button class="b act" id="b60" onclick="setDef(0)">Defensa 6:0</button><button class="b" id="b51" onclick="setDef(1)">Defensa 5:1</button></p>
+<p id="dd" class="box"></p><p id="i1" class="box" style="margin-top:10px">👆 Toca un jugador para ver su función.</p></div></div></section>
+
+<section class="s"><span class="tag">Parte 2 · Sistema ofensivo</span><h2>Ataque 3:3</h2>
+<div class="g2"><svg class="ct" id="c2" viewBox="0 0 400 240"></svg>
+<div><p class="box">Dos líneas de tres: tres jugadores cerca de los 6 m y tres cerca de los 9 m. Se mueve a los defensores para crear espacios de lanzamiento.</p>
+<p style="margin-top:8px"><button class="b" id="bd" onclick="togDef()">Mostrar defensa 6:0</button><button class="b" id="bp" onclick="togBall()">▶ Circular el balón</button></p>
+<p id="i2" class="box">👆 Toca un jugador para ver su función.</p></div></div></section>
+
+<section data-ex="0" class="s"></section>
+<section data-ex="1" class="s"></section>
+<section data-ex="2" class="s"></section>
+
+<section class="s"><span class="tag">Reto final · Situación real</span><h2>Atacar una defensa 6:0</h2>
+<p>Dos ejercicios de ataque y un sistema táctico para superarla.</p>
+<p><button class="b act" onclick="tab(0)">Circulación de balón</button><button class="b" onclick="tab(1)">Cruces y penetraciones</button><button class="b" onclick="tab(2)">Sistema 3:3</button></p>
+<div id="rt"></div></section>
+
+<section class="s"><span class="tag">Reto final · Plan de evaluación</span><h2>¿Hemos mejorado?</h2>
+<p>Dos partidos de 10 minutos contra una defensa 6:0: uno antes y otro después de entrenar. Anota los datos.</p>
+<table><tr><th>Aspecto</th><th>Antes</th><th>Después</th><th>Resultado</th></tr><tbody id="ev"></tbody></table>
+<p><b id="vd" style="color:var(--y)"></b> <button class="b" onclick="demo()">Cargar ejemplo</button></p></section>
+
+<section class="s"><span class="tag">Comprueba lo aprendido</span><h2>Mini test de entrenador</h2>
+<div class="qs" id="qz"></div>
+<p><b id="sc" style="color:var(--y)">Puntuación: 0 / 4</b> <button class="b" onclick="rq()">Reiniciar</button></p></section>
+
+<nav><div id="bar"></div><button class="b" onclick="go(n-1)">← Anterior</button><div class="dots" id="dt"></div><span id="cnt"></span><button class="b" onclick="go(n+1)">Siguiente →</button></nav>
+
+<script>
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+// ---- Contenido
+const F=[['🤝','Pase','Enviar el balón a un compañero con la mano para mantener la posesión y crear ventaja en ataque.'],['⬇️','Bote','Desplazarse con el balón rebotándolo en el suelo con la mano, volviendo a la misma o a la contraria.'],['🥅','Lanzamiento','Lanzar el balón a portería con la mano, evitando a defensas y portero para conseguir gol.'],['🎭','Fintas','Movimientos para engañar al defensor: parecer que haces una acción y hacer otra. Hay de movimiento, pase y lanzamiento.'],['🙌','Blocajes','Acción defensiva para evitar o bloquear un lanzamiento o pase rival, usando sobre todo brazos y manos.'],['🏃','Desmarques','Movimientos del atacante para ganar ventaja al defensor y estar mejor colocado para continuar el ataque.']];
+const D60=[[62,36,'EI','Extremo izquierdo','Defiende el lado izquierdo y evita que el extremo contrario tenga espacios para lanzar.'],[93,102,'LI','Lateral izquierdo','Protege la zona izquierda y ayuda a cerrar los espacios entre defensores.'],[152,144,'C','Central','Ocupa la zona central y coordina los movimientos de sus compañeros.'],[248,144,'C','Central','Ocupa la zona central y coordina los movimientos de sus compañeros.'],[307,102,'LD','Lateral derecho','Protege la zona derecha y colabora en las ayudas defensivas.'],[338,36,'ED','Extremo derecho','Defiende el lado derecho e intenta impedir los lanzamientos desde esa zona.']].map(p=>[...p,'d']);
+const D51=[D60[0],[100,110,'LI','Lateral izquierdo','Defiende la zona izquierda y ayuda a cerrar los espacios.','d'],[200,152,'C','Central defensivo','Protege la zona central y coordina la defensa.','d'],[300,110,'LD','Lateral derecho','Protege el lado derecho y realiza coberturas.','d'],D60[5],[200,205,'AV','Defensor avanzado','Presiona al central o a quien organiza el ataque, intenta interceptar pases y dificulta la circulación.','d']];
+const DT=['Los seis jugadores en una misma línea cerca del área de 6 m, formando una barrera. Cierra los espacios interiores y dificulta los lanzamientos cercanos. No hay defensor adelantado.','Cinco jugadores cerca de los 6 m y uno adelantado, a unos 9-10 m, que presiona al atacante central y dificulta la circulación del balón.'];
+const A=[[24,28,'EI','Extremo izquierdo','Cerca de la banda izquierda; busca lanzar desde un ángulo reducido.'],[90,160,'LI','Lateral izquierdo','Entre el extremo y el central; organiza acciones y busca lanzar o pasar.'],[200,205,'C','Central','Dirige el juego: decide cuándo pasar, penetrar o lanzar.'],[310,160,'LD','Lateral derecho','Funciones similares al lateral izquierdo, buscando espacios para atacar.'],[376,28,'ED','Extremo derecho','Cerca de la banda derecha; busca finalizar las jugadas.'],[200,150,'P','Pivote','Se coloca entre los defensores para crear espacios, recibir pases y facilitar los lanzamientos.']];
+const X=[{t:'Pases en movimiento',o:'Mejorar la precisión de los pases, la recepción y aprender a desmarcarse para recibir el balón.',g:'Grupos de 5 participantes, espacio delimitado por conos y zonas de recepción marcadas con aros.',d:'Los jugadores se pasan el balón haciendo antes un desmarque. Tras pasar es obligatorio desmarcarse a otra posición y buscar un espacio libre para recibir.',r:['No se puede devolver al mismo compañero','No retener el balón más de 3 segundos','Todos realizan un movimiento antes del siguiente pase'],v:'Añadir un defensor que intente interceptar el balón.'},
+{t:'Trenzado',o:'Mejorar la transición ofensiva, coordinar el bote y mejorar la precisión del pase y del lanzamiento.',g:'Grupos de 3 jugadores en el fondo de pista; la posición inicial se marca con conos.',d:'El primero sale de una esquina y conduce al centro para pasar a la banda contraria; después rebasa por detrás al compañero que recibe, mientras el otro ocupa su posición lateral. Se repite hasta la frontal del área y lanzamiento a portería.',r:['3 botes mínimo en la conducción','Pase sin que toque el suelo','Finalizar en menos de 4 pases'],v:'Hacerlo con la mano no dominante.'},
+{t:'Remate aéreo',o:'Mejorar la precisión del pase, el desmarque y el salto al área, y la finalización con salto.',g:'Dos grupos, uno en cada córner, y una pica colocada en la línea de 7 metros.',d:'Un jugador sale del córner rodeando el área y pasa por detrás de la pica; ahí recibe un pase del córner contrario hacia el interior del área, salta y remata antes de caer. Quien pasa es el siguiente en salir.',r:['No pisar la línea del área','Lanzar antes de caer','Pase sin que bote'],v:'Pase y lanzamiento con la mano no dominante.'}];
+const R=[{t:'Circulación de balón',o:'Mejorar la circulación para mover a la defensa y crear espacios.',g:'Seis atacantes (dos extremos, dos laterales, central y pivote) frente a seis defensores en 6:0.',d:'Pases rápidos de un lado a otro para mover a los defensores y encontrar espacio por donde penetrar o lanzar. El pivote busca huecos entre defensores y los extremos hunden a los defensores exteriores.',r:['15 pases obligatorios antes de finalizar','3 paredes entre esos 15 pases','Desde la frontal 1 gol; desde los extremos cuenta doble'],v:'Añadir tiempo para finalizar.'},
+{t:'Cruces y penetraciones',o:'Superar la defensa 6:0 con cruces, fintas y penetraciones para generar espacios de lanzamiento.',g:'Seis atacantes frente a seis defensores en 6:0 y un portero en la portería.',d:'El central empieza con el balón y cruza con un lateral. Ambos intentan confundir a los defensores para que uno penetre hacia portería. El pivote se desplaza para dificultar las ayudas defensivas.',r:['Cruces sin contacto','Lanzamiento desde fuera del área'],v:'Mínimo 2 cruces en cada jugada antes de finalizar.'}];
+// ---- Navegación
+const S=$$('.s');let n=0;
+$('#dt').innerHTML=S.map((_,i)=>`<button onclick="go(${i})" aria-label="Diapositiva ${i+1}"></button>`).join('');
+function go(i){n=Math.max(0,Math.min(S.length-1,i));S.forEach((s,j)=>s.classList.toggle('on',j==n));$$('.dots button').forEach((b,j)=>b.classList.toggle('a',j==n));$('#cnt').textContent=(n+1)+' / '+S.length;$('#bar').style.width=(n+1)/S.length*100+'%'}
+addEventListener('keydown',e=>{if(e.target.isContentEditable||e.target.tagName=='INPUT')return;if(e.key=='ArrowRight'||e.key==' ')go(n+1);if(e.key=='ArrowLeft')go(n-1)});
+// ---- Fundamentos
+$('#fc').innerHTML=F.map(f=>`<div class="card" onclick="this.classList.toggle('f')"><div class="iw"><div class="fa"><span style="font-size:2.2rem">${f[0]}</span>${f[1]}</div><div class="fb">${f[2]}</div></div></div>`).join('');
+// ---- Pista
+const BASE='<rect width="400" height="240" rx="14" fill="#145a8a"/><path d="M70 10A130 130 0 0 0 330 10Z" fill="rgba(255,107,26,.35)" stroke="#fff" stroke-width="3"/><path d="M30 10A170 170 0 0 0 370 10" fill="none" stroke="#fff" stroke-width="2.5" stroke-dasharray="8 6"/><rect x="170" y="0" width="60" height="10" fill="#fff"/>';
+function court(id,P,info,extra=''){const el=$(id);el.innerHTML=BASE+P.map((p,i)=>`<g class="pl ${p[5]||''}" data-i="${i}" transform="translate(${p[0]} ${p[1]})"><circle r="16"/><text y="4">${p[2]}</text></g>`).join('')+extra;
+$$(id+' .pl').forEach(g=>g.onclick=()=>{$$(id+' .pl').forEach(x=>x.classList.remove('sel'));g.classList.add('sel');const p=P[g.dataset.i];$(info).innerHTML=`<b style="color:var(--y)">${p[3]}</b>: ${p[4]}`})}
+function setDef(k){court('#c1',k?D51:D60,'#i1');$('#dd').textContent=DT[k];$('#b60').classList.toggle('act',!k);$('#b51').classList.toggle('act',!!k);$('#i1').textContent='👆 Toca un jugador para ver su función.'}
+setDef(0);
+let gh=0,tm=0,bi=0;const SEQ=[2,1,0,1,2,3,4,3,5,2];
+function drawAtt(){const P=A.concat(gh?D60.map(p=>[p[0],p[1],'D','','','d gh']):[]);court('#c2',P,'#i2',`<g class="ball" id="ball" style="transform:translate(${A[SEQ[bi]][0]}px,${A[SEQ[bi]][1]-22}px)"><circle r="8" fill="#ffd23f" stroke="#fff" stroke-width="2"/></g>`)}
+function togDef(){gh=!gh;$('#bd').textContent=gh?'Ocultar defensa 6:0':'Mostrar defensa 6:0';$('#bd').classList.toggle('act',gh);drawAtt()}
+function togBall(){if(tm){clearInterval(tm);tm=0;$('#bp').textContent='▶ Circular el balón';return}$('#bp').textContent='⏸ Parar';tm=setInterval(()=>{bi=(bi+1)%SEQ.length;const q=A[SEQ[bi]];$('#ball').style.transform=`translate(${q[0]}px,${q[1]-22}px)`},800)}
+drawAtt();
+// ---- Ejercicios
+const ex=d=>`<details open><summary>📍 Organización</summary><p>${d.g}</p></details><details><summary>▶️ Desarrollo</summary><p>${d.d}</p></details><details open><summary>📏 Reglas (toca para marcarlas)</summary><ul class="rl">${d.r.map(x=>`<li onclick="this.classList.toggle('ck')">${x}</li>`).join('')}</ul></details><details><summary>🔁 Variante</summary><p>${d.v}</p></details>`;
+const W=['<button class="b" onclick="cr(this)">⏱ Retener el balón: pulsa</button><p style="font-size:.85em">Practica el límite de 3 segundos.</p>','<button class="b" onclick="bt(this)">⬇️ Bote (0)</button><p style="font-size:.85em">Cuenta los botes de la conducción: mínimo 3.</p>','<button class="b" onclick="sh(1)">🥅 Gol</button><button class="b" onclick="sh(0)">❌ Fallo</button><p id="sp" style="font-size:.85em">Registra tus remates.</p>'];
+$$('[data-ex]').forEach((s,i)=>{const d=X[i];s.innerHTML=`<span class="tag">Parte 3 · Ejercicio ${i+1}</span><h2>${d.t}</h2><div class="g2"><div><div class="box">🎯 <b>Objetivo:</b> ${d.o}</div><div style="margin-top:14px">${W[i]}</div></div><div>${ex(d)}</div></div>`});
+function cr(b){let t=3;b.textContent='⏱ 3…';const i=setInterval(()=>{t--;if(t>0)b.textContent='⏱ '+t+'…';else{b.textContent='🚨 ¡Pasa ya!';clearInterval(i);setTimeout(()=>b.textContent='⏱ Retener el balón: pulsa',1500)}},1000)}
+function bt(b){b.dataset.c=(+b.dataset.c||0)+1;b.textContent='⬇️ Bote ('+b.dataset.c+')'+(b.dataset.c>=3?' ✅ mínimo':'')}
+let G=0,Fl=0;function sh(k){k?G++:Fl++;$('#sp').textContent=`Goles ${G} de ${G+Fl} remates · acierto ${Math.round(G/(G+Fl)*100)}%`}
+// ---- Reto
+function tab(i){$$('#rt').length;$$('.s:nth-of-type(8) .b').forEach((b,j)=>b.classList.toggle('act',j==i));$('#rt').innerHTML=i<2?`<div class="g2"><div class="box"><b>${R[i].t}</b><br>🎯 ${R[i].o}</div><div>${ex(R[i])}</div></div>`:`<div class="g2"><div class="box"><b>Distribución</b><br><b style="color:var(--y)">Primera línea:</b> central, lateral izquierdo y lateral derecho. Organizan el ataque, mueven el balón y buscan penetraciones o lanzamientos exteriores.<br><br><b style="color:var(--y)">Segunda línea:</b> extremo izquierdo, pivote y extremo derecho. Buscan espacios, reciben pases y ayudan a generar ocasiones de gol.</div><div class="box"><b>Funcionamiento</b><br>El central dirige el ataque y distribuye hacia los laterales. Estos hacen cruces, fintas y penetraciones para superar a los defensores. Los extremos aprovechan los espacios cercanos a las bandas y el pivote recibe entre los defensores para generar ocasiones de lanzamiento.</div></div>`}
+tab(0);
+// ---- Evaluación
+const E=[['Ataques que terminan en gol',1],['Lanzamientos realizados',1],['Pérdidas de balón',-1],['Penetraciones con éxito',1],['Pases interceptados',-1]];
+$('#ev').innerHTML=E.map((e,i)=>`<tr><td>${e[0]}</td><td><input type="number" min="0" id="a${i}" oninput="calc()"></td><td><input type="number" min="0" id="d${i}" oninput="calc()"></td><td id="r${i}">–</td></tr>`).join('');
+function calc(){let m=0,t=0;E.forEach((e,i)=>{const a=$('#a'+i).value,d=$('#d'+i).value,c=$('#r'+i);if(a===''||d===''){c.textContent='–';c.className='';return}t++;const x=(d-a)*e[1];if(x>0)m++;c.textContent=x>0?'▲ mejora':x<0?'▼ empeora':'= igual';c.className=x>0?'up':x<0?'dn':''});$('#vd').textContent=t?`${m} de ${t} aspectos mejoran`+(t==5?(m>=4?' → ¡El plan funciona! 🎉':m>=3?' → Mejora parcial: ajustar ejercicios':' → Hay que replantear el entrenamiento'):''):'Introduce los datos de los dos partidos.'}
+function demo(){[[4,12,9,3,6],[7,15,5,6,3]].forEach((r,k)=>r.forEach((v,i)=>$((k?'#d':'#a')+i).value=v));calc()}calc();
+// ---- Test
+const Q=[['En la defensa 6:0, ¿cómo se colocan los defensores?',['En una sola línea junto al área de 6 m','Uno adelantado a 9 m','En dos líneas de tres'],0],['¿Dónde se sitúa el defensor avanzado del 5:1?',['Junto al portero','Entre los 9 y 10 metros','En el extremo'],1],['En el ataque 3:3, ¿quién dirige el juego?',['El pivote','El extremo','El central'],2],['¿Cuántos pases obligatorios tiene «Circulación de balón»?',['10','15','20'],1]];
+let sc=0,an=0;
+function rq(){sc=an=0;$('#sc').textContent='Puntuación: 0 / '+Q.length;$('#qz').innerHTML=Q.map((q,i)=>`<div class="box"><b>${i+1}. ${q[0]}</b>${q[1].map((o,j)=>`<button class="opt" onclick="pick(this,${i},${j})">${o}</button>`).join('')}</div>`).join('')}
+function pick(b,i,j){const p=b.parentNode;if(p.dataset.d)return;p.dataset.d=1;an++;if(j==Q[i][2]){sc++;b.classList.add('ok')}else{b.classList.add('no');p.children[Q[i][2]+1].classList.add('ok')}$('#sc').textContent=`Puntuación: ${sc} / ${Q.length}`+(an==Q.length?(sc==Q.length?' 🏆 ¡Gol de oro!':' 💪 ¡Sigue entrenando!'):'')}
+rq();go(0);
+</script></body></html>
